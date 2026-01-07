@@ -12,9 +12,11 @@ repositories {
 }
 
 dependencies {
+    // AWS SDK for Kotlin
+    implementation("aws.sdk.kotlin:dynamodb:1.5.113")
+
     // Use JUnit Jupiter for testing.
     testImplementation(libs.junit.jupiter)
-
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     // This dependency is used by the application.
@@ -30,7 +32,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = "org.example.AppKt"
+    mainClass = "com.ondemanddeletionplatform.deletionworker.DeletionWorker"
 }
 
 tasks.named<Test>("test") {
