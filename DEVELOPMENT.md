@@ -21,8 +21,9 @@ If you do not clean before building, your local environment may continue to use 
 
 ## Helpful commands
 
-* `./gradlew build` - build project and run unit tests
-* `./gradlew clean build` - clear build artifacts, rebuild project, and run unit tests
+* `./gradlew build` - build project, run lint checker, and run unit tests
+* `./gradlew clean build` - clear build artifacts, rebuild project, run lint checker, and run unit tests
+* `./gradlew detekt` - run lint checker
 * `./gradlew run` - run the application
 * `./gradlew tasks` - list available Gradle tasks
 * `./gradlew test` - run unit tests
