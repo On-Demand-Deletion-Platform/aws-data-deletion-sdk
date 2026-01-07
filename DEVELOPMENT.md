@@ -38,3 +38,8 @@ Run `./gradlew build --info` to rerun the tests with info logging enabled, which
 #### My local builds are not picking up Gradle dependency changes
 
 Run `./gradlew clean build --refresh-dependencies` to ignore your Gradle environment's cached entries for modules and artifacts, and download new versions if they have different published hashsums.
+
+## Resources
+
+* [AWS SDK for Kotlin API docs](https://docs.aws.amazon.com/sdk-for-kotlin/api/latest/)
+* [AWS SDK for Kotlin DynamoDB code examples](https://docs.aws.amazon.com/sdk-for-kotlin/latest/developer-guide/kotlin_dynamodb_code_examples.html)
