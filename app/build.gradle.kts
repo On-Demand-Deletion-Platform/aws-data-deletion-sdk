@@ -32,7 +32,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = "com.ondemanddeletionplatform.deletionworker.DeletionWorker"
+    mainClass.set("com.ondemanddeletionplatform.deletionworker.DeletionWorkerKt")
 }
 
 tasks.named<Test>("test") {
