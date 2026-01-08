@@ -3,6 +3,7 @@ package com.ondemanddeletionplatform.deletionworker.domain.connectors
 import aws.sdk.kotlin.services.dynamodb.DynamoDbClient
 import aws.sdk.kotlin.services.dynamodb.model.AttributeValue
 import aws.sdk.kotlin.services.dynamodb.model.DeleteItemRequest
+import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionKey
 import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionStrategyType
 import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionTarget
 import com.ondemanddeletionplatform.deletionworker.domain.models.ValidatedDynamoDbGsiDeletionTarget
@@ -23,12 +24,7 @@ class DynamoDbDeletionConnectorTest {
     private const val TEST_TABLE_NAME = "TestTable"
     private const val TEST_PARTITION_KEY_NAME = "CustomerId"
     private const val TEST_SORT_KEY_NAME = "SortKey"
-    private const val TEST_SORT_KEY_VALUE = "SortValue456"
     private const val TEST_GSI_NAME = "GsiIndex"
-    private const val TEST_GSI_PARTITION_KEY_NAME = "GsiPartitionKey"
-    private const val TEST_GSI_PARTITION_KEY_VALUE = "Customer123"
-    private const val TEST_GSI_SORT_KEY_NAME = "GsiSortKey"
-    private const val TEST_GSI_SORT_KEY_VALUE = "SortValue456"
     private const val TEST_TABLE_DELETION_KEY_NAME = "DeletionKey"
     private const val TEST_CUSTOMER_ID = "Customer123"
   }
@@ -39,22 +35,24 @@ class DynamoDbDeletionConnectorTest {
     val deletionConnector = DynamoDbDeletionConnector(mockDdbClient)
 
     val deletionTarget = DynamoDbDeletionTarget(
-      strategy = DynamoDbDeletionStrategyType.TABLE_KEY,
+      strategy = DynamoDbDeletionStrategyType.GSI_QUERY,
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
-      partitionKeyValue = null
+      deletionKey = DynamoDbDeletionKey(
+        primaryAttributeName = TEST_PARTITION_KEY_NAME
+      )
     )
     val exception = assertThrows(IllegalArgumentException::class.java) {
       runBlocking {
         deletionConnector.deleteCustomer(deletionTarget, TEST_CUSTOMER_ID)
       }
     }
-    assertEquals("Partition key value must not be null", exception.message)
+    assertEquals("GSI name must not be null", exception.message)
   }
 
   @Test
-  fun deleteCustomerByPartitionKey_withoutSortKey_successfulDeletion() {
+  fun deleteCustomerByPartitionKey_successfulDeletion() {
     val mockDdbClient: DynamoDbClient = mock()
     val deletionConnector = DynamoDbDeletionConnector(mockDdbClient)
 
@@ -63,43 +61,15 @@ class DynamoDbDeletionConnectorTest {
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
-      partitionKeyValue = TEST_CUSTOMER_ID
+      deletionKey = DynamoDbDeletionKey(
+        primaryAttributeName = TEST_PARTITION_KEY_NAME
+      )
     )
 
     val expectedDeleteItemRequest = DeleteItemRequest {
       tableName = TEST_TABLE_NAME
       key = mapOf(
         TEST_PARTITION_KEY_NAME to AttributeValue.S(TEST_CUSTOMER_ID)
-      )
-    }
-
-    runBlocking {
-      deletionConnector.deleteCustomer(deletionTarget, TEST_CUSTOMER_ID)
-
-      verify(mockDdbClient).deleteItem(expectedDeleteItemRequest)
-    }
-  }
-
-  @Test
-  fun deleteCustomerByPartitionKey_withSortKey_successfulDeletion() {
-    val mockDdbClient: DynamoDbClient = mock()
-    val deletionConnector = DynamoDbDeletionConnector(mockDdbClient)
-
-    val deletionTarget = DynamoDbDeletionTarget(
-      strategy = DynamoDbDeletionStrategyType.TABLE_KEY,
-      awsRegion = TEST_AWS_REGION,
-      tableName = TEST_TABLE_NAME,
-      partitionKeyName = TEST_PARTITION_KEY_NAME,
-      partitionKeyValue = TEST_CUSTOMER_ID,
-      sortKeyName = TEST_SORT_KEY_NAME,
-      sortKeyValue = TEST_SORT_KEY_VALUE
-    )
-
-    val expectedDeleteItemRequest = DeleteItemRequest {
-      tableName = TEST_TABLE_NAME
-      key = mapOf(
-        TEST_PARTITION_KEY_NAME to AttributeValue.S(TEST_CUSTOMER_ID),
-        TEST_SORT_KEY_NAME to AttributeValue.S(TEST_SORT_KEY_VALUE)
       )
     }
 
@@ -121,10 +91,10 @@ class DynamoDbDeletionConnectorTest {
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
       gsiName = TEST_GSI_NAME,
-      gsiPartitionKeyName = TEST_GSI_PARTITION_KEY_NAME,
-      gsiPartitionKeyValue = TEST_GSI_PARTITION_KEY_VALUE,
-      gsiSortKeyName = TEST_GSI_SORT_KEY_NAME,
-      gsiSortKeyValue = TEST_GSI_SORT_KEY_VALUE
+      deletionKey = DynamoDbDeletionKey(
+        primaryAttributeName = TEST_PARTITION_KEY_NAME,
+        secondaryAttributeName = TEST_SORT_KEY_NAME
+      )
     )
 
     assertThrows(NotImplementedError::class.java) {
@@ -144,7 +114,9 @@ class DynamoDbDeletionConnectorTest {
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
-      tableDeletionKeyName = TEST_TABLE_DELETION_KEY_NAME
+      deletionKey = DynamoDbDeletionKey(
+        primaryAttributeName = TEST_TABLE_DELETION_KEY_NAME
+      )
     )
 
     assertThrows(NotImplementedError::class.java) {

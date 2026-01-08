@@ -11,9 +11,14 @@ class ValidatedDynamoDbTableKeyDeletionTargetTest {
     private const val TEST_AWS_REGION = "us-west-2"
     private const val TEST_TABLE_NAME = "TestTable"
     private const val TEST_PARTITION_KEY_NAME = "CustomerId"
-    private const val TEST_PARTITION_KEY_VALUE = "Customer123"
     private const val TEST_SORT_KEY_NAME = "SortKey"
-    private const val TEST_SORT_KEY_VALUE = "SortValue456"
+    private val TEST_DELETION_KEY_WITHOUT_SORT_KEY = DynamoDbDeletionKey(
+      primaryAttributeName = TEST_PARTITION_KEY_NAME
+    )
+    private val TEST_DELETION_KEY_WITH_SORT_KEY = DynamoDbDeletionKey(
+      primaryAttributeName = TEST_PARTITION_KEY_NAME,
+      secondaryAttributeName = TEST_SORT_KEY_NAME
+    )
   }
 
   @Test
@@ -23,16 +28,15 @@ class ValidatedDynamoDbTableKeyDeletionTargetTest {
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
-      partitionKeyValue = TEST_PARTITION_KEY_VALUE
+      deletionKey = TEST_DELETION_KEY_WITHOUT_SORT_KEY
     )
 
     assertEquals(DynamoDbDeletionStrategyType.TABLE_KEY, tableKeyDeletionTarget.strategy)
     assertEquals(TEST_AWS_REGION, tableKeyDeletionTarget.awsRegion)
     assertEquals(TEST_TABLE_NAME, tableKeyDeletionTarget.tableName)
     assertEquals(TEST_PARTITION_KEY_NAME, tableKeyDeletionTarget.partitionKeyName)
-    assertEquals(TEST_PARTITION_KEY_VALUE, tableKeyDeletionTarget.partitionKeyValue)
     assertNull(tableKeyDeletionTarget.sortKeyName)
-    assertNull(tableKeyDeletionTarget.sortKeyValue)
+    assertNull(tableKeyDeletionTarget.deletionKey.secondaryAttributeName)
   }
 
   @Test
@@ -41,65 +45,14 @@ class ValidatedDynamoDbTableKeyDeletionTargetTest {
       strategy = DynamoDbDeletionStrategyType.GSI_QUERY,
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
-      partitionKeyName = TEST_PARTITION_KEY_NAME
-    )
-
-    val exception = assertThrows(IllegalArgumentException::class.java) {
-      ValidatedDynamoDbTableKeyDeletionTarget.fromDeletionTarget(deletionTarget)
-    }
-    assertEquals("Deletion target strategy must be PARTITION_KEY", exception.message)
-  }
-
-  @Test
-  fun missingPartitionKeyValue_throwsException() {
-    val deletionTarget = DynamoDbDeletionTarget(
-      strategy = DynamoDbDeletionStrategyType.TABLE_KEY,
-      awsRegion = TEST_AWS_REGION,
-      tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
-      partitionKeyValue = null
+      deletionKey = TEST_DELETION_KEY_WITHOUT_SORT_KEY
     )
 
     val exception = assertThrows(IllegalArgumentException::class.java) {
       ValidatedDynamoDbTableKeyDeletionTarget.fromDeletionTarget(deletionTarget)
     }
-    assertEquals("Partition key value must not be null", exception.message)
-  }
-
-  @Test
-  fun missingSortKeyValueWithSortKeyName_throwsException() {
-    val deletionTarget = DynamoDbDeletionTarget(
-      strategy = DynamoDbDeletionStrategyType.TABLE_KEY,
-      awsRegion = TEST_AWS_REGION,
-      tableName = TEST_TABLE_NAME,
-      partitionKeyName = TEST_PARTITION_KEY_NAME,
-      partitionKeyValue = TEST_PARTITION_KEY_VALUE,
-      sortKeyName = TEST_SORT_KEY_NAME,
-      sortKeyValue = null
-    )
-
-    val exception = assertThrows(IllegalArgumentException::class.java) {
-      ValidatedDynamoDbTableKeyDeletionTarget.fromDeletionTarget(deletionTarget)
-    }
-    assertEquals("Sort key value must be provided if sort key name is provided", exception.message)
-  }
-
-  @Test
-  fun missingSortKeyNameWithSortKeyValue_throwsException() {
-    val deletionTarget = DynamoDbDeletionTarget(
-      strategy = DynamoDbDeletionStrategyType.TABLE_KEY,
-      awsRegion = TEST_AWS_REGION,
-      tableName = TEST_TABLE_NAME,
-      partitionKeyName = TEST_PARTITION_KEY_NAME,
-      partitionKeyValue = TEST_PARTITION_KEY_VALUE,
-      sortKeyName = null,
-      sortKeyValue = TEST_SORT_KEY_VALUE
-    )
-
-    val exception = assertThrows(IllegalArgumentException::class.java) {
-      ValidatedDynamoDbTableKeyDeletionTarget.fromDeletionTarget(deletionTarget)
-    }
-    assertEquals("Sort key name must be provided if sort key value is provided", exception.message)
+    assertEquals("Deletion target strategy must be TABLE_KEY", exception.message)
   }
 
   @Test
@@ -109,9 +62,7 @@ class ValidatedDynamoDbTableKeyDeletionTargetTest {
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
-      partitionKeyValue = TEST_PARTITION_KEY_VALUE,
-      sortKeyName = null,
-      sortKeyValue = null
+      deletionKey = TEST_DELETION_KEY_WITHOUT_SORT_KEY
     )
 
     val validatedTarget = ValidatedDynamoDbTableKeyDeletionTarget.fromDeletionTarget(deletionTarget)
@@ -120,9 +71,8 @@ class ValidatedDynamoDbTableKeyDeletionTargetTest {
     assertEquals(TEST_AWS_REGION, validatedTarget.awsRegion)
     assertEquals(TEST_TABLE_NAME, validatedTarget.tableName)
     assertEquals(TEST_PARTITION_KEY_NAME, validatedTarget.partitionKeyName)
-    assertEquals(TEST_PARTITION_KEY_VALUE, validatedTarget.partitionKeyValue)
+    assertEquals(TEST_PARTITION_KEY_NAME, validatedTarget.deletionKey.primaryAttributeName)
     assertNull(validatedTarget.sortKeyName)
-    assertNull(validatedTarget.sortKeyValue)
   }
 
   @Test
@@ -132,9 +82,8 @@ class ValidatedDynamoDbTableKeyDeletionTargetTest {
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
-      partitionKeyValue = TEST_PARTITION_KEY_VALUE,
       sortKeyName = TEST_SORT_KEY_NAME,
-      sortKeyValue = TEST_SORT_KEY_VALUE
+      deletionKey = TEST_DELETION_KEY_WITH_SORT_KEY
     )
 
     val validatedTarget = ValidatedDynamoDbTableKeyDeletionTarget.fromDeletionTarget(deletionTarget)
@@ -143,8 +92,8 @@ class ValidatedDynamoDbTableKeyDeletionTargetTest {
     assertEquals(TEST_AWS_REGION, validatedTarget.awsRegion)
     assertEquals(TEST_TABLE_NAME, validatedTarget.tableName)
     assertEquals(TEST_PARTITION_KEY_NAME, validatedTarget.partitionKeyName)
-    assertEquals(TEST_PARTITION_KEY_VALUE, validatedTarget.partitionKeyValue)
+    assertEquals(TEST_PARTITION_KEY_NAME, validatedTarget.deletionKey.primaryAttributeName)
     assertEquals(TEST_SORT_KEY_NAME, validatedTarget.sortKeyName)
-    assertEquals(TEST_SORT_KEY_VALUE, validatedTarget.sortKeyValue)
+    assertEquals(TEST_SORT_KEY_NAME, validatedTarget.deletionKey.secondaryAttributeName)
   }
 }

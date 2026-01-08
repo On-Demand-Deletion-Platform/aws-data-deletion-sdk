@@ -16,15 +16,12 @@ data class ValidatedDynamoDbScanDeletionTarget(
   val tableName: String,
   val partitionKeyName: String,
   val sortKeyName: String? = null,
-  val tableDeletionKeyName: String
+  val deletionKey: DynamoDbDeletionKey
 ) {
   companion object {
     fun fromDeletionTarget(deletionTarget: DynamoDbDeletionTarget): ValidatedDynamoDbScanDeletionTarget {
       require(deletionTarget.strategy == DynamoDbDeletionStrategyType.SCAN) {
         "Deletion target strategy must be SCAN"
-      }
-      requireNotNull(deletionTarget.tableDeletionKeyName) {
-        "tableDeletionKeyName must be provided for SCAN deletion strategy"
       }
 
       return ValidatedDynamoDbScanDeletionTarget(
@@ -33,7 +30,7 @@ data class ValidatedDynamoDbScanDeletionTarget(
         tableName = deletionTarget.tableName,
         partitionKeyName = deletionTarget.partitionKeyName,
         sortKeyName = deletionTarget.sortKeyName,
-        tableDeletionKeyName = deletionTarget.tableDeletionKeyName
+        deletionKey = deletionTarget.deletionKey
       )
     }
   }
