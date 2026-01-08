@@ -1,4 +1,4 @@
-package com.ondemanddeletionplatform.deletionworker.domain.models
+package com.ondemanddeletionplatform.deletionworker.domain.models.dynamodb
 
 /**
  * Validated data model for the DynamoDB GSI-based deletion strategy.

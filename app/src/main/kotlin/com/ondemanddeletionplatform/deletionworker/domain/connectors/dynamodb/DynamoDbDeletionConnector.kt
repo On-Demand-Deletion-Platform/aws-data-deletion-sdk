@@ -1,11 +1,11 @@
-package com.ondemanddeletionplatform.deletionworker.domain.connectors
+package com.ondemanddeletionplatform.deletionworker.domain.connectors.dynamodb
 
 import aws.sdk.kotlin.services.dynamodb.DynamoDbClient
-import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionKeyValue
-import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionStrategyType
-import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionTarget
-import com.ondemanddeletionplatform.deletionworker.domain.models.ValidatedDynamoDbGsiDeletionTarget
-import com.ondemanddeletionplatform.deletionworker.domain.models.ValidatedDynamoDbScanDeletionTarget
+import com.ondemanddeletionplatform.deletionworker.domain.models.dynamodb.DynamoDbDeletionKeyValue
+import com.ondemanddeletionplatform.deletionworker.domain.models.dynamodb.DynamoDbDeletionStrategyType
+import com.ondemanddeletionplatform.deletionworker.domain.models.dynamodb.DynamoDbDeletionTarget
+import com.ondemanddeletionplatform.deletionworker.domain.models.dynamodb.ValidatedDynamoDbGsiDeletionTarget
+import com.ondemanddeletionplatform.deletionworker.domain.models.dynamodb.ValidatedDynamoDbScanDeletionTarget
 
 /**
  * Used to execute on-demand data deletion requests

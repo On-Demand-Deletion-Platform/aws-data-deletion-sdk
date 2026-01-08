@@ -1,4 +1,4 @@
-package com.ondemanddeletionplatform.deletionworker.domain.models
+package com.ondemanddeletionplatform.deletionworker.domain.models.dynamodb
 
 /**
  * Supported strategies for on-demand data deletion from DynamoDB tables.

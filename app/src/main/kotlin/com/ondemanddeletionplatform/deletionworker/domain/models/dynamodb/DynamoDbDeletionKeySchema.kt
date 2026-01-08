@@ -1,4 +1,4 @@
-package com.ondemanddeletionplatform.deletionworker.domain.models
+package com.ondemanddeletionplatform.deletionworker.domain.models.dynamodb
 
 /**
  * Data model representing a DynamoDB deletion key schema,

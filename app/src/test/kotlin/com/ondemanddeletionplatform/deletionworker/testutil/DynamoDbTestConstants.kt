@@ -1,9 +1,9 @@
 package com.ondemanddeletionplatform.deletionworker.testutil
 
-import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionKeySchema
-import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionKeyValue
-import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionStrategyType
-import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionTarget
+import com.ondemanddeletionplatform.deletionworker.domain.models.dynamodb.DynamoDbDeletionKeySchema
+import com.ondemanddeletionplatform.deletionworker.domain.models.dynamodb.DynamoDbDeletionKeyValue
+import com.ondemanddeletionplatform.deletionworker.domain.models.dynamodb.DynamoDbDeletionStrategyType
+import com.ondemanddeletionplatform.deletionworker.domain.models.dynamodb.DynamoDbDeletionTarget
 
 object DynamoDbTestConstants {
   const val TEST_AWS_REGION = "us-west-2"

@@ -1,4 +1,4 @@
-package com.ondemanddeletionplatform.deletionworker.domain.models
+package com.ondemanddeletionplatform.deletionworker.domain.models.dynamodb
 
 import com.ondemanddeletionplatform.deletionworker.testutil.DynamoDbTestConstants
 import org.junit.jupiter.api.Test

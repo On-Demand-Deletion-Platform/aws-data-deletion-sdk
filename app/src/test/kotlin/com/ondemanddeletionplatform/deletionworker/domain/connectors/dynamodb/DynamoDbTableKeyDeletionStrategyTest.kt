@@ -1,15 +1,15 @@
-package com.ondemanddeletionplatform.deletionworker.domain.connectors
+package com.ondemanddeletionplatform.deletionworker.domain.connectors.dynamodb
 
 import aws.sdk.kotlin.services.dynamodb.DynamoDbClient
 import aws.sdk.kotlin.services.dynamodb.model.AttributeValue
 import aws.sdk.kotlin.services.dynamodb.model.DeleteItemRequest
-import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionKeySchema
-import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionKeyValue
-import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionStrategyType
-import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionTarget
-import com.ondemanddeletionplatform.deletionworker.domain.models.ValidatedDynamoDbGsiDeletionTarget
-import com.ondemanddeletionplatform.deletionworker.domain.models.ValidatedDynamoDbScanDeletionTarget
-import com.ondemanddeletionplatform.deletionworker.domain.models.ValidatedDynamoDbTableKeyDeletionTarget
+import com.ondemanddeletionplatform.deletionworker.domain.models.dynamodb.DynamoDbDeletionKeySchema
+import com.ondemanddeletionplatform.deletionworker.domain.models.dynamodb.DynamoDbDeletionKeyValue
+import com.ondemanddeletionplatform.deletionworker.domain.models.dynamodb.DynamoDbDeletionStrategyType
+import com.ondemanddeletionplatform.deletionworker.domain.models.dynamodb.DynamoDbDeletionTarget
+import com.ondemanddeletionplatform.deletionworker.domain.models.dynamodb.ValidatedDynamoDbGsiDeletionTarget
+import com.ondemanddeletionplatform.deletionworker.domain.models.dynamodb.ValidatedDynamoDbScanDeletionTarget
+import com.ondemanddeletionplatform.deletionworker.domain.models.dynamodb.ValidatedDynamoDbTableKeyDeletionTarget
 import com.ondemanddeletionplatform.deletionworker.testutil.DynamoDbTestConstants
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
