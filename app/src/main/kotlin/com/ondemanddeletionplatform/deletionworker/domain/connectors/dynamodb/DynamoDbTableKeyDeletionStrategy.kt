@@ -11,7 +11,7 @@ import com.ondemanddeletionplatform.deletionworker.domain.models.dynamodb.Valida
  */
 class DynamoDbTableKeyDeletionStrategy : DynamoDbDeletionStrategy() {
   override suspend fun deleteData(ddb: DynamoDbClient, deletionTarget: DynamoDbDeletionTarget, deletionKey: DynamoDbDeletionKeyValue) {
-    println("Called partition key deletion for deletionKey: $deletionKey")
+    println("Called table key deletion for deletionKey: $deletionKey")
     val validatedDeletionTarget = ValidatedDynamoDbTableKeyDeletionTarget.fromDeletionTarget(deletionTarget)
 
     val tableKey = mutableMapOf<String, AttributeValue>()
