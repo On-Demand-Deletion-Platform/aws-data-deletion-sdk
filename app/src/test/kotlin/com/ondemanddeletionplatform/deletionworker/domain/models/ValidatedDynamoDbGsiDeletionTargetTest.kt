@@ -21,6 +21,30 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
   }
 
   @Test
+  fun canConstructWithoutOptionalFields() {
+    val gsiDeletionTarget = ValidatedDynamoDbGsiDeletionTarget(
+      strategy = DynamoDbDeletionStrategy.GSI_QUERY,
+      awsRegion = TEST_AWS_REGION,
+      tableName = TEST_TABLE_NAME,
+      partitionKeyName = TEST_PARTITION_KEY_NAME,
+      gsiName = TEST_GSI_NAME,
+      gsiPartitionKeyName = TEST_GSI_PARTITION_KEY_NAME,
+      gsiPartitionKeyValue = TEST_GSI_PARTITION_KEY_VALUE
+    )
+
+    assertEquals(DynamoDbDeletionStrategy.GSI_QUERY, gsiDeletionTarget.strategy)
+    assertEquals(TEST_AWS_REGION, gsiDeletionTarget.awsRegion)
+    assertEquals(TEST_TABLE_NAME, gsiDeletionTarget.tableName)
+    assertEquals(TEST_PARTITION_KEY_NAME, gsiDeletionTarget.partitionKeyName)
+    assertEquals(TEST_GSI_NAME, gsiDeletionTarget.gsiName)
+    assertEquals(TEST_GSI_PARTITION_KEY_NAME, gsiDeletionTarget.gsiPartitionKeyName)
+    assertEquals(TEST_GSI_PARTITION_KEY_VALUE, gsiDeletionTarget.gsiPartitionKeyValue)
+    assertNull(gsiDeletionTarget.sortKeyName)
+    assertNull(gsiDeletionTarget.gsiSortKeyName)
+    assertNull(gsiDeletionTarget.gsiSortKeyValue)
+  }
+
+  @Test
   fun incorrectStrategy_throwsException() {
     val deletionTarget = DynamoDbDeletionTarget(
       strategy = DynamoDbDeletionStrategy.TABLE_KEY,
@@ -48,6 +72,40 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
       ValidatedDynamoDbGsiDeletionTarget.fromDeletionTarget(deletionTarget)
     }
     assertEquals("GSI name must not be null", exception.message)
+  }
+
+  @Test
+  fun missingGsiPartitionKeyName_throwsException() {
+    val deletionTarget = DynamoDbDeletionTarget(
+      strategy = DynamoDbDeletionStrategy.GSI_QUERY,
+      awsRegion = TEST_AWS_REGION,
+      tableName = TEST_TABLE_NAME,
+      partitionKeyName = TEST_PARTITION_KEY_NAME,
+      gsiName = TEST_GSI_NAME,
+      gsiPartitionKeyValue = TEST_GSI_PARTITION_KEY_VALUE
+    )
+
+    val exception = assertThrows(IllegalArgumentException::class.java) {
+      ValidatedDynamoDbGsiDeletionTarget.fromDeletionTarget(deletionTarget)
+    }
+    assertEquals("GSI partition key name must not be null", exception.message)
+  }
+
+  @Test
+  fun missingGsiPartitionKeyValue_throwsException() {
+    val deletionTarget = DynamoDbDeletionTarget(
+      strategy = DynamoDbDeletionStrategy.GSI_QUERY,
+      awsRegion = TEST_AWS_REGION,
+      tableName = TEST_TABLE_NAME,
+      partitionKeyName = TEST_PARTITION_KEY_NAME,
+      gsiName = TEST_GSI_NAME,
+      gsiPartitionKeyName = TEST_GSI_PARTITION_KEY_NAME
+    )
+
+    val exception = assertThrows(IllegalArgumentException::class.java) {
+      ValidatedDynamoDbGsiDeletionTarget.fromDeletionTarget(deletionTarget)
+    }
+    assertEquals("GSI partition key value must not be null", exception.message)
   }
 
   @Test
@@ -89,7 +147,7 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
   }
 
   @Test
-  fun validInput_returnsValidatedGsiDeletionTarget() {
+  fun validInputWithoutSortKey_returnsValidatedGsiDeletionTarget() {
     val deletionTarget = DynamoDbDeletionTarget(
       strategy = DynamoDbDeletionStrategy.GSI_QUERY,
       awsRegion = TEST_AWS_REGION,

@@ -20,6 +20,25 @@ class ValidatedDynamoDbTableKeyDeletionTargetTest {
   }
 
   @Test
+  fun canConstructWithoutOptionalFields() {
+    val tableKeyDeletionTarget = ValidatedDynamoDbTableKeyDeletionTarget(
+      strategy = DynamoDbDeletionStrategy.TABLE_KEY,
+      awsRegion = TEST_AWS_REGION,
+      tableName = TEST_TABLE_NAME,
+      partitionKeyName = TEST_PARTITION_KEY_NAME,
+      partitionKeyValue = TEST_PARTITION_KEY_VALUE
+    )
+
+    assertEquals(DynamoDbDeletionStrategy.TABLE_KEY, tableKeyDeletionTarget.strategy)
+    assertEquals(TEST_AWS_REGION, tableKeyDeletionTarget.awsRegion)
+    assertEquals(TEST_TABLE_NAME, tableKeyDeletionTarget.tableName)
+    assertEquals(TEST_PARTITION_KEY_NAME, tableKeyDeletionTarget.partitionKeyName)
+    assertEquals(TEST_PARTITION_KEY_VALUE, tableKeyDeletionTarget.partitionKeyValue)
+    assertNull(tableKeyDeletionTarget.sortKeyName)
+    assertNull(tableKeyDeletionTarget.sortKeyValue)
+  }
+
+  @Test
   fun incorrectStrategy_throwsException() {
     val deletionTarget = DynamoDbDeletionTarget(
       strategy = DynamoDbDeletionStrategy.GSI_QUERY,

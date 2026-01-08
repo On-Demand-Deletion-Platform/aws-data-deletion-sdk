@@ -8,6 +8,9 @@ plugins {
 
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+
+    // Apply the JaCoCo plugin for code coverage reports.
+    jacoco
 }
 
 repositories {
@@ -42,6 +45,10 @@ application {
     mainClass.set("com.ondemanddeletionplatform.deletionworker.DeletionWorkerKt")
 }
 
+jacoco {
+    toolVersion = "0.8.10"
+}
+
 detekt {
     // Version of detekt to use. For a list of available versions,
     // see https://github.com/detekt/detekt/releases.
@@ -60,9 +67,30 @@ detekt {
     debug = false
 }
 
-tasks.named<Test>("test") {
-    // Use JUnit Platform for unit tests.
+tasks.test {
     useJUnitPlatform()
+
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+    reports {
+        html.required.set(true)
+    }
+}
+
+tasks.jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = "0.95".toBigDecimal()
+            }
+        }
+    }
+}
+
+tasks.check {
+    dependsOn(tasks.jacocoTestCoverageVerification)
 }
 
 tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
