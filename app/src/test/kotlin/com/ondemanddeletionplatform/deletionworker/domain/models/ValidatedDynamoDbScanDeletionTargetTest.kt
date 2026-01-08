@@ -22,7 +22,7 @@ class ValidatedDynamoDbScanDeletionTargetTest {
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
-      deletionKey = DynamoDbDeletionKeySchema(
+      deletionKeySchema = DynamoDbDeletionKeySchema(
         primaryKeyName = TEST_TABLE_DELETION_KEY_NAME
       )
     )
@@ -31,7 +31,7 @@ class ValidatedDynamoDbScanDeletionTargetTest {
     assertEquals(TEST_AWS_REGION, scanDeletionTarget.awsRegion)
     assertEquals(TEST_TABLE_NAME, scanDeletionTarget.tableName)
     assertEquals(TEST_PARTITION_KEY_NAME, scanDeletionTarget.partitionKeyName)
-    assertEquals(TEST_TABLE_DELETION_KEY_NAME, scanDeletionTarget.deletionKey.primaryKeyName)
+    assertEquals(TEST_TABLE_DELETION_KEY_NAME, scanDeletionTarget.deletionKeySchema.primaryKeyName)
   }
 
   @Test
@@ -41,7 +41,7 @@ class ValidatedDynamoDbScanDeletionTargetTest {
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
-      deletionKey = DynamoDbDeletionKeySchema(
+      deletionKeySchema = DynamoDbDeletionKeySchema(
         primaryKeyName = TEST_PARTITION_KEY_NAME
       )
     )
@@ -59,7 +59,7 @@ class ValidatedDynamoDbScanDeletionTargetTest {
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
-      deletionKey = DynamoDbDeletionKeySchema(
+      deletionKeySchema = DynamoDbDeletionKeySchema(
         primaryKeyName = TEST_TABLE_DELETION_KEY_NAME
       )
     )
@@ -70,7 +70,7 @@ class ValidatedDynamoDbScanDeletionTargetTest {
     assertEquals(TEST_AWS_REGION, scanDeletionTarget.awsRegion)
     assertEquals(TEST_TABLE_NAME, scanDeletionTarget.tableName)
     assertEquals(TEST_PARTITION_KEY_NAME, scanDeletionTarget.partitionKeyName)
-    assertEquals(TEST_TABLE_DELETION_KEY_NAME, scanDeletionTarget.deletionKey.primaryKeyName)
+    assertEquals(TEST_TABLE_DELETION_KEY_NAME, scanDeletionTarget.deletionKeySchema.primaryKeyName)
   }
 
   @Test
@@ -81,7 +81,7 @@ class ValidatedDynamoDbScanDeletionTargetTest {
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
       sortKeyName = TEST_SORT_KEY_NAME,
-      deletionKey = DynamoDbDeletionKeySchema(
+      deletionKeySchema = DynamoDbDeletionKeySchema(
         primaryKeyName = TEST_TABLE_DELETION_KEY_NAME
       )
     )
@@ -93,6 +93,6 @@ class ValidatedDynamoDbScanDeletionTargetTest {
     assertEquals(TEST_TABLE_NAME, scanDeletionTarget.tableName)
     assertEquals(TEST_PARTITION_KEY_NAME, scanDeletionTarget.partitionKeyName)
     assertEquals(TEST_SORT_KEY_NAME, scanDeletionTarget.sortKeyName)
-    assertEquals(TEST_TABLE_DELETION_KEY_NAME, scanDeletionTarget.deletionKey.primaryKeyName)
+    assertEquals(TEST_TABLE_DELETION_KEY_NAME, scanDeletionTarget.deletionKeySchema.primaryKeyName)
   }
 }

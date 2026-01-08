@@ -12,7 +12,7 @@ data class DynamoDbDeletionTarget(
   val tableName: String,
   val partitionKeyName: String,
   val sortKeyName: String? = null,
-  val deletionKey: DynamoDbDeletionKeySchema,
+  val deletionKeySchema: DynamoDbDeletionKeySchema,
 
   // GSI deletion strategy parameters
   val gsiName: String? = null

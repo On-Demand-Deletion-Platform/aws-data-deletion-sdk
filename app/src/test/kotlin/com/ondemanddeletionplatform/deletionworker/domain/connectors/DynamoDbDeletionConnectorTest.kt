@@ -4,6 +4,7 @@ import aws.sdk.kotlin.services.dynamodb.DynamoDbClient
 import aws.sdk.kotlin.services.dynamodb.model.AttributeValue
 import aws.sdk.kotlin.services.dynamodb.model.DeleteItemRequest
 import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionKeySchema
+import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionKeyValue
 import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionStrategyType
 import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionTarget
 import com.ondemanddeletionplatform.deletionworker.domain.models.ValidatedDynamoDbGsiDeletionTarget
@@ -27,6 +28,15 @@ class DynamoDbDeletionConnectorTest {
     private const val TEST_GSI_NAME = "GsiIndex"
     private const val TEST_TABLE_DELETION_KEY_NAME = "DeletionKey"
     private const val TEST_CUSTOMER_ID = "Customer123"
+    private const val TEST_SORT_KEY_VALUE = "SortValue456"
+    private val TEST_DELETION_KEY_SCHEMA = DynamoDbDeletionKeySchema(
+      primaryKeyName = TEST_PARTITION_KEY_NAME,
+      secondaryKeyName = TEST_SORT_KEY_NAME
+    )
+    private val TEST_DELETION_KEY_VALUE = DynamoDbDeletionKeyValue(
+      primaryKeyValue = TEST_CUSTOMER_ID,
+      secondaryKeyValue = TEST_SORT_KEY_VALUE
+    )
   }
 
   @Test
@@ -39,20 +49,18 @@ class DynamoDbDeletionConnectorTest {
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
-      deletionKey = DynamoDbDeletionKeySchema(
-        primaryKeyName = TEST_PARTITION_KEY_NAME
-      )
+      deletionKeySchema = TEST_DELETION_KEY_SCHEMA
     )
     val exception = assertThrows(IllegalArgumentException::class.java) {
       runBlocking {
-        deletionConnector.deleteCustomer(deletionTarget, TEST_CUSTOMER_ID)
+        deletionConnector.deleteData(deletionTarget, TEST_DELETION_KEY_VALUE)
       }
     }
     assertEquals("GSI name must not be null", exception.message)
   }
 
   @Test
-  fun deleteCustomerByPartitionKey_successfulDeletion() {
+  fun deleteCustomerByTableKey_successfulDeletion() {
     val mockDdbClient: DynamoDbClient = mock()
     val deletionConnector = DynamoDbDeletionConnector(mockDdbClient)
 
@@ -61,20 +69,20 @@ class DynamoDbDeletionConnectorTest {
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
-      deletionKey = DynamoDbDeletionKeySchema(
-        primaryKeyName = TEST_PARTITION_KEY_NAME
-      )
+      sortKeyName = TEST_SORT_KEY_NAME,
+      deletionKeySchema = TEST_DELETION_KEY_SCHEMA
     )
 
     val expectedDeleteItemRequest = DeleteItemRequest {
       tableName = TEST_TABLE_NAME
       key = mapOf(
-        TEST_PARTITION_KEY_NAME to AttributeValue.S(TEST_CUSTOMER_ID)
+        TEST_PARTITION_KEY_NAME to AttributeValue.S(TEST_CUSTOMER_ID),
+        TEST_SORT_KEY_NAME to AttributeValue.S(TEST_SORT_KEY_VALUE)
       )
     }
 
     runBlocking {
-      deletionConnector.deleteCustomer(deletionTarget, TEST_CUSTOMER_ID)
+      deletionConnector.deleteData(deletionTarget, TEST_DELETION_KEY_VALUE)
 
       verify(mockDdbClient).deleteItem(expectedDeleteItemRequest)
     }
@@ -91,15 +99,12 @@ class DynamoDbDeletionConnectorTest {
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
       gsiName = TEST_GSI_NAME,
-      deletionKey = DynamoDbDeletionKeySchema(
-        primaryKeyName = TEST_PARTITION_KEY_NAME,
-        secondaryKeyName = TEST_SORT_KEY_NAME
-      )
+      deletionKeySchema = TEST_DELETION_KEY_SCHEMA
     )
 
     assertThrows(NotImplementedError::class.java) {
       runBlocking {
-        deletionConnector.deleteCustomer(deletionTarget, TEST_CUSTOMER_ID)
+        deletionConnector.deleteData(deletionTarget, TEST_DELETION_KEY_VALUE)
       }
     }
   }
@@ -114,14 +119,12 @@ class DynamoDbDeletionConnectorTest {
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
-      deletionKey = DynamoDbDeletionKeySchema(
-        primaryKeyName = TEST_TABLE_DELETION_KEY_NAME
-      )
+      deletionKeySchema = TEST_DELETION_KEY_SCHEMA
     )
 
     assertThrows(NotImplementedError::class.java) {
       runBlocking {
-        deletionConnector.deleteCustomer(deletionTarget, TEST_CUSTOMER_ID)
+        deletionConnector.deleteData(deletionTarget, TEST_DELETION_KEY_VALUE)
       }
     }
   }

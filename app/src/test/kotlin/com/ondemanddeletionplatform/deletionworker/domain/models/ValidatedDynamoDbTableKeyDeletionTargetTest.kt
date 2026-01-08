@@ -28,7 +28,7 @@ class ValidatedDynamoDbTableKeyDeletionTargetTest {
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
-      deletionKey = TEST_DELETION_KEY_WITHOUT_SORT_KEY
+      deletionKeySchema = TEST_DELETION_KEY_WITHOUT_SORT_KEY
     )
 
     assertEquals(DynamoDbDeletionStrategyType.TABLE_KEY, tableKeyDeletionTarget.strategy)
@@ -36,7 +36,7 @@ class ValidatedDynamoDbTableKeyDeletionTargetTest {
     assertEquals(TEST_TABLE_NAME, tableKeyDeletionTarget.tableName)
     assertEquals(TEST_PARTITION_KEY_NAME, tableKeyDeletionTarget.partitionKeyName)
     assertNull(tableKeyDeletionTarget.sortKeyName)
-    assertNull(tableKeyDeletionTarget.deletionKey.secondaryKeyName)
+    assertNull(tableKeyDeletionTarget.deletionKeySchema.secondaryKeyName)
   }
 
   @Test
@@ -46,7 +46,7 @@ class ValidatedDynamoDbTableKeyDeletionTargetTest {
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
-      deletionKey = TEST_DELETION_KEY_WITHOUT_SORT_KEY
+      deletionKeySchema = TEST_DELETION_KEY_WITHOUT_SORT_KEY
     )
 
     val exception = assertThrows(IllegalArgumentException::class.java) {
@@ -56,13 +56,46 @@ class ValidatedDynamoDbTableKeyDeletionTargetTest {
   }
 
   @Test
+  fun missingSortKeyValue_throwsException() {
+    val deletionTarget = DynamoDbDeletionTarget(
+      strategy = DynamoDbDeletionStrategyType.TABLE_KEY,
+      awsRegion = TEST_AWS_REGION,
+      tableName = TEST_TABLE_NAME,
+      partitionKeyName = TEST_PARTITION_KEY_NAME,
+      sortKeyName = TEST_SORT_KEY_NAME,
+      deletionKeySchema = TEST_DELETION_KEY_WITHOUT_SORT_KEY
+    )
+
+    val exception = assertThrows(IllegalArgumentException::class.java) {
+      ValidatedDynamoDbTableKeyDeletionTarget.fromDeletionTarget(deletionTarget)
+    }
+    assertEquals("If sortKeyName is provided, deletionKeySchema.secondaryKeyName must also be provided", exception.message)
+  }
+
+  @Test
+  fun missingSortKeyName_throwsException() {
+    val deletionTarget = DynamoDbDeletionTarget(
+      strategy = DynamoDbDeletionStrategyType.TABLE_KEY,
+      awsRegion = TEST_AWS_REGION,
+      tableName = TEST_TABLE_NAME,
+      partitionKeyName = TEST_PARTITION_KEY_NAME,
+      deletionKeySchema = TEST_DELETION_KEY_WITH_SORT_KEY
+    )
+
+    val exception = assertThrows(IllegalArgumentException::class.java) {
+      ValidatedDynamoDbTableKeyDeletionTarget.fromDeletionTarget(deletionTarget)
+    }
+    assertEquals("If deletionKeySchema.secondaryKeyName is provided, sortKeyName must also be provided", exception.message)
+  }
+
+  @Test
   fun validDeletionTarget_withoutSortKey_returnsValidatedTarget() {
     val deletionTarget = DynamoDbDeletionTarget(
       strategy = DynamoDbDeletionStrategyType.TABLE_KEY,
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
-      deletionKey = TEST_DELETION_KEY_WITHOUT_SORT_KEY
+      deletionKeySchema = TEST_DELETION_KEY_WITHOUT_SORT_KEY
     )
 
     val validatedTarget = ValidatedDynamoDbTableKeyDeletionTarget.fromDeletionTarget(deletionTarget)
@@ -71,7 +104,7 @@ class ValidatedDynamoDbTableKeyDeletionTargetTest {
     assertEquals(TEST_AWS_REGION, validatedTarget.awsRegion)
     assertEquals(TEST_TABLE_NAME, validatedTarget.tableName)
     assertEquals(TEST_PARTITION_KEY_NAME, validatedTarget.partitionKeyName)
-    assertEquals(TEST_PARTITION_KEY_NAME, validatedTarget.deletionKey.primaryKeyName)
+    assertEquals(TEST_PARTITION_KEY_NAME, validatedTarget.deletionKeySchema.primaryKeyName)
     assertNull(validatedTarget.sortKeyName)
   }
 
@@ -83,7 +116,7 @@ class ValidatedDynamoDbTableKeyDeletionTargetTest {
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
       sortKeyName = TEST_SORT_KEY_NAME,
-      deletionKey = TEST_DELETION_KEY_WITH_SORT_KEY
+      deletionKeySchema = TEST_DELETION_KEY_WITH_SORT_KEY
     )
 
     val validatedTarget = ValidatedDynamoDbTableKeyDeletionTarget.fromDeletionTarget(deletionTarget)
@@ -92,8 +125,8 @@ class ValidatedDynamoDbTableKeyDeletionTargetTest {
     assertEquals(TEST_AWS_REGION, validatedTarget.awsRegion)
     assertEquals(TEST_TABLE_NAME, validatedTarget.tableName)
     assertEquals(TEST_PARTITION_KEY_NAME, validatedTarget.partitionKeyName)
-    assertEquals(TEST_PARTITION_KEY_NAME, validatedTarget.deletionKey.primaryKeyName)
+    assertEquals(TEST_PARTITION_KEY_NAME, validatedTarget.deletionKeySchema.primaryKeyName)
     assertEquals(TEST_SORT_KEY_NAME, validatedTarget.sortKeyName)
-    assertEquals(TEST_SORT_KEY_NAME, validatedTarget.deletionKey.secondaryKeyName)
+    assertEquals(TEST_SORT_KEY_NAME, validatedTarget.deletionKeySchema.secondaryKeyName)
   }
 }

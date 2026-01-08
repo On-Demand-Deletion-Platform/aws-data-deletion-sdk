@@ -12,12 +12,18 @@ data class ValidatedDynamoDbTableKeyDeletionTarget(
   val tableName: String,
   val partitionKeyName: String,
   val sortKeyName: String? = null,
-  val deletionKey: DynamoDbDeletionKeySchema
+  val deletionKeySchema: DynamoDbDeletionKeySchema
 ) {
   companion object {
     fun fromDeletionTarget(deletionTarget: DynamoDbDeletionTarget): ValidatedDynamoDbTableKeyDeletionTarget {
       require(deletionTarget.strategy == DynamoDbDeletionStrategyType.TABLE_KEY) {
         "Deletion target strategy must be TABLE_KEY"
+      }
+      require(deletionTarget.sortKeyName == null || deletionTarget.deletionKeySchema.secondaryKeyName != null) {
+        "If sortKeyName is provided, deletionKeySchema.secondaryKeyName must also be provided"
+      }
+      require(deletionTarget.sortKeyName != null || deletionTarget.deletionKeySchema.secondaryKeyName == null) {
+        "If deletionKeySchema.secondaryKeyName is provided, sortKeyName must also be provided"
       }
 
       return ValidatedDynamoDbTableKeyDeletionTarget(
@@ -26,7 +32,7 @@ data class ValidatedDynamoDbTableKeyDeletionTarget(
         tableName = deletionTarget.tableName,
         partitionKeyName = deletionTarget.partitionKeyName,
         sortKeyName = deletionTarget.sortKeyName,
-        deletionKey = deletionTarget.deletionKey
+        deletionKeySchema = deletionTarget.deletionKeySchema
       )
     }
   }

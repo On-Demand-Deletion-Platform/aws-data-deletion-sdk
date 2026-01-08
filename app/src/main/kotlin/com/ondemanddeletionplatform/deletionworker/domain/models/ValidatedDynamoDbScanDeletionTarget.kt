@@ -16,7 +16,7 @@ data class ValidatedDynamoDbScanDeletionTarget(
   val tableName: String,
   val partitionKeyName: String,
   val sortKeyName: String? = null,
-  val deletionKey: DynamoDbDeletionKeySchema
+  val deletionKeySchema: DynamoDbDeletionKeySchema
 ) {
   companion object {
     fun fromDeletionTarget(deletionTarget: DynamoDbDeletionTarget): ValidatedDynamoDbScanDeletionTarget {
@@ -30,7 +30,7 @@ data class ValidatedDynamoDbScanDeletionTarget(
         tableName = deletionTarget.tableName,
         partitionKeyName = deletionTarget.partitionKeyName,
         sortKeyName = deletionTarget.sortKeyName,
-        deletionKey = deletionTarget.deletionKey
+        deletionKeySchema = deletionTarget.deletionKeySchema
       )
     }
   }

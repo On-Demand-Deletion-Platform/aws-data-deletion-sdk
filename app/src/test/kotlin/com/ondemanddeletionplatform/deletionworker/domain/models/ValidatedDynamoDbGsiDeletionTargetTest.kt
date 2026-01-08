@@ -28,7 +28,7 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
       gsiName = TEST_GSI_NAME,
-      deletionKey = TEST_DELETION_KEY_WITHOUT_SORT_KEY
+      deletionKeySchema = TEST_DELETION_KEY_WITHOUT_SORT_KEY
     )
 
     assertEquals(DynamoDbDeletionStrategyType.GSI_QUERY, gsiDeletionTarget.strategy)
@@ -36,9 +36,9 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
     assertEquals(TEST_TABLE_NAME, gsiDeletionTarget.tableName)
     assertEquals(TEST_PARTITION_KEY_NAME, gsiDeletionTarget.partitionKeyName)
     assertEquals(TEST_GSI_NAME, gsiDeletionTarget.gsiName)
-    assertEquals(TEST_GSI_PARTITION_KEY_NAME, gsiDeletionTarget.deletionKey.primaryKeyName)
+    assertEquals(TEST_GSI_PARTITION_KEY_NAME, gsiDeletionTarget.deletionKeySchema.primaryKeyName)
     assertNull(gsiDeletionTarget.sortKeyName)
-    assertNull(gsiDeletionTarget.deletionKey.secondaryKeyName)
+    assertNull(gsiDeletionTarget.deletionKeySchema.secondaryKeyName)
   }
 
   @Test
@@ -48,7 +48,7 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
-      deletionKey = TEST_DELETION_KEY_WITHOUT_SORT_KEY
+      deletionKeySchema = TEST_DELETION_KEY_WITHOUT_SORT_KEY
     )
 
     val exception = assertThrows(IllegalArgumentException::class.java) {
@@ -64,7 +64,7 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
-      deletionKey = TEST_DELETION_KEY_WITHOUT_SORT_KEY
+      deletionKeySchema = TEST_DELETION_KEY_WITHOUT_SORT_KEY
     )
 
     val exception = assertThrows(IllegalArgumentException::class.java) {
@@ -81,7 +81,7 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
       gsiName = TEST_GSI_NAME,
-      deletionKey = TEST_DELETION_KEY_WITHOUT_SORT_KEY
+      deletionKeySchema = TEST_DELETION_KEY_WITHOUT_SORT_KEY
     )
 
     val validatedTarget = ValidatedDynamoDbGsiDeletionTarget.fromDeletionTarget(deletionTarget)
@@ -91,8 +91,8 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
     assertEquals(TEST_TABLE_NAME, validatedTarget.tableName)
     assertEquals(TEST_PARTITION_KEY_NAME, validatedTarget.partitionKeyName)
     assertEquals(TEST_GSI_NAME, validatedTarget.gsiName)
-    assertEquals(TEST_GSI_PARTITION_KEY_NAME, validatedTarget.deletionKey.primaryKeyName)
-    assertNull(validatedTarget.deletionKey.secondaryKeyName)
+    assertEquals(TEST_GSI_PARTITION_KEY_NAME, validatedTarget.deletionKeySchema.primaryKeyName)
+    assertNull(validatedTarget.deletionKeySchema.secondaryKeyName)
   }
 
   @Test
@@ -103,7 +103,7 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
       gsiName = TEST_GSI_NAME,
-      deletionKey =  DynamoDbDeletionKeySchema(
+      deletionKeySchema =  DynamoDbDeletionKeySchema(
         primaryKeyName = TEST_GSI_PARTITION_KEY_NAME,
         secondaryKeyName = TEST_GSI_SORT_KEY_NAME
       )
@@ -116,7 +116,7 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
     assertEquals(TEST_TABLE_NAME, validatedTarget.tableName)
     assertEquals(TEST_PARTITION_KEY_NAME, validatedTarget.partitionKeyName)
     assertEquals(TEST_GSI_NAME, validatedTarget.gsiName)
-    assertEquals(TEST_GSI_PARTITION_KEY_NAME, validatedTarget.deletionKey.primaryKeyName)
-    assertEquals(TEST_GSI_SORT_KEY_NAME, validatedTarget.deletionKey.secondaryKeyName)
+    assertEquals(TEST_GSI_PARTITION_KEY_NAME, validatedTarget.deletionKeySchema.primaryKeyName)
+    assertEquals(TEST_GSI_SORT_KEY_NAME, validatedTarget.deletionKeySchema.secondaryKeyName)
   }
 }
