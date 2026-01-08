@@ -1,5 +1,11 @@
 package com.ondemanddeletionplatform.deletionworker
 
+/**
+ * Main class for the On Demand Deletion worker.
+ *
+ * This class will poll for deletion requests and execute
+ * them across all onboarded data stores.
+ */
 class DeletionWorker {
   val greeting: String
     get() {

@@ -2,6 +2,12 @@ package com.ondemanddeletionplatform.deletionworker.domain.models
 
 import com.ondemanddeletionplatform.deletionworker.domain.constants.DynamoDbDeletionStrategy
 
+/**
+ * Validated data model for the DynamoDB GSI-based deletion strategy.
+ *
+ * Used for data deletion when deletion requests map to a DynamoDB
+ * Global Secondary Index (GSI) primary key.
+ */
 data class ValidatedDynamoDbGsiDeletionTarget(
   val strategy: DynamoDbDeletionStrategy,
   val awsRegion: String,

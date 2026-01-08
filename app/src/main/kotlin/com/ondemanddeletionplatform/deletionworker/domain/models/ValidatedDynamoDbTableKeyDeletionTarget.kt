@@ -2,6 +2,12 @@ package com.ondemanddeletionplatform.deletionworker.domain.models
 
 import com.ondemanddeletionplatform.deletionworker.domain.constants.DynamoDbDeletionStrategy
 
+/**
+ * Validated data model for the DynamoDB table-key-based deletion strategy.
+ *
+ * Used for efficient data deletion when deletion requests directly
+ * map to the DynamoDB table's primary key.
+ */
 data class ValidatedDynamoDbTableKeyDeletionTarget(
   val strategy: DynamoDbDeletionStrategy,
   val awsRegion: String,

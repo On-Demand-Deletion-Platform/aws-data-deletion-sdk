@@ -1,5 +1,8 @@
 package com.ondemanddeletionplatform.deletionworker.domain.constants
 
+/**
+ * Supported strategies for on-demand data deletion from DynamoDB tables.
+ */
 enum class DynamoDbDeletionStrategy {
   // Delete item by table primary key (partition key and sort key if applicable)
   TABLE_KEY,

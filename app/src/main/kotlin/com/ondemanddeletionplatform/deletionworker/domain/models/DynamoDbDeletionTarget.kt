@@ -2,6 +2,9 @@ package com.ondemanddeletionplatform.deletionworker.domain.models
 
 import com.ondemanddeletionplatform.deletionworker.domain.constants.DynamoDbDeletionStrategy
 
+/**
+ * Common data model for on-demand deletion strategies for DynamoDB tables.
+ */
 data class DynamoDbDeletionTarget(
   // The deletion strategy to use for this target.
   val strategy: DynamoDbDeletionStrategy,
