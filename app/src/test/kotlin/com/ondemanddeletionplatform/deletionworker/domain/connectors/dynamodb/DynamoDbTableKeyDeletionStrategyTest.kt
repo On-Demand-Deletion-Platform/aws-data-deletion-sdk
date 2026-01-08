@@ -7,9 +7,9 @@ import com.ondemanddeletionplatform.deletionworker.domain.models.dynamodb.Dynamo
 import com.ondemanddeletionplatform.deletionworker.domain.models.dynamodb.DynamoDbDeletionTarget
 import com.ondemanddeletionplatform.deletionworker.testutil.DynamoDbTestConstants
 import kotlinx.coroutines.runBlocking
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoInteractions
@@ -20,7 +20,11 @@ class DynamoDbTableKeyDeletionStrategyTest {
     val mockDdbClient: DynamoDbClient = mock()
     val exception = assertThrows(IllegalArgumentException::class.java) {
       runBlocking {
-        DynamoDbTableKeyDeletionStrategy().deleteData(mockDdbClient, DynamoDbTestConstants.TEST_GSI_DELETION_TARGET, DynamoDbTestConstants.TEST_DELETION_KEY_VALUE)
+        DynamoDbTableKeyDeletionStrategy().deleteData(
+          mockDdbClient,
+          DynamoDbTestConstants.TEST_GSI_DELETION_TARGET,
+          DynamoDbTestConstants.TEST_DELETION_KEY_VALUE
+        )
       }
     }
     assertEquals("Deletion target strategy must be TABLE_KEY", exception.message)
@@ -65,7 +69,7 @@ class DynamoDbTableKeyDeletionStrategyTest {
           awsRegion = DynamoDbTestConstants.TEST_AWS_REGION,
           tableName = DynamoDbTestConstants.TEST_TABLE_NAME,
           partitionKeyName = DynamoDbTestConstants.TEST_PARTITION_KEY_NAME,
-          deletionKeySchema =  DynamoDbTestConstants.TEST_DELETION_KEY_SCHEMA_NO_SORT
+          deletionKeySchema = DynamoDbTestConstants.TEST_DELETION_KEY_SCHEMA_NO_SORT
         ),
         DynamoDbTestConstants.TEST_DELETION_KEY_VALUE_NO_SORT
       )

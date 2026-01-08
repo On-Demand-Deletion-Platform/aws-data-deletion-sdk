@@ -56,7 +56,7 @@ detekt {
     toolVersion = "1.23.8"
 
     // Directory where detekt will search for source files.
-    source.setFrom("src/main/kotlin")
+    source.setFrom("src/main/kotlin", "src/test/kotlin")
 
     // Specify custom detekt config file for overriding lint rules.
     config.setFrom("$projectDir/config/detekt.yml")

@@ -1,7 +1,7 @@
 package com.ondemanddeletionplatform.deletionworker
 
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Test
 
 class DeletionWorkerTest {
   @Test

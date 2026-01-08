@@ -45,14 +45,14 @@ object DynamoDbTestConstants {
     tableName = TEST_TABLE_NAME,
     partitionKeyName = TEST_PARTITION_KEY_NAME,
     sortKeyName = TEST_SORT_KEY_NAME,
-    deletionKeySchema =  TEST_DELETION_KEY_SCHEMA
+    deletionKeySchema = TEST_DELETION_KEY_SCHEMA
   )
   val TEST_GSI_DELETION_TARGET = DynamoDbDeletionTarget(
-      strategy = DynamoDbDeletionStrategyType.GSI_QUERY,
-      awsRegion = TEST_AWS_REGION,
-      tableName = TEST_TABLE_NAME,
-      partitionKeyName = TEST_PARTITION_KEY_NAME,
-      gsiName = TEST_GSI_NAME,
-      deletionKeySchema =  TEST_GSI_DELETION_KEY_SCHEMA
-    )
+    strategy = DynamoDbDeletionStrategyType.GSI_QUERY,
+    awsRegion = TEST_AWS_REGION,
+    tableName = TEST_TABLE_NAME,
+    partitionKeyName = TEST_PARTITION_KEY_NAME,
+    gsiName = TEST_GSI_NAME,
+    deletionKeySchema = TEST_GSI_DELETION_KEY_SCHEMA
+  )
 }
