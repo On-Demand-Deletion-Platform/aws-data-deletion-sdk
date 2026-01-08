@@ -22,15 +22,15 @@ dependencies {
     // AWS SDK for Kotlin
     implementation("aws.sdk.kotlin:dynamodb:1.5.113")
 
-    // Use JUnit Jupiter for testing.
+    // JUnit Jupiter for testing.
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
+    // Mockito Kotlin for mocking in tests.
+    testImplementation("org.mockito.kotlin:mockito-kotlin:6.1.0")
+
     // Detekt dependencies for static code analysis.
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.8")
-
-    // This dependency is used by the application.
-    implementation(libs.guava)
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
