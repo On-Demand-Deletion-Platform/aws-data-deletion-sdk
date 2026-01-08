@@ -17,11 +17,7 @@ class DynamoDbTableKeyDeletionStrategy : DynamoDbDeletionStrategy() {
     val tableKey = mutableMapOf<String, AttributeValue>()
     tableKey[validatedDeletionTarget.partitionKeyName] = AttributeValue.S(deletionKey.primaryKeyValue)
 
-    if (
-      validatedDeletionTarget.sortKeyName != null &&
-      validatedDeletionTarget.deletionKeySchema.secondaryKeyName != null &&
-      deletionKey.secondaryKeyValue != null
-    ) {
+    if (validatedDeletionTarget.sortKeyName != null && deletionKey.secondaryKeyValue != null) {
       tableKey[validatedDeletionTarget.sortKeyName] = AttributeValue.S(deletionKey.secondaryKeyValue)
     }
 
