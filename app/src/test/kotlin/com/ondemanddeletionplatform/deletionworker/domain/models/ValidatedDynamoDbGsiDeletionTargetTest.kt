@@ -1,7 +1,5 @@
 package com.ondemanddeletionplatform.deletionworker.domain.models
 
-import com.ondemanddeletionplatform.deletionworker.domain.constants.DynamoDbDeletionStrategy
-
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
