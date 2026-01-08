@@ -11,7 +11,7 @@ package com.ondemanddeletionplatform.deletionworker.domain.models
  * to index tables by a reasonable on-demand-deletion key.
  */
 data class ValidatedDynamoDbScanDeletionTarget(
-  val strategy: DynamoDbDeletionStrategy,
+  val strategy: DynamoDbDeletionStrategyType,
   val awsRegion: String,
   val tableName: String,
   val partitionKeyName: String,
@@ -20,7 +20,7 @@ data class ValidatedDynamoDbScanDeletionTarget(
 ) {
   companion object {
     fun fromDeletionTarget(deletionTarget: DynamoDbDeletionTarget): ValidatedDynamoDbScanDeletionTarget {
-      require(deletionTarget.strategy == DynamoDbDeletionStrategy.SCAN) {
+      require(deletionTarget.strategy == DynamoDbDeletionStrategyType.SCAN) {
         "Deletion target strategy must be SCAN"
       }
       requireNotNull(deletionTarget.tableDeletionKeyName) {

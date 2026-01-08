@@ -3,7 +3,7 @@ package com.ondemanddeletionplatform.deletionworker.domain.connectors
 import aws.sdk.kotlin.services.dynamodb.DynamoDbClient
 import aws.sdk.kotlin.services.dynamodb.model.AttributeValue
 import aws.sdk.kotlin.services.dynamodb.model.DeleteItemRequest
-import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionStrategy
+import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionStrategyType
 import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionTarget
 import com.ondemanddeletionplatform.deletionworker.domain.models.ValidatedDynamoDbGsiDeletionTarget
 import com.ondemanddeletionplatform.deletionworker.domain.models.ValidatedDynamoDbScanDeletionTarget
@@ -16,9 +16,9 @@ import com.ondemanddeletionplatform.deletionworker.domain.models.ValidatedDynamo
 class DynamoDbDeletionConnector(val ddb: DynamoDbClient) {
   suspend fun deleteCustomer(deletionTarget: DynamoDbDeletionTarget, customerId: String) {
     when (deletionTarget.strategy) {
-      DynamoDbDeletionStrategy.TABLE_KEY -> deleteCustomerByPartitionKey(deletionTarget, customerId)
-      DynamoDbDeletionStrategy.GSI_QUERY -> deleteCustomerByGsiKey(deletionTarget, customerId)
-      DynamoDbDeletionStrategy.SCAN -> deleteCustomerByScan(deletionTarget, customerId)
+      DynamoDbDeletionStrategyType.TABLE_KEY -> deleteCustomerByPartitionKey(deletionTarget, customerId)
+      DynamoDbDeletionStrategyType.GSI_QUERY -> deleteCustomerByGsiKey(deletionTarget, customerId)
+      DynamoDbDeletionStrategyType.SCAN -> deleteCustomerByScan(deletionTarget, customerId)
     }
   }
 

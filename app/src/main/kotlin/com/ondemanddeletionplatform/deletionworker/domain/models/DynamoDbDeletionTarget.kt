@@ -5,7 +5,7 @@ package com.ondemanddeletionplatform.deletionworker.domain.models
  */
 data class DynamoDbDeletionTarget(
   // The deletion strategy to use for this target.
-  val strategy: DynamoDbDeletionStrategy,
+  val strategy: DynamoDbDeletionStrategyType,
 
   // Common parameters
   val awsRegion: String,

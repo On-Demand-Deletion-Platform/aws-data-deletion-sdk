@@ -27,6 +27,7 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     // Mockito Kotlin for mocking in tests.
+    // See: https://github.com/mockito/mockito-kotlin/wiki/Mocking-and-verifying
     testImplementation("org.mockito.kotlin:mockito-kotlin:6.1.0")
 
     // Detekt dependencies for static code analysis.

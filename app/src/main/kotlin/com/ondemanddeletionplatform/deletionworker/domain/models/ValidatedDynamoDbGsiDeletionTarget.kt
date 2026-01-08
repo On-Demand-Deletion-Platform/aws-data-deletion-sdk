@@ -7,7 +7,7 @@ package com.ondemanddeletionplatform.deletionworker.domain.models
  * Global Secondary Index (GSI) primary key.
  */
 data class ValidatedDynamoDbGsiDeletionTarget(
-  val strategy: DynamoDbDeletionStrategy,
+  val strategy: DynamoDbDeletionStrategyType,
   val awsRegion: String,
   val tableName: String,
   val partitionKeyName: String,
@@ -20,7 +20,7 @@ data class ValidatedDynamoDbGsiDeletionTarget(
 ) {
   companion object {
     fun fromDeletionTarget(deletionTarget: DynamoDbDeletionTarget): ValidatedDynamoDbGsiDeletionTarget {
-      require(deletionTarget.strategy == DynamoDbDeletionStrategy.GSI_QUERY) {
+      require(deletionTarget.strategy == DynamoDbDeletionStrategyType.GSI_QUERY) {
         "Deletion target strategy must be GSI_QUERY"
       }
 

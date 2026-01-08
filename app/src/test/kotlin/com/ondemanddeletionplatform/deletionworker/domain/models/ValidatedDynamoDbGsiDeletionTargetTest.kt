@@ -21,7 +21,7 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
   @Test
   fun canConstructWithoutOptionalFields() {
     val gsiDeletionTarget = ValidatedDynamoDbGsiDeletionTarget(
-      strategy = DynamoDbDeletionStrategy.GSI_QUERY,
+      strategy = DynamoDbDeletionStrategyType.GSI_QUERY,
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
@@ -30,7 +30,7 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
       gsiPartitionKeyValue = TEST_GSI_PARTITION_KEY_VALUE
     )
 
-    assertEquals(DynamoDbDeletionStrategy.GSI_QUERY, gsiDeletionTarget.strategy)
+    assertEquals(DynamoDbDeletionStrategyType.GSI_QUERY, gsiDeletionTarget.strategy)
     assertEquals(TEST_AWS_REGION, gsiDeletionTarget.awsRegion)
     assertEquals(TEST_TABLE_NAME, gsiDeletionTarget.tableName)
     assertEquals(TEST_PARTITION_KEY_NAME, gsiDeletionTarget.partitionKeyName)
@@ -45,7 +45,7 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
   @Test
   fun incorrectStrategy_throwsException() {
     val deletionTarget = DynamoDbDeletionTarget(
-      strategy = DynamoDbDeletionStrategy.TABLE_KEY,
+      strategy = DynamoDbDeletionStrategyType.TABLE_KEY,
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME
@@ -60,7 +60,7 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
   @Test
   fun missingGsiFields_throwsException() {
     val deletionTarget = DynamoDbDeletionTarget(
-      strategy = DynamoDbDeletionStrategy.GSI_QUERY,
+      strategy = DynamoDbDeletionStrategyType.GSI_QUERY,
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME
@@ -75,7 +75,7 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
   @Test
   fun missingGsiPartitionKeyName_throwsException() {
     val deletionTarget = DynamoDbDeletionTarget(
-      strategy = DynamoDbDeletionStrategy.GSI_QUERY,
+      strategy = DynamoDbDeletionStrategyType.GSI_QUERY,
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
@@ -92,7 +92,7 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
   @Test
   fun missingGsiPartitionKeyValue_throwsException() {
     val deletionTarget = DynamoDbDeletionTarget(
-      strategy = DynamoDbDeletionStrategy.GSI_QUERY,
+      strategy = DynamoDbDeletionStrategyType.GSI_QUERY,
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
@@ -109,7 +109,7 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
   @Test
   fun missingGsiSortKeyName_throwsException() {
     val deletionTarget = DynamoDbDeletionTarget(
-      strategy = DynamoDbDeletionStrategy.GSI_QUERY,
+      strategy = DynamoDbDeletionStrategyType.GSI_QUERY,
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
@@ -128,7 +128,7 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
   @Test
   fun missingGsiSortKeyValue_throwsException() {
     val deletionTarget = DynamoDbDeletionTarget(
-      strategy = DynamoDbDeletionStrategy.GSI_QUERY,
+      strategy = DynamoDbDeletionStrategyType.GSI_QUERY,
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
@@ -147,7 +147,7 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
   @Test
   fun validInputWithoutSortKey_returnsValidatedGsiDeletionTarget() {
     val deletionTarget = DynamoDbDeletionTarget(
-      strategy = DynamoDbDeletionStrategy.GSI_QUERY,
+      strategy = DynamoDbDeletionStrategyType.GSI_QUERY,
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
@@ -158,7 +158,7 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
 
     val validatedTarget = ValidatedDynamoDbGsiDeletionTarget.fromDeletionTarget(deletionTarget)
 
-    assertEquals(DynamoDbDeletionStrategy.GSI_QUERY, validatedTarget.strategy)
+    assertEquals(DynamoDbDeletionStrategyType.GSI_QUERY, validatedTarget.strategy)
     assertEquals(TEST_AWS_REGION, validatedTarget.awsRegion)
     assertEquals(TEST_TABLE_NAME, validatedTarget.tableName)
     assertEquals(TEST_PARTITION_KEY_NAME, validatedTarget.partitionKeyName)
@@ -172,7 +172,7 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
   @Test
   fun validInputWithSortKey_returnsValidatedGsiDeletionTarget() {
     val deletionTarget = DynamoDbDeletionTarget(
-      strategy = DynamoDbDeletionStrategy.GSI_QUERY,
+      strategy = DynamoDbDeletionStrategyType.GSI_QUERY,
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
@@ -185,7 +185,7 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
 
     val validatedTarget = ValidatedDynamoDbGsiDeletionTarget.fromDeletionTarget(deletionTarget)
 
-    assertEquals(DynamoDbDeletionStrategy.GSI_QUERY, validatedTarget.strategy)
+    assertEquals(DynamoDbDeletionStrategyType.GSI_QUERY, validatedTarget.strategy)
     assertEquals(TEST_AWS_REGION, validatedTarget.awsRegion)
     assertEquals(TEST_TABLE_NAME, validatedTarget.tableName)
     assertEquals(TEST_PARTITION_KEY_NAME, validatedTarget.partitionKeyName)

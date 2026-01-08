@@ -3,7 +3,7 @@ package com.ondemanddeletionplatform.deletionworker.domain.connectors
 import aws.sdk.kotlin.services.dynamodb.DynamoDbClient
 import aws.sdk.kotlin.services.dynamodb.model.AttributeValue
 import aws.sdk.kotlin.services.dynamodb.model.DeleteItemRequest
-import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionStrategy
+import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionStrategyType
 import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionTarget
 import com.ondemanddeletionplatform.deletionworker.domain.models.ValidatedDynamoDbGsiDeletionTarget
 import com.ondemanddeletionplatform.deletionworker.domain.models.ValidatedDynamoDbScanDeletionTarget
@@ -39,7 +39,7 @@ class DynamoDbDeletionConnectorTest {
     val deletionConnector = DynamoDbDeletionConnector(mockDdbClient)
 
     val deletionTarget = DynamoDbDeletionTarget(
-      strategy = DynamoDbDeletionStrategy.TABLE_KEY,
+      strategy = DynamoDbDeletionStrategyType.TABLE_KEY,
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
@@ -59,7 +59,7 @@ class DynamoDbDeletionConnectorTest {
     val deletionConnector = DynamoDbDeletionConnector(mockDdbClient)
 
     val deletionTarget = DynamoDbDeletionTarget(
-      strategy = DynamoDbDeletionStrategy.TABLE_KEY,
+      strategy = DynamoDbDeletionStrategyType.TABLE_KEY,
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
@@ -86,7 +86,7 @@ class DynamoDbDeletionConnectorTest {
     val deletionConnector = DynamoDbDeletionConnector(mockDdbClient)
 
     val deletionTarget = DynamoDbDeletionTarget(
-      strategy = DynamoDbDeletionStrategy.TABLE_KEY,
+      strategy = DynamoDbDeletionStrategyType.TABLE_KEY,
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
@@ -116,7 +116,7 @@ class DynamoDbDeletionConnectorTest {
     val deletionConnector = DynamoDbDeletionConnector(mockDdbClient)
 
     val deletionTarget = DynamoDbDeletionTarget(
-      strategy = DynamoDbDeletionStrategy.GSI_QUERY,
+      strategy = DynamoDbDeletionStrategyType.GSI_QUERY,
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
@@ -140,7 +140,7 @@ class DynamoDbDeletionConnectorTest {
     val deletionConnector = DynamoDbDeletionConnector(mockDdbClient)
 
     val deletionTarget = DynamoDbDeletionTarget(
-      strategy = DynamoDbDeletionStrategy.SCAN,
+      strategy = DynamoDbDeletionStrategyType.SCAN,
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,

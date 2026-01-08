@@ -18,14 +18,14 @@ class ValidatedDynamoDbScanDeletionTargetTest {
   @Test
   fun canConstructValidatedScanDeletionTarget() {
     val scanDeletionTarget = ValidatedDynamoDbScanDeletionTarget(
-      strategy = DynamoDbDeletionStrategy.SCAN,
+      strategy = DynamoDbDeletionStrategyType.SCAN,
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
       tableDeletionKeyName = TEST_TABLE_DELETION_KEY_NAME
     )
 
-    assertEquals(DynamoDbDeletionStrategy.SCAN, scanDeletionTarget.strategy)
+    assertEquals(DynamoDbDeletionStrategyType.SCAN, scanDeletionTarget.strategy)
     assertEquals(TEST_AWS_REGION, scanDeletionTarget.awsRegion)
     assertEquals(TEST_TABLE_NAME, scanDeletionTarget.tableName)
     assertEquals(TEST_PARTITION_KEY_NAME, scanDeletionTarget.partitionKeyName)
@@ -35,7 +35,7 @@ class ValidatedDynamoDbScanDeletionTargetTest {
   @Test
   fun incorrectStrategy_throwsException() {
     val deletionTarget = DynamoDbDeletionTarget(
-      strategy = DynamoDbDeletionStrategy.TABLE_KEY,
+      strategy = DynamoDbDeletionStrategyType.TABLE_KEY,
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME
@@ -50,7 +50,7 @@ class ValidatedDynamoDbScanDeletionTargetTest {
   @Test
   fun missingTableDeletionKeyName_throwsException() {
     val deletionTarget = DynamoDbDeletionTarget(
-      strategy = DynamoDbDeletionStrategy.SCAN,
+      strategy = DynamoDbDeletionStrategyType.SCAN,
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME
@@ -65,7 +65,7 @@ class ValidatedDynamoDbScanDeletionTargetTest {
   @Test
   fun validInputWithoutSortKey_returnsValidatedScanDeletionTarget() {
     val deletionTarget = DynamoDbDeletionTarget(
-      strategy = DynamoDbDeletionStrategy.SCAN,
+      strategy = DynamoDbDeletionStrategyType.SCAN,
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
@@ -74,7 +74,7 @@ class ValidatedDynamoDbScanDeletionTargetTest {
 
     val scanDeletionTarget = ValidatedDynamoDbScanDeletionTarget.fromDeletionTarget(deletionTarget)
 
-    assertEquals(DynamoDbDeletionStrategy.SCAN, scanDeletionTarget.strategy)
+    assertEquals(DynamoDbDeletionStrategyType.SCAN, scanDeletionTarget.strategy)
     assertEquals(TEST_AWS_REGION, scanDeletionTarget.awsRegion)
     assertEquals(TEST_TABLE_NAME, scanDeletionTarget.tableName)
     assertEquals(TEST_PARTITION_KEY_NAME, scanDeletionTarget.partitionKeyName)
@@ -84,7 +84,7 @@ class ValidatedDynamoDbScanDeletionTargetTest {
   @Test
   fun validInputWithSortKey_returnsValidatedScanDeletionTarget() {
     val deletionTarget = DynamoDbDeletionTarget(
-      strategy = DynamoDbDeletionStrategy.SCAN,
+      strategy = DynamoDbDeletionStrategyType.SCAN,
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
@@ -94,7 +94,7 @@ class ValidatedDynamoDbScanDeletionTargetTest {
 
     val scanDeletionTarget = ValidatedDynamoDbScanDeletionTarget.fromDeletionTarget(deletionTarget)
 
-    assertEquals(DynamoDbDeletionStrategy.SCAN, scanDeletionTarget.strategy)
+    assertEquals(DynamoDbDeletionStrategyType.SCAN, scanDeletionTarget.strategy)
     assertEquals(TEST_AWS_REGION, scanDeletionTarget.awsRegion)
     assertEquals(TEST_TABLE_NAME, scanDeletionTarget.tableName)
     assertEquals(TEST_PARTITION_KEY_NAME, scanDeletionTarget.partitionKeyName)

@@ -7,7 +7,7 @@ package com.ondemanddeletionplatform.deletionworker.domain.models
  * map to the DynamoDB table's primary key.
  */
 data class ValidatedDynamoDbTableKeyDeletionTarget(
-  val strategy: DynamoDbDeletionStrategy,
+  val strategy: DynamoDbDeletionStrategyType,
   val awsRegion: String,
   val tableName: String,
   val partitionKeyName: String,
@@ -17,7 +17,7 @@ data class ValidatedDynamoDbTableKeyDeletionTarget(
 ) {
   companion object {
     fun fromDeletionTarget(deletionTarget: DynamoDbDeletionTarget): ValidatedDynamoDbTableKeyDeletionTarget {
-      require(deletionTarget.strategy == DynamoDbDeletionStrategy.TABLE_KEY) {
+      require(deletionTarget.strategy == DynamoDbDeletionStrategyType.TABLE_KEY) {
         "Deletion target strategy must be PARTITION_KEY"
       }
       requireNotNull(deletionTarget.partitionKeyValue) { "Partition key value must not be null" }
