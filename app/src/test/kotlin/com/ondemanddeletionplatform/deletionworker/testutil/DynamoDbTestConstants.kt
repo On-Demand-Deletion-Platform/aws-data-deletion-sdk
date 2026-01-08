@@ -2,6 +2,8 @@ package com.ondemanddeletionplatform.deletionworker.testutil
 
 import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionKeySchema
 import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionKeyValue
+import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionStrategyType
+import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionTarget
 
 object DynamoDbTestConstants {
   const val TEST_AWS_REGION = "us-west-2"
@@ -36,4 +38,21 @@ object DynamoDbTestConstants {
   val TEST_GSI_DELETION_KEY_SCHEMA_NO_SORT = DynamoDbDeletionKeySchema(
     primaryKeyName = TEST_GSI_PARTITION_KEY_NAME
   )
+
+  val TEST_TABLE_KEY_DELETION_TARGET = DynamoDbDeletionTarget(
+    strategy = DynamoDbDeletionStrategyType.TABLE_KEY,
+    awsRegion = TEST_AWS_REGION,
+    tableName = TEST_TABLE_NAME,
+    partitionKeyName = TEST_PARTITION_KEY_NAME,
+    sortKeyName = TEST_SORT_KEY_NAME,
+    deletionKeySchema =  TEST_DELETION_KEY_SCHEMA
+  )
+  val TEST_GSI_DELETION_TARGET = DynamoDbDeletionTarget(
+      strategy = DynamoDbDeletionStrategyType.GSI_QUERY,
+      awsRegion = TEST_AWS_REGION,
+      tableName = TEST_TABLE_NAME,
+      partitionKeyName = TEST_PARTITION_KEY_NAME,
+      gsiName = TEST_GSI_NAME,
+      deletionKeySchema =  TEST_GSI_DELETION_KEY_SCHEMA
+    )
 }

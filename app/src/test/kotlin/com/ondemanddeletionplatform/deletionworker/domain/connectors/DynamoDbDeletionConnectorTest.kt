@@ -19,41 +19,13 @@ import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoInteractions
 
 class DynamoDbDeletionConnectorTest {
-  @Test
-  fun deleteCustomerByGsiKey_invalidStrategy_throwsException() {
-    val mockDdbClient = DynamoDbClient { region = DynamoDbTestConstants.TEST_AWS_REGION }
-    val deletionConnector = DynamoDbDeletionConnector(mockDdbClient)
-
-    val deletionTarget = DynamoDbDeletionTarget(
-      strategy = DynamoDbDeletionStrategyType.GSI_QUERY,
-      awsRegion = DynamoDbTestConstants.TEST_AWS_REGION,
-      tableName = DynamoDbTestConstants.TEST_TABLE_NAME,
-      partitionKeyName = DynamoDbTestConstants.TEST_PARTITION_KEY_NAME,
-      deletionKeySchema = DynamoDbTestConstants.TEST_DELETION_KEY_SCHEMA
-    )
-    val exception = assertThrows(IllegalArgumentException::class.java) {
-      runBlocking {
-        deletionConnector.deleteData(deletionTarget, DynamoDbTestConstants.TEST_DELETION_KEY_VALUE)
-      }
-    }
-    assertEquals("GSI name must not be null", exception.message)
-  }
-
   @Test
   fun deleteCustomerByTableKey_successfulDeletion() {
     val mockDdbClient: DynamoDbClient = mock()
     val deletionConnector = DynamoDbDeletionConnector(mockDdbClient)
-
-    val deletionTarget = DynamoDbDeletionTarget(
-      strategy = DynamoDbDeletionStrategyType.TABLE_KEY,
-      awsRegion = DynamoDbTestConstants.TEST_AWS_REGION,
-      tableName = DynamoDbTestConstants.TEST_TABLE_NAME,
-      partitionKeyName = DynamoDbTestConstants.TEST_PARTITION_KEY_NAME,
-      sortKeyName = DynamoDbTestConstants.TEST_SORT_KEY_NAME,
-      deletionKeySchema = DynamoDbTestConstants.TEST_DELETION_KEY_SCHEMA
-    )
 
     val expectedDeleteItemRequest = DeleteItemRequest {
       tableName = DynamoDbTestConstants.TEST_TABLE_NAME
@@ -64,7 +36,7 @@ class DynamoDbDeletionConnectorTest {
     }
 
     runBlocking {
-      deletionConnector.deleteData(deletionTarget, DynamoDbTestConstants.TEST_DELETION_KEY_VALUE)
+      deletionConnector.deleteData(DynamoDbTestConstants.TEST_TABLE_KEY_DELETION_TARGET, DynamoDbTestConstants.TEST_DELETION_KEY_VALUE)
 
       verify(mockDdbClient).deleteItem(expectedDeleteItemRequest)
     }
@@ -72,28 +44,20 @@ class DynamoDbDeletionConnectorTest {
 
   @Test
   fun deleteCustomerByGsiKey_notYetImplemented() {
-    val mockDdbClient = DynamoDbClient { region = DynamoDbTestConstants.TEST_AWS_REGION }
+    val mockDdbClient: DynamoDbClient = mock()
     val deletionConnector = DynamoDbDeletionConnector(mockDdbClient)
-
-    val deletionTarget = DynamoDbDeletionTarget(
-      strategy = DynamoDbDeletionStrategyType.GSI_QUERY,
-      awsRegion = DynamoDbTestConstants.TEST_AWS_REGION,
-      tableName = DynamoDbTestConstants.TEST_TABLE_NAME,
-      partitionKeyName = DynamoDbTestConstants.TEST_PARTITION_KEY_NAME,
-      gsiName = DynamoDbTestConstants.TEST_GSI_NAME,
-      deletionKeySchema = DynamoDbTestConstants.TEST_DELETION_KEY_SCHEMA
-    )
 
     assertThrows(NotImplementedError::class.java) {
       runBlocking {
-        deletionConnector.deleteData(deletionTarget, DynamoDbTestConstants.TEST_DELETION_KEY_VALUE)
+        deletionConnector.deleteData(DynamoDbTestConstants.TEST_GSI_DELETION_TARGET, DynamoDbTestConstants.TEST_DELETION_KEY_VALUE)
       }
     }
+    verifyNoInteractions(mockDdbClient)
   }
 
   @Test
   fun deleteCustomerByScan_notYetImplemented() {
-    val mockDdbClient = DynamoDbClient { region = DynamoDbTestConstants.TEST_AWS_REGION }
+    val mockDdbClient: DynamoDbClient = mock()
     val deletionConnector = DynamoDbDeletionConnector(mockDdbClient)
 
     val deletionTarget = DynamoDbDeletionTarget(
@@ -109,5 +73,6 @@ class DynamoDbDeletionConnectorTest {
         deletionConnector.deleteData(deletionTarget, DynamoDbTestConstants.TEST_DELETION_KEY_VALUE)
       }
     }
+    verifyNoInteractions(mockDdbClient)
   }
 }
