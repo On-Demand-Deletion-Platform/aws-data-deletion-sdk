@@ -23,7 +23,7 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
   @Test
   fun incorrectStrategy_throwsException() {
     val deletionTarget = DynamoDbDeletionTarget(
-      strategy = DynamoDbDeletionStrategy.PARTITION_KEY,
+      strategy = DynamoDbDeletionStrategy.TABLE_KEY,
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME

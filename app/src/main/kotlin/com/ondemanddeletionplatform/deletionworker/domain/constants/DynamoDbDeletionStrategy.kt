@@ -1,8 +1,8 @@
 package com.ondemanddeletionplatform.deletionworker.domain.constants
 
 enum class DynamoDbDeletionStrategy {
-  // Delete item by partition key (and sort key if applicable)
-  PARTITION_KEY,
+  // Delete item by table primary key (partition key and sort key if applicable)
+  TABLE_KEY,
 
   // Query GSI for all matching items, then delete
   GSI_QUERY,

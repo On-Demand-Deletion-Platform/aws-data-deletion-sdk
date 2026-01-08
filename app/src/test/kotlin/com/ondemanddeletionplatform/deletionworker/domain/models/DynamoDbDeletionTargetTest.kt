@@ -17,13 +17,13 @@ class DynamoDbDeletionTargetTest {
   @Test
   fun optionalAttrsDefaultToNull() {
     val partitionKeyDeletionTarget = DynamoDbDeletionTarget(
-      strategy = DynamoDbDeletionStrategy.PARTITION_KEY,
+      strategy = DynamoDbDeletionStrategy.TABLE_KEY,
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME
     )
     assertNotNull(partitionKeyDeletionTarget, "DynamoDbDeletionTarget should be created")
-    assertEquals(DynamoDbDeletionStrategy.PARTITION_KEY, partitionKeyDeletionTarget.strategy, "strategy should be PARTITION_KEY")
+    assertEquals(DynamoDbDeletionStrategy.TABLE_KEY, partitionKeyDeletionTarget.strategy, "strategy should be PARTITION_KEY")
     assertEquals(TEST_AWS_REGION, partitionKeyDeletionTarget.awsRegion, "awsRegion should match")
     assertEquals(TEST_TABLE_NAME, partitionKeyDeletionTarget.tableName, "tableName should match")
     assertEquals(TEST_PARTITION_KEY_NAME, partitionKeyDeletionTarget.partitionKeyName, "partitionKeyName should match")

@@ -13,7 +13,7 @@ data class ValidatedDynamoDbTableKeyDeletionTarget(
 ) {
   companion object {
     fun fromDeletionTarget(deletionTarget: DynamoDbDeletionTarget): ValidatedDynamoDbTableKeyDeletionTarget {
-      require(deletionTarget.strategy == DynamoDbDeletionStrategy.PARTITION_KEY) {
+      require(deletionTarget.strategy == DynamoDbDeletionStrategy.TABLE_KEY) {
         "Deletion target strategy must be PARTITION_KEY"
       }
       requireNotNull(deletionTarget.partitionKeyValue) { "Partition key value must not be null" }
