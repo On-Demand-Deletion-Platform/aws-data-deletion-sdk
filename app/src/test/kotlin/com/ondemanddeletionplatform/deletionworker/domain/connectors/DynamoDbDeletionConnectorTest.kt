@@ -3,7 +3,7 @@ package com.ondemanddeletionplatform.deletionworker.domain.connectors
 import aws.sdk.kotlin.services.dynamodb.DynamoDbClient
 import aws.sdk.kotlin.services.dynamodb.model.AttributeValue
 import aws.sdk.kotlin.services.dynamodb.model.DeleteItemRequest
-import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionKey
+import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionKeySchema
 import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionStrategyType
 import com.ondemanddeletionplatform.deletionworker.domain.models.DynamoDbDeletionTarget
 import com.ondemanddeletionplatform.deletionworker.domain.models.ValidatedDynamoDbGsiDeletionTarget
@@ -39,8 +39,8 @@ class DynamoDbDeletionConnectorTest {
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
-      deletionKey = DynamoDbDeletionKey(
-        primaryAttributeName = TEST_PARTITION_KEY_NAME
+      deletionKey = DynamoDbDeletionKeySchema(
+        primaryKeyName = TEST_PARTITION_KEY_NAME
       )
     )
     val exception = assertThrows(IllegalArgumentException::class.java) {
@@ -61,8 +61,8 @@ class DynamoDbDeletionConnectorTest {
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
-      deletionKey = DynamoDbDeletionKey(
-        primaryAttributeName = TEST_PARTITION_KEY_NAME
+      deletionKey = DynamoDbDeletionKeySchema(
+        primaryKeyName = TEST_PARTITION_KEY_NAME
       )
     )
 
@@ -91,9 +91,9 @@ class DynamoDbDeletionConnectorTest {
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
       gsiName = TEST_GSI_NAME,
-      deletionKey = DynamoDbDeletionKey(
-        primaryAttributeName = TEST_PARTITION_KEY_NAME,
-        secondaryAttributeName = TEST_SORT_KEY_NAME
+      deletionKey = DynamoDbDeletionKeySchema(
+        primaryKeyName = TEST_PARTITION_KEY_NAME,
+        secondaryKeyName = TEST_SORT_KEY_NAME
       )
     )
 
@@ -114,8 +114,8 @@ class DynamoDbDeletionConnectorTest {
       awsRegion = TEST_AWS_REGION,
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
-      deletionKey = DynamoDbDeletionKey(
-        primaryAttributeName = TEST_TABLE_DELETION_KEY_NAME
+      deletionKey = DynamoDbDeletionKeySchema(
+        primaryKeyName = TEST_TABLE_DELETION_KEY_NAME
       )
     )
 

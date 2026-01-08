@@ -12,12 +12,12 @@ class ValidatedDynamoDbTableKeyDeletionTargetTest {
     private const val TEST_TABLE_NAME = "TestTable"
     private const val TEST_PARTITION_KEY_NAME = "CustomerId"
     private const val TEST_SORT_KEY_NAME = "SortKey"
-    private val TEST_DELETION_KEY_WITHOUT_SORT_KEY = DynamoDbDeletionKey(
-      primaryAttributeName = TEST_PARTITION_KEY_NAME
+    private val TEST_DELETION_KEY_WITHOUT_SORT_KEY = DynamoDbDeletionKeySchema(
+      primaryKeyName = TEST_PARTITION_KEY_NAME
     )
-    private val TEST_DELETION_KEY_WITH_SORT_KEY = DynamoDbDeletionKey(
-      primaryAttributeName = TEST_PARTITION_KEY_NAME,
-      secondaryAttributeName = TEST_SORT_KEY_NAME
+    private val TEST_DELETION_KEY_WITH_SORT_KEY = DynamoDbDeletionKeySchema(
+      primaryKeyName = TEST_PARTITION_KEY_NAME,
+      secondaryKeyName = TEST_SORT_KEY_NAME
     )
   }
 
@@ -36,7 +36,7 @@ class ValidatedDynamoDbTableKeyDeletionTargetTest {
     assertEquals(TEST_TABLE_NAME, tableKeyDeletionTarget.tableName)
     assertEquals(TEST_PARTITION_KEY_NAME, tableKeyDeletionTarget.partitionKeyName)
     assertNull(tableKeyDeletionTarget.sortKeyName)
-    assertNull(tableKeyDeletionTarget.deletionKey.secondaryAttributeName)
+    assertNull(tableKeyDeletionTarget.deletionKey.secondaryKeyName)
   }
 
   @Test
@@ -71,7 +71,7 @@ class ValidatedDynamoDbTableKeyDeletionTargetTest {
     assertEquals(TEST_AWS_REGION, validatedTarget.awsRegion)
     assertEquals(TEST_TABLE_NAME, validatedTarget.tableName)
     assertEquals(TEST_PARTITION_KEY_NAME, validatedTarget.partitionKeyName)
-    assertEquals(TEST_PARTITION_KEY_NAME, validatedTarget.deletionKey.primaryAttributeName)
+    assertEquals(TEST_PARTITION_KEY_NAME, validatedTarget.deletionKey.primaryKeyName)
     assertNull(validatedTarget.sortKeyName)
   }
 
@@ -92,8 +92,8 @@ class ValidatedDynamoDbTableKeyDeletionTargetTest {
     assertEquals(TEST_AWS_REGION, validatedTarget.awsRegion)
     assertEquals(TEST_TABLE_NAME, validatedTarget.tableName)
     assertEquals(TEST_PARTITION_KEY_NAME, validatedTarget.partitionKeyName)
-    assertEquals(TEST_PARTITION_KEY_NAME, validatedTarget.deletionKey.primaryAttributeName)
+    assertEquals(TEST_PARTITION_KEY_NAME, validatedTarget.deletionKey.primaryKeyName)
     assertEquals(TEST_SORT_KEY_NAME, validatedTarget.sortKeyName)
-    assertEquals(TEST_SORT_KEY_NAME, validatedTarget.deletionKey.secondaryAttributeName)
+    assertEquals(TEST_SORT_KEY_NAME, validatedTarget.deletionKey.secondaryKeyName)
   }
 }

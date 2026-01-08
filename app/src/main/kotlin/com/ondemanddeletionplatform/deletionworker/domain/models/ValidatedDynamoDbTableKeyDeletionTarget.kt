@@ -12,7 +12,7 @@ data class ValidatedDynamoDbTableKeyDeletionTarget(
   val tableName: String,
   val partitionKeyName: String,
   val sortKeyName: String? = null,
-  val deletionKey: DynamoDbDeletionKey
+  val deletionKey: DynamoDbDeletionKeySchema
 ) {
   companion object {
     fun fromDeletionTarget(deletionTarget: DynamoDbDeletionTarget): ValidatedDynamoDbTableKeyDeletionTarget {

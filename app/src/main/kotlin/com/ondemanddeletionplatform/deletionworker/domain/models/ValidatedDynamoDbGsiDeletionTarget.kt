@@ -13,7 +13,7 @@ data class ValidatedDynamoDbGsiDeletionTarget(
   val partitionKeyName: String,
   val sortKeyName: String? = null,
   val gsiName: String,
-  val deletionKey: DynamoDbDeletionKey
+  val deletionKey: DynamoDbDeletionKeySchema
 ) {
   companion object {
     fun fromDeletionTarget(deletionTarget: DynamoDbDeletionTarget): ValidatedDynamoDbGsiDeletionTarget {

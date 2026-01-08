@@ -15,8 +15,8 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
     private const val TEST_GSI_PARTITION_KEY_NAME = "GsiPartitionKey"
     private const val TEST_GSI_SORT_KEY_NAME = "GsiSortKey"
 
-    private val TEST_DELETION_KEY_WITHOUT_SORT_KEY = DynamoDbDeletionKey(
-      primaryAttributeName = TEST_GSI_PARTITION_KEY_NAME
+    private val TEST_DELETION_KEY_WITHOUT_SORT_KEY = DynamoDbDeletionKeySchema(
+      primaryKeyName = TEST_GSI_PARTITION_KEY_NAME
     )
   }
 
@@ -36,9 +36,9 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
     assertEquals(TEST_TABLE_NAME, gsiDeletionTarget.tableName)
     assertEquals(TEST_PARTITION_KEY_NAME, gsiDeletionTarget.partitionKeyName)
     assertEquals(TEST_GSI_NAME, gsiDeletionTarget.gsiName)
-    assertEquals(TEST_GSI_PARTITION_KEY_NAME, gsiDeletionTarget.deletionKey.primaryAttributeName)
+    assertEquals(TEST_GSI_PARTITION_KEY_NAME, gsiDeletionTarget.deletionKey.primaryKeyName)
     assertNull(gsiDeletionTarget.sortKeyName)
-    assertNull(gsiDeletionTarget.deletionKey.secondaryAttributeName)
+    assertNull(gsiDeletionTarget.deletionKey.secondaryKeyName)
   }
 
   @Test
@@ -91,8 +91,8 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
     assertEquals(TEST_TABLE_NAME, validatedTarget.tableName)
     assertEquals(TEST_PARTITION_KEY_NAME, validatedTarget.partitionKeyName)
     assertEquals(TEST_GSI_NAME, validatedTarget.gsiName)
-    assertEquals(TEST_GSI_PARTITION_KEY_NAME, validatedTarget.deletionKey.primaryAttributeName)
-    assertNull(validatedTarget.deletionKey.secondaryAttributeName)
+    assertEquals(TEST_GSI_PARTITION_KEY_NAME, validatedTarget.deletionKey.primaryKeyName)
+    assertNull(validatedTarget.deletionKey.secondaryKeyName)
   }
 
   @Test
@@ -103,9 +103,9 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
       tableName = TEST_TABLE_NAME,
       partitionKeyName = TEST_PARTITION_KEY_NAME,
       gsiName = TEST_GSI_NAME,
-      deletionKey =  DynamoDbDeletionKey(
-        primaryAttributeName = TEST_GSI_PARTITION_KEY_NAME,
-        secondaryAttributeName = TEST_GSI_SORT_KEY_NAME
+      deletionKey =  DynamoDbDeletionKeySchema(
+        primaryKeyName = TEST_GSI_PARTITION_KEY_NAME,
+        secondaryKeyName = TEST_GSI_SORT_KEY_NAME
       )
     )
 
@@ -116,7 +116,7 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
     assertEquals(TEST_TABLE_NAME, validatedTarget.tableName)
     assertEquals(TEST_PARTITION_KEY_NAME, validatedTarget.partitionKeyName)
     assertEquals(TEST_GSI_NAME, validatedTarget.gsiName)
-    assertEquals(TEST_GSI_PARTITION_KEY_NAME, validatedTarget.deletionKey.primaryAttributeName)
-    assertEquals(TEST_GSI_SORT_KEY_NAME, validatedTarget.deletionKey.secondaryAttributeName)
+    assertEquals(TEST_GSI_PARTITION_KEY_NAME, validatedTarget.deletionKey.primaryKeyName)
+    assertEquals(TEST_GSI_SORT_KEY_NAME, validatedTarget.deletionKey.secondaryKeyName)
   }
 }
