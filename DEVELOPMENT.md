@@ -19,6 +19,19 @@ In order to clean up stale build artifacts and rebuild the API models based on y
 
 If you do not clean before building, your local environment may continue to use stale, cached artifacts in builds.
 
+### Running local integ tests
+Prerequisite set-up:
+1. Install Docker Desktop from https://www.docker.com/products/docker-desktop/
+2. Launch Docker Desktop and create or sign into a Docker account
+
+To run local integ tests against test containers, run
+
+```sh
+./gradlew localIntegTest -DrunLocalIntegTests=true
+```
+
+If need to debug errors, add the --info option to the command.
+
 ## Helpful commands
 
 * `./gradlew build` - build project, run lint checker, and run unit tests

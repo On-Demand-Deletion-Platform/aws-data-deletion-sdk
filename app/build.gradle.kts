@@ -30,6 +30,12 @@ dependencies {
     // See: https://github.com/mockito/mockito-kotlin/wiki/Mocking-and-verifying
     testImplementation("org.mockito.kotlin:mockito-kotlin:6.1.0")
 
+    // Testcontainers for local integration testing.
+    // See: https://java.testcontainers.org/quickstart/junit_5_quickstart/
+    testImplementation("org.testcontainers:localstack:1.21.4")
+    testImplementation("org.testcontainers:testcontainers:2.0.3")
+    testImplementation("org.testcontainers:testcontainers-junit-jupiter:2.0.3")
+
     // Detekt dependencies for static code analysis.
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.8")
 }
@@ -56,7 +62,7 @@ detekt {
     toolVersion = "1.23.8"
 
     // Directory where detekt will search for source files.
-    source.setFrom("src/main/kotlin", "src/test/kotlin")
+    source.setFrom("src/main/kotlin", "src/test/kotlin", "src/localIntegTest/kotlin")
 
     // Specify custom detekt config file for overriding lint rules.
     config.setFrom("$projectDir/config/detekt.yml")
@@ -69,7 +75,9 @@ detekt {
 }
 
 tasks.test {
-    useJUnitPlatform()
+    useJUnitPlatform {
+        excludeTags("localIntegTest")
+    }
 
     finalizedBy(tasks.jacocoTestReport)
 }
@@ -105,4 +113,39 @@ tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
 
 tasks.withType<io.gitlab.arturbosch.detekt.DetektCreateBaselineTask>().configureEach {
     jvmTarget = "21"
+}
+
+// ------------------------------
+// Local integration test config
+// ------------------------------
+
+// Define source set for local integ tests
+val localIntegTestSourceSet = sourceSets.create("localIntegTest") {
+    kotlin.srcDir("src/localIntegTest/kotlin")
+    resources.srcDir("src/localIntegTest/resources")
+}
+
+// Reuse test dependencies for local integ tests
+configurations["localIntegTestImplementation"]
+    .extendsFrom(configurations["testImplementation"])
+configurations["localIntegTestRuntimeOnly"]
+    .extendsFrom(configurations["testRuntimeOnly"])
+
+// Define task to run local integ tests
+val localIntegTest = tasks.register<Test>("localIntegTest") {
+    description = "Runs local integration tests."
+    group = "verification"
+
+    testClassesDirs = localIntegTestSourceSet.output.classesDirs
+    classpath = localIntegTestSourceSet.runtimeClasspath
+
+    useJUnitPlatform {
+        includeTags("localIntegTest")
+    }
+
+    shouldRunAfter(tasks.test)
+
+    onlyIf {
+        System.getProperty("runLocalIntegTests") == "true"
+    }
 }
