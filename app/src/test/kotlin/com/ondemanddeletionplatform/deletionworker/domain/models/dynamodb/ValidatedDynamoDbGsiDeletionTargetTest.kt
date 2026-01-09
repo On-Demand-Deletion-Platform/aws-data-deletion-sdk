@@ -84,7 +84,9 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
 
   @Test
   fun validInputWithSortKey_returnsValidatedGsiDeletionTarget() {
-    val validatedTarget = ValidatedDynamoDbGsiDeletionTarget.fromDeletionTarget(DynamoDbTestConstants.TEST_GSI_DELETION_TARGET)
+    val validatedTarget = ValidatedDynamoDbGsiDeletionTarget.fromDeletionTarget(
+      DynamoDbTestConstants.TEST_GSI_DELETION_TARGET_NO_SORT
+    )
 
     assertEquals(DynamoDbDeletionStrategyType.GSI_QUERY, validatedTarget.strategy)
     assertEquals(DynamoDbTestConstants.TEST_AWS_REGION, validatedTarget.awsRegion)

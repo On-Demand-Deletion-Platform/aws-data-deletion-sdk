@@ -3,15 +3,18 @@ package com.ondemanddeletionplatform.deletionworker.domain.connectors.dynamodb
 import aws.sdk.kotlin.services.dynamodb.DynamoDbClient
 import aws.sdk.kotlin.services.dynamodb.model.AttributeValue
 import aws.sdk.kotlin.services.dynamodb.model.DeleteItemRequest
+import aws.sdk.kotlin.services.dynamodb.model.QueryResponse
 import com.ondemanddeletionplatform.deletionworker.domain.models.dynamodb.DynamoDbDeletionStrategyType
 import com.ondemanddeletionplatform.deletionworker.domain.models.dynamodb.DynamoDbDeletionTarget
 import com.ondemanddeletionplatform.deletionworker.testutil.DynamoDbTestConstants
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoInteractions
+import org.mockito.kotlin.whenever
 
 class DynamoDbDeletionConnectorTest {
   @Test
@@ -35,16 +38,19 @@ class DynamoDbDeletionConnectorTest {
   }
 
   @Test
-  fun deleteCustomerByGsiKey_notYetImplemented() {
-    val mockDdbClient: DynamoDbClient = mock()
-    val deletionConnector = DynamoDbDeletionConnector(mockDdbClient)
-
-    assertThrows(NotImplementedError::class.java) {
-      runBlocking {
-        deletionConnector.deleteData(DynamoDbTestConstants.TEST_GSI_DELETION_TARGET, DynamoDbTestConstants.TEST_DELETION_KEY_VALUE)
+  fun deleteCustomerByGsiKey_success() {
+    runBlocking {
+      val mockDdbClient: DynamoDbClient = mock()
+      val mockDdbQueryResults = QueryResponse {
+        items = null
       }
+      whenever(mockDdbClient.query(any())).thenReturn(mockDdbQueryResults)
+
+      val deletionConnector = DynamoDbDeletionConnector(mockDdbClient)
+      deletionConnector.deleteData(DynamoDbTestConstants.TEST_GSI_DELETION_TARGET, DynamoDbTestConstants.TEST_DELETION_KEY_VALUE)
+
+      verify(mockDdbClient).query(any())
     }
-    verifyNoInteractions(mockDdbClient)
   }
 
   @Test

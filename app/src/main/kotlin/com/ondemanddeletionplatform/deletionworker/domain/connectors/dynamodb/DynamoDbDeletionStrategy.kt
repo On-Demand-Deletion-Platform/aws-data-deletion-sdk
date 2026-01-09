@@ -14,11 +14,11 @@ abstract class DynamoDbDeletionStrategy {
 
   protected suspend fun deleteDataByKey(
     ddb: DynamoDbClient,
-    deletionTarget: DynamoDbDeletionTarget,
+    tableName: String,
     tableKey: Map<String, AttributeValue>
   ) {
     val deleteItemRequest = DeleteItemRequest {
-      tableName = deletionTarget.tableName
+      this.tableName = tableName
       key = tableKey
     }
     ddb.deleteItem(deleteItemRequest)

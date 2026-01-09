@@ -21,6 +21,6 @@ class DynamoDbTableKeyDeletionStrategy : DynamoDbDeletionStrategy() {
       tableKey[validatedDeletionTarget.sortKeyName] = AttributeValue.S(deletionKey.secondaryKeyValue)
     }
 
-    deleteDataByKey(ddb, deletionTarget, tableKey)
+    deleteDataByKey(ddb, deletionTarget.tableName, tableKey)
   }
 }
