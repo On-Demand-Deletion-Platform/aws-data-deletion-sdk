@@ -22,7 +22,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.testcontainers.containers.localstack.LocalStackContainer
 import org.testcontainers.containers.wait.strategy.Wait
-import org.testcontainers.containers.wait.strategy.WaitAllStrategy
 import org.testcontainers.utility.DockerImageName
 import kotlin.time.Duration.Companion.seconds
 
@@ -44,6 +43,7 @@ class DynamoDbDeletionConnectorIntegTest {
     private const val DDB_PORT = 4566
     private const val WAIT_TIME_BEFORE_TABLE_CREATION_MS = 3000L
     private const val WAIT_TIME_BETWEEN_DDB_OPERATIONS_MS = 500L
+    private const val MAX_ATTEMPTS_DDB_AVAILABILITY = 10
   }
 
   private lateinit var localstack: LocalStackContainer
@@ -75,7 +75,9 @@ class DynamoDbDeletionConnectorIntegTest {
         connectTimeout = 30.seconds
       }
     }
-    println("Initialized DynamoDbClient using LocalStack endpoint: $dynamoDbEndpoint")
+    runBlocking {
+      waitForDynamoDb(dynamoDb)
+    }
   }
 
   @Tag("localIntegTest")
@@ -104,13 +106,10 @@ class DynamoDbDeletionConnectorIntegTest {
       }
     }
 
-    println("Waiting $WAIT_TIME_BEFORE_TABLE_CREATION_MS ms before creating table to allow LocalStack to initialize...")
+    println("Waiting ${WAIT_TIME_BEFORE_TABLE_CREATION_MS}ms before creating table to allow LocalStack to initialize...")
     Thread.sleep(WAIT_TIME_BEFORE_TABLE_CREATION_MS)
 
     runBlocking {
-      println("Waiting for DynamoDB availability...")
-      waitForDynamoDb(dynamoDb)
-
       // Create test table
       dynamoDb.createTable(createTableRequest)
       println("Created test table")
@@ -148,14 +147,22 @@ class DynamoDbDeletionConnectorIntegTest {
     }
   }
 
+  /**
+   * Waits for the local DynamoDB server to become available by periodically querying ListTables.
+   *
+   * Improves LocalStack integ test reliability since the DynamoDB service can take a few seconds
+   * to become available after the container starts.
+   */
   suspend fun waitForDynamoDb(dynamoDb: DynamoDbClient) {
-    val maxAttempts = 10
-    repeat(maxAttempts) {
+    println("Waiting for DynamoDB availability...")
+
+    repeat(MAX_ATTEMPTS_DDB_AVAILABILITY) {
       try {
-        println("Checking DynamoDB availability (attempt ${it + 1}/$maxAttempts)...")
+        println("Checking DynamoDB availability (attempt ${it + 1}/$MAX_ATTEMPTS_DDB_AVAILABILITY)...")
         dynamoDb.listTables()
         return
-      } catch (e: Exception) {
+      } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+        println("DynamoDB not available yet: ${e.message}. Retrying after ${WAIT_TIME_BEFORE_TABLE_CREATION_MS}ms...")
         Thread.sleep(WAIT_TIME_BEFORE_TABLE_CREATION_MS)
       }
     }

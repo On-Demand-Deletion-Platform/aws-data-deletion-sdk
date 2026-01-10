@@ -32,6 +32,8 @@ To run local integ tests against test containers, run
 
 If need to debug errors, add the --info option to the command.
 
+If the integ tests automatically pass with the message `Configuration cache entry reused.`, add the --rerun-tasks option to the command.
+
 ## Helpful commands
 
 * `./gradlew build` - build project, run lint checker, and run unit tests
