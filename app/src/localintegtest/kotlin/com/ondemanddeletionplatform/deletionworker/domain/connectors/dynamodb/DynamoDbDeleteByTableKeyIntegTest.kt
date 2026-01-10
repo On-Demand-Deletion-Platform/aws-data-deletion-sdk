@@ -2,7 +2,6 @@ package com.ondemanddeletionplatform.deletionworker.domain.connectors.dynamodb
 
 import aws.sdk.kotlin.services.dynamodb.DynamoDbClient
 import aws.sdk.kotlin.services.dynamodb.model.AttributeValue
-import aws.sdk.kotlin.services.dynamodb.model.CreateTableRequest
 import aws.sdk.kotlin.services.dynamodb.model.GetItemRequest
 import aws.sdk.kotlin.services.dynamodb.model.GetItemResponse
 import aws.sdk.kotlin.services.dynamodb.model.PutItemRequest
@@ -12,6 +11,7 @@ import com.ondemanddeletionplatform.deletionworker.domain.models.dynamodb.Dynamo
 import com.ondemanddeletionplatform.deletionworker.domain.models.dynamodb.DynamoDbDeletionTarget
 import com.ondemanddeletionplatform.deletionworker.testutil.dynamodb.DynamoDbIntegTestConstants
 import com.ondemanddeletionplatform.deletionworker.testutil.dynamodb.DynamoDbLocalStack
+import com.ondemanddeletionplatform.deletionworker.testutil.dynamodb.DynamoDbRepositoryUtils
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -24,11 +24,11 @@ import org.junit.jupiter.api.TestInstance
 /**
  * Local DynamoDB deletion connector integ tests using LocalStack.
  */
-@Suppress("TooManyFunctions")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DynamoDbDeleteByTableKeyIntegTest {
   private lateinit var localstack: DynamoDbLocalStack
   private lateinit var dynamoDb: DynamoDbClient
+  private val dynamoDbUtils = DynamoDbRepositoryUtils()
 
   @BeforeAll
   fun setupLocalStack() {
@@ -43,7 +43,7 @@ class DynamoDbDeleteByTableKeyIntegTest {
     runBlocking {
       createCustomerTableWithTestData(tableName)
 
-      val deletionTarget = generateTableKeyDeletionTarget(tableName, null)
+      val deletionTarget = buildTableKeyDeletionTarget(tableName, null)
       val deletionKeyValue = DynamoDbDeletionKeyValue(
         primaryKeyValue = DynamoDbIntegTestConstants.CUSTOMER_ID_1
       )
@@ -63,7 +63,7 @@ class DynamoDbDeleteByTableKeyIntegTest {
     runBlocking {
       createCustomerTableWithTestData(tableName, sortKeyVal)
 
-      val deletionTarget = generateTableKeyDeletionTarget(tableName, DynamoDbIntegTestConstants.SORT_KEY_NAME)
+      val deletionTarget = buildTableKeyDeletionTarget(tableName, DynamoDbIntegTestConstants.SORT_KEY_NAME)
       val deletionKeyValue = DynamoDbDeletionKeyValue(
         primaryKeyValue = DynamoDbIntegTestConstants.CUSTOMER_ID_1,
         secondaryKeyValue = sortKeyVal
@@ -77,13 +77,9 @@ class DynamoDbDeleteByTableKeyIntegTest {
   }
 
   private suspend fun createCustomerTableWithTestData(tableName: String, sortKeyVal: String? = null) {
-    val createTableRequest = generateCreateTableRequest(tableName, sortKeyVal != null)
-    dynamoDb.createTable(createTableRequest)
-    println("Created test table")
-
+    dynamoDbUtils.createTable(dynamoDb, tableName, sortKeyVal != null)
     Thread.sleep(DynamoDbIntegTestConstants.WAIT_TIME_BETWEEN_DDB_OPERATIONS_MS)
 
-    // Populate test data
     putCustomerItem(tableName, DynamoDbIntegTestConstants.CUSTOMER_ID_1, sortKeyVal)
     Thread.sleep(DynamoDbIntegTestConstants.WAIT_TIME_BETWEEN_DDB_OPERATIONS_MS)
     putCustomerItem(tableName, DynamoDbIntegTestConstants.CUSTOMER_ID_2, sortKeyVal)
@@ -91,7 +87,7 @@ class DynamoDbDeleteByTableKeyIntegTest {
   }
 
   private suspend fun putCustomerItem(tableName: String, customerId: String, sortKeyVal: String? = null) {
-    val customerItem = generateItemKey(customerId, sortKeyVal)
+    val customerItem = buildItemKey(customerId, sortKeyVal)
     dynamoDb.putItem(
       PutItemRequest {
         this.tableName = tableName
@@ -102,7 +98,7 @@ class DynamoDbDeleteByTableKeyIntegTest {
   }
 
   private suspend fun getCustomerItem(tableName: String, customerId: String, sortKeyVal: String? = null): GetItemResponse {
-    val tableKey = generateItemKey(customerId, sortKeyVal)
+    val tableKey = buildItemKey(customerId, sortKeyVal)
     val getItemResponse = dynamoDb.getItem(
       GetItemRequest {
         this.tableName = tableName
@@ -113,22 +109,7 @@ class DynamoDbDeleteByTableKeyIntegTest {
     return getItemResponse
   }
 
-  private fun generateCreateTableRequest(tableName: String, withSortKey: Boolean): CreateTableRequest {
-    var keySchema = mutableListOf(DynamoDbIntegTestConstants.KEY_SCHEMA_ELEMENT_PARTITION_KEY)
-    var attrDefs = mutableListOf(DynamoDbIntegTestConstants.ATTR_DEF_PARTITION_KEY)
-    if (withSortKey) {
-      keySchema.add(DynamoDbIntegTestConstants.KEY_SCHEMA_ELEMENT_SORT_KEY)
-      attrDefs.add(DynamoDbIntegTestConstants.ATTR_DEF_SORT_KEY)
-    }
-    return CreateTableRequest {
-      this.tableName = tableName
-      this.keySchema = keySchema
-      attributeDefinitions = attrDefs
-      provisionedThroughput = DynamoDbIntegTestConstants.PROVISIONED_THROUGHPUT
-    }
-  }
-
-  private fun generateItemKey(partitionKeyVal: String, sortKeyVal: String?): Map<String, AttributeValue> {
+  private fun buildItemKey(partitionKeyVal: String, sortKeyVal: String?): Map<String, AttributeValue> {
     val keyValueMap = mutableMapOf(DynamoDbIntegTestConstants.PARTITION_KEY_NAME to AttributeValue.S(partitionKeyVal))
     if (sortKeyVal != null) {
       keyValueMap[DynamoDbIntegTestConstants.SORT_KEY_NAME] = AttributeValue.S(sortKeyVal)
@@ -136,8 +117,8 @@ class DynamoDbDeleteByTableKeyIntegTest {
     return keyValueMap
   }
 
-  private fun generateTableKeyDeletionTarget(tableName: String, sortKeyName: String?): DynamoDbDeletionTarget {
-    val deletionKeySchema = generateDeletionKeySchema(sortKeyName)
+  private fun buildTableKeyDeletionTarget(tableName: String, sortKeyName: String?): DynamoDbDeletionTarget {
+    val deletionKeySchema = buildDeletionKeySchema(sortKeyName)
 
     return DynamoDbDeletionTarget(
       tableName = tableName,
@@ -149,7 +130,7 @@ class DynamoDbDeleteByTableKeyIntegTest {
     )
   }
 
-  private fun generateDeletionKeySchema(sortKeyName: String?): DynamoDbDeletionKeySchema {
+  private fun buildDeletionKeySchema(sortKeyName: String?): DynamoDbDeletionKeySchema {
     return DynamoDbDeletionKeySchema(
       primaryKeyName = DynamoDbIntegTestConstants.PARTITION_KEY_NAME,
       secondaryKeyName = sortKeyName
