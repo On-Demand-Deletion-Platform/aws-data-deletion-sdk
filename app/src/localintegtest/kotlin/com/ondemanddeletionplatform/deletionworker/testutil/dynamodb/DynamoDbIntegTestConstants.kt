@@ -1,4 +1,4 @@
-package com.ondemanddeletionplatform.deletionworker.testutil
+package com.ondemanddeletionplatform.deletionworker.testutil.dynamodb
 
 import aws.sdk.kotlin.services.dynamodb.model.AttributeDefinition
 import aws.sdk.kotlin.services.dynamodb.model.KeySchemaElement

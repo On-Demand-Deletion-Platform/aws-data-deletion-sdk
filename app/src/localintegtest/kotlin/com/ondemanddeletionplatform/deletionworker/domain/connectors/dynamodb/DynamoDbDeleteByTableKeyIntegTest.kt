@@ -10,8 +10,8 @@ import com.ondemanddeletionplatform.deletionworker.domain.models.dynamodb.Dynamo
 import com.ondemanddeletionplatform.deletionworker.domain.models.dynamodb.DynamoDbDeletionKeyValue
 import com.ondemanddeletionplatform.deletionworker.domain.models.dynamodb.DynamoDbDeletionStrategyType
 import com.ondemanddeletionplatform.deletionworker.domain.models.dynamodb.DynamoDbDeletionTarget
-import com.ondemanddeletionplatform.deletionworker.testutil.DynamoDbIntegTestConstants
-import com.ondemanddeletionplatform.deletionworker.testutil.DynamoDbLocalStack
+import com.ondemanddeletionplatform.deletionworker.testutil.dynamodb.DynamoDbIntegTestConstants
+import com.ondemanddeletionplatform.deletionworker.testutil.dynamodb.DynamoDbLocalStack
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
