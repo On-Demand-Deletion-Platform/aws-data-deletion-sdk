@@ -15,6 +15,13 @@ object DynamoDbIntegTestConstants {
   const val SORT_KEY_NAME = "sortKey"
   const val SORT_KEY_VALUE = "sortKeyVal"
 
+  const val CUSTOMER_ID_1 = "customer1"
+  const val CUSTOMER_ID_2 = "customer2"
+
+  const val WAIT_TIME_BEFORE_TABLE_CREATION_MS = 3000L
+  const val WAIT_TIME_BETWEEN_DDB_OPERATIONS_MS = 500L
+  const val MAX_ATTEMPTS_DDB_AVAILABILITY = 10
+
   val PROVISIONED_THROUGHPUT: ProvisionedThroughput = ProvisionedThroughput {
     readCapacityUnits = DDB_CAPACITY_UNITS
     writeCapacityUnits = DDB_CAPACITY_UNITS
