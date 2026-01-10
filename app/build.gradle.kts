@@ -123,6 +123,8 @@ tasks.withType<io.gitlab.arturbosch.detekt.DetektCreateBaselineTask>().configure
 val localIntegTestSourceSet = sourceSets.create("localIntegTest") {
     kotlin.srcDir("src/localIntegTest/kotlin")
     resources.srcDir("src/localIntegTest/resources")
+    compileClasspath += sourceSets.main.get().output
+    runtimeClasspath += sourceSets.main.get().output
 }
 
 // Reuse test dependencies for local integ tests
