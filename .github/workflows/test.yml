@@ -1,0 +1,25 @@
+# This GitHub workflow will automatically build and test code changes
+name: Local tests
+on:
+  # Run when pushing code or config changes to GitHub
+  push:
+    paths:
+      - '**.kt'
+      - '**.yml'
+      - build.gradle.kts
+      - settings.gradle.kts
+  # Run automatically for all pull requests
+  pull_request:
+  # Enable running workflow manually from GitHub Actions
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Check out package
+        uses: actions/checkout@v4
+      - name: Run local tests
+        uses: ./.github/actions/localIntegTest

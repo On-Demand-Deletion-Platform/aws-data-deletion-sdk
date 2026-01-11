@@ -1,0 +1,25 @@
+name: Local tests
+description: Run unit tests and local integ tests
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Check out package
+      uses: actions/checkout@v4
+      with:
+        # Specify repository so this action can be run from other repositories
+        repository: On-Demand-Deletion-Platform/aws-data-deletion-worker
+        path: aws-data-deletion-worker
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
+      with:
+        distribution: corretto
+        java-version: 21
+    - name: Run gradle build
+      run: gradle wrapper build
+      shell: bash
+      working-directory: aws-data-deletion-worker
+    - name: Run gradle localIntegTest
+      run: gradle wrapper localIntegTest
+      shell: bash
+      working-directory: aws-data-deletion-worker
