@@ -16,6 +16,8 @@ plugins {
     `maven-publish`
 }
 
+import org.gradle.api.publish.maven.tasks.PublishToMavenRepository
+
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
@@ -173,7 +175,7 @@ publishing {
 
             groupId = "com.ondemanddeletionplatform"
             artifactId = "aws-data-deletion-sdk"
-            version = "0.0.1"
+            version = "0.0.2"
 
             pom {
                 name.set("AWS Data Deletion SDK")
@@ -195,4 +197,8 @@ publishing {
             }
         }
     }
+}
+
+tasks.withType<PublishToMavenRepository>().configureEach {
+    notCompatibleWithConfigurationCache("Publishing tasks are not compatible with configuration cache")
 }
