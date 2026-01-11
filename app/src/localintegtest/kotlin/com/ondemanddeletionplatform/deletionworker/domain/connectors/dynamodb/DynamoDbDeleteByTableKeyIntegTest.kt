@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 
 /**
- * Local DynamoDB deletion connector integ tests using LocalStack.
+ * Local integ tests for deleting DynamoDB data by table key.
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DynamoDbDeleteByTableKeyIntegTest {
@@ -77,7 +77,7 @@ class DynamoDbDeleteByTableKeyIntegTest {
   }
 
   private suspend fun createCustomerTableWithTestData(tableName: String, sortKeyVal: String? = null) {
-    dynamoDbUtils.createTable(dynamoDb, tableName, sortKeyVal != null)
+    dynamoDbUtils.createTable(dynamoDb, tableName, sortKeyVal != null, null)
     Thread.sleep(DynamoDbIntegTestConstants.WAIT_TIME_BETWEEN_DDB_OPERATIONS_MS)
 
     putCustomerItem(tableName, DynamoDbIntegTestConstants.CUSTOMER_ID_1, sortKeyVal)
