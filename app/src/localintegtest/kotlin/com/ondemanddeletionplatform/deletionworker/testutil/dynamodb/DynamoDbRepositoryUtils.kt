@@ -74,7 +74,7 @@ class DynamoDbRepositoryUtils {
 
     // Add attribute definitions for GSI keys
     gsis?.forEach { gsi ->
-      gsi.keySchema?.forEach { keyElement ->
+      gsi.keySchema.forEach { keyElement ->
         val attributeName = keyElement.attributeName
         if (attributeDefinitions.none { it.attributeName == attributeName }) {
           attributeDefinitions.add(

@@ -6,6 +6,9 @@ plugins {
     // See: https://detekt.dev/docs/1.23.8/gettingstarted/gradle
     id("io.gitlab.arturbosch.detekt") version "1.23.8"
 
+    // Apply Dokka for automatic documentation generation
+    id("org.jetbrains.dokka") version "2.1.0"
+
     // Apply the application plugin to add support for building a CLI application in Java.
     application
 
@@ -152,7 +155,10 @@ val localIntegTest = tasks.register<Test>("localIntegTest") {
     }
 }
 
-// Ensure localIntegTest compilation is included in build task
 tasks.build {
+    // Ensure localIntegTest compilation is included in build task
     dependsOn(tasks.named("compileLocalIntegTestKotlin"))
+
+    // Auto-generate documentation during builds
+    dependsOn(tasks.dokkaGenerateHtml)
 }
