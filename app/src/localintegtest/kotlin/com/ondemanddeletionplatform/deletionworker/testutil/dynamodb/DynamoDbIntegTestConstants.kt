@@ -20,7 +20,7 @@ object DynamoDbIntegTestConstants {
   const val CUSTOMER_ID_4 = "customer4"
   const val CUSTOMER_ID_5 = "customer5"
 
-  const val WAIT_TIME_BETWEEN_DDB_OPERATIONS_MS = 500L
+  const val WAIT_TIME_BETWEEN_DDB_OPERATIONS_MS = 100L
 
   val PROVISIONED_THROUGHPUT: ProvisionedThroughput = ProvisionedThroughput {
     readCapacityUnits = DDB_CAPACITY_UNITS
