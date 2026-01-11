@@ -67,3 +67,6 @@ Run `./gradlew clean build --refresh-dependencies` to ignore your Gradle environ
 
 * [AWS SDK for Kotlin API docs](https://docs.aws.amazon.com/sdk-for-kotlin/api/latest/)
 * [AWS SDK for Kotlin DynamoDB code examples](https://docs.aws.amazon.com/sdk-for-kotlin/latest/developer-guide/kotlin_dynamodb_code_examples.html)
+* [GitHub Actions docs](https://docs.github.com/en/actions)
+* [Kotlin API docs](https://kotlinlang.org/docs/api-references.html)
+* [Testcontainers quickstart guide for JUnit 5](https://java.testcontainers.org/quickstart/junit_5_quickstart/)
