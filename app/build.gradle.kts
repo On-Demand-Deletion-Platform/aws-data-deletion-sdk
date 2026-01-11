@@ -52,7 +52,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass.set("com.ondemanddeletionplatform.deletionworker.DeletionWorkerKt")
+    mainClass.set("com.ondemanddeletionplatform.deletion.DeletionWorkerKt")
 }
 
 jacoco {

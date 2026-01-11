@@ -1,8 +1,8 @@
-# aws-data-deletion-worker
+# aws-data-deletion-sdk
 
-[![Local tests](https://github.com/On-Demand-Deletion-Platform/aws-data-deletion-worker/actions/workflows/test.yml/badge.svg)](https://github.com/On-Demand-Deletion-Platform/aws-data-deletion-worker/actions/workflows/test.yml)
+[![Local tests](https://github.com/On-Demand-Deletion-Platform/aws-data-deletion-sdk/actions/workflows/test.yml/badge.svg)](https://github.com/On-Demand-Deletion-Platform/aws-data-deletion-sdk/actions/workflows/test.yml)
 
-Service code for processing a deletion request and deleting a customer's data from onboarded AWS-hosted data stores.
+Libraries and data models for executing data deletion requests against onboarded AWS-hosted data stores.
 
 ## Technologies
 
