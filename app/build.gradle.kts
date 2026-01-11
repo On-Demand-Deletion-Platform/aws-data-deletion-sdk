@@ -151,3 +151,8 @@ val localIntegTest = tasks.register<Test>("localIntegTest") {
         System.getProperty("runLocalIntegTests") == "true"
     }
 }
+
+// Ensure localIntegTest compilation is included in build task
+tasks.build {
+    dependsOn(tasks.named("compileLocalIntegTestKotlin"))
+}
