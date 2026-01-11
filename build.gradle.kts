@@ -11,6 +11,9 @@ plugins {
 
     // Apply the JaCoCo plugin for code coverage reports.
     jacoco
+
+    // Apply maven-publish plugin for library publishing
+    `maven-publish`
 }
 
 repositories {
@@ -40,10 +43,8 @@ dependencies {
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.8")
 }
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
+kotlin {
+    jvmToolchain(21)
 }
 
 jacoco {
@@ -152,4 +153,46 @@ tasks.build {
 
     // Auto-generate documentation during builds
     dependsOn(tasks.dokkaGenerateHtml)
+}
+
+// Library publishing config
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/On-Demand-Deletion-Platform/aws-data-deletion-sdk")
+            credentials {
+                username = project.findProperty("gpr.user") as String? ?: System.getenv("GITHUB_USERNAME")
+                password = project.findProperty("gpr.key") as String? ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+    publications {
+        create<MavenPublication>("maven") {
+            from(components["kotlin"])
+
+            groupId = "com.ondemanddeletionplatform"
+            artifactId = "aws-data-deletion-sdk"
+            version = "0.0.1"
+
+            pom {
+                name.set("AWS Data Deletion SDK")
+                description.set("Libraries and data models for executing data deletion requests against onboarded AWS-hosted data stores")
+                url.set("https://github.com/On-Demand-Deletion-Platform/aws-data-deletion-sdk")
+
+                licenses {
+                    license {
+                        name.set("GPL-3.0")
+                        url.set("https://www.gnu.org/licenses/gpl-3.0.html")
+                    }
+                }
+
+                scm {
+                    connection.set("scm:git:git://github.com/On-Demand-Deletion-Platform/aws-data-deletion-sdk.git")
+                    developerConnection.set("scm:git:ssh://github.com/On-Demand-Deletion-Platform/aws-data-deletion-sdk.git")
+                    url.set("https://github.com/On-Demand-Deletion-Platform/aws-data-deletion-sdk")
+                }
+            }
+        }
+    }
 }

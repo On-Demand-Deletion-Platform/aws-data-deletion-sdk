@@ -10,7 +10,7 @@ To build the project for the first time, run
 
 and validate that it completes successfully.
 
-You can then browse auto-generated library docs by opening app/build/dokka/html/index.html in a browser.
+You can then browse auto-generated library docs by opening build/dokka/html/index.html in a browser.
 
 ### Subsequent builds
 In order to clean up stale build artifacts and rebuild the API models based on your latest changes, run
