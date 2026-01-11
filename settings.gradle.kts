@@ -4,4 +4,3 @@ plugins {
 }
 
 rootProject.name = "aws-data-deletion-sdk"
-include("app")
