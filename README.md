@@ -1,8 +1,10 @@
 # aws-data-deletion-sdk
 
-[![Local tests](https://github.com/On-Demand-Deletion-Platform/aws-data-deletion-sdk/actions/workflows/test.yml/badge.svg)](https://github.com/On-Demand-Deletion-Platform/aws-data-deletion-sdk/actions/workflows/test.yml)
+[![Local tests](https://github.com/On-Demand-Deletion-Platform/aws-data-deletion-sdk/actions/workflows/test.yml/badge.svg)](https://github.com/On-Demand-Deletion-Platform/aws-data-deletion-sdk/actions/workflows/test.yml) [![Deploy Documentation](https://github.com/On-Demand-Deletion-Platform/aws-data-deletion-sdk/actions/workflows/docs.yml/badge.svg)](https://github.com/On-Demand-Deletion-Platform/aws-data-deletion-sdk/actions/workflows/docs.yml)
 
-Libraries and data models for executing data deletion requests against onboarded AWS-hosted data stores.
+Kotlin library with connectors and data models for executing data deletion requests against onboarded AWS-hosted data stores.
+
+See https://on-demand-deletion-platform.github.io/aws-data-deletion-sdk for SDK documentation.
 
 ## Importing
 
