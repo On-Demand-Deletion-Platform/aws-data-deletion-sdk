@@ -21,7 +21,7 @@ In order to clean up stale build artifacts and rebuild the API models based on y
 
 If you do not clean before building, your local environment may continue to use stale, cached artifacts in builds.
 
-### Running local integ tests
+## Running local integ tests
 Prerequisite set-up:
 1. Install Docker Desktop from https://www.docker.com/products/docker-desktop/
 2. Launch Docker Desktop and create or sign into a Docker account
@@ -32,7 +32,7 @@ To run local integ tests against test containers, run
 ./gradlew localIntegTest -DrunLocalIntegTests=true
 ```
 
-#### Debugging local integ tests
+### Debugging local integ tests
 
 Helpful localIntegTest options:
 * `--info` - print info logs to console
@@ -43,6 +43,21 @@ Integ test code snippets to help with debugging:
 * If need to debug LocalStack startup issues, update the `LocalStackContainer` definition to include:
   * `.withEnv("LS_LOG", "trace") // Enable detailed logging for debugging`
   * `.withEnv("DEBUG", "1") // Enable debug mode`
+
+## Publishing release artifacts to GitHub Packages
+Follow [GitHub's "Managing your personal access tokens" guide](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) to set up a personal access token that has write permissions to your GitHub Packages.
+
+Set up a `GITHUB_USERNAME` environment variable matching your GitHub username.
+
+Set up a `GITHUB_TOKEN` environment variable matching your GitHub personal access token.
+
+Increment the package's Maven package version in `build.gradle.kts`.
+
+Run `./gradlew clean build` to ensure build artifacts are based on the latest Smithy models.
+
+Run `./gradlew publish` to publish the new GitHub Package version.
+
+Ref: https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-gradle-registry#authenticating-to-github-packages
 
 ## Helpful commands
 
