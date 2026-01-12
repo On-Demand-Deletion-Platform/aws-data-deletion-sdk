@@ -16,7 +16,7 @@ Set up a `GITHUB_USERNAME` environment variable matching your GitHub username.
 
 Set up a `GITHUB_TOKEN` environment variable matching your GitHub personal access token.
 
-### Gradle (Kotlin DSL)
+### Gradle Kotlin DSL
 
 Merge the following into your build.gradle.kts file:
 
@@ -38,7 +38,7 @@ dependencies {
 }
 ```
 
-### Gradle (Groovy DSL)
+### Gradle Groovy
 
 Merge the following into your build.gradle file:
 
@@ -47,8 +47,8 @@ repositories {
     maven {
         url = uri("https://maven.pkg.github.com/On-Demand-Deletion-Platform/aws-data-deletion-sdk")
         credentials {
-            username = System.getenv("GITHUB_USERNAME")
-            password = System.getenv("GITHUB_TOKEN")
+            username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_USERNAME")
+            password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
         }
     }
 }
