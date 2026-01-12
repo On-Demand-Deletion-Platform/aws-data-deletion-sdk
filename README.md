@@ -16,7 +16,7 @@ Set up a `GITHUB_USERNAME` environment variable matching your GitHub username.
 
 Set up a `GITHUB_TOKEN` environment variable matching your GitHub personal access token.
 
-### Gradle (build.gradle.kts)
+### Gradle (Kotlin DSL)
 
 Merge the following into your build.gradle.kts file:
 
@@ -36,6 +36,47 @@ dependencies {
     // AWS Data Deletion SDK
     implementation("com.ondemanddeletionplatform:aws-data-deletion-sdk:0.0.2")
 }
+```
+
+### Gradle (Groovy DSL)
+
+Merge the following into your build.gradle file:
+
+```groovy
+repositories {
+    maven {
+        url = uri("https://maven.pkg.github.com/On-Demand-Deletion-Platform/aws-data-deletion-sdk")
+        credentials {
+            username = System.getenv("GITHUB_USERNAME")
+            password = System.getenv("GITHUB_TOKEN")
+        }
+    }
+}
+
+dependencies {
+    implementation 'com.ondemanddeletionplatform:aws-data-deletion-sdk:0.0.2'
+}
+```
+
+### Maven
+
+Merge the following into your pom.xml file:
+
+```xml
+<repositories>
+    <repository>
+        <id>github</id>
+        <url>https://maven.pkg.github.com/On-Demand-Deletion-Platform/aws-data-deletion-sdk</url>
+    </repository>
+</repositories>
+
+<dependencies>
+    <dependency>
+        <groupId>com.ondemanddeletionplatform</groupId>
+        <artifactId>aws-data-deletion-sdk</artifactId>
+        <version>0.0.2</version>
+    </dependency>
+</dependencies>
 ```
 
 ## Technologies
