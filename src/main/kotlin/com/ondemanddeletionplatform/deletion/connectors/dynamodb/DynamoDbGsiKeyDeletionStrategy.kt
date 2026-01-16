@@ -71,13 +71,13 @@ class DynamoDbGsiKeyDeletionStrategy : DynamoDbDeletionStrategy() {
         val tableKey = mutableMapOf<String, AttributeValue>()
         val partitionKeyValue = it[deletionTarget.partitionKeyName]?.asSOrNull()
         checkNotNull(partitionKeyValue) {
-          "GSI query result partition key missing or not a string: ${it[deletionTarget.partitionKeyName]}"
+          "GSI query result partition key missing or not a string: $partitionKeyValue"
         }
         tableKey[deletionTarget.partitionKeyName] = AttributeValue.S(partitionKeyValue)
         if (deletionTarget.sortKeyName != null) {
           val sortKeyValue = it[deletionTarget.sortKeyName]?.asSOrNull()
           checkNotNull(sortKeyValue) {
-            "GSI query result sort key missing or not a string: ${it[deletionTarget.sortKeyName]}"
+            "GSI query result sort key missing or not a string: $sortKeyValue"
           }
           tableKey[deletionTarget.sortKeyName] = AttributeValue.S(sortKeyValue)
         }

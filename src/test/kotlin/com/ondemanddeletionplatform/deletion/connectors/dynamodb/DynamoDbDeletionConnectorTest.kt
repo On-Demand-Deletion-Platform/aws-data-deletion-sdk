@@ -4,16 +4,15 @@ import aws.sdk.kotlin.services.dynamodb.DynamoDbClient
 import aws.sdk.kotlin.services.dynamodb.model.AttributeValue
 import aws.sdk.kotlin.services.dynamodb.model.DeleteItemRequest
 import aws.sdk.kotlin.services.dynamodb.model.QueryResponse
+import aws.sdk.kotlin.services.dynamodb.model.ScanResponse
 import com.ondemanddeletionplatform.deletion.models.dynamodb.DynamoDbDeletionStrategyType
 import com.ondemanddeletionplatform.deletion.models.dynamodb.DynamoDbDeletionTarget
 import com.ondemanddeletionplatform.deletion.testutil.DynamoDbTestConstants
 import kotlinx.coroutines.runBlocking
-import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
-import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
 
 class DynamoDbDeletionConnectorTest {
@@ -54,23 +53,27 @@ class DynamoDbDeletionConnectorTest {
   }
 
   @Test
-  fun deleteCustomerByScan_notYetImplemented() {
-    val mockDdbClient: DynamoDbClient = mock()
-    val deletionConnector = DynamoDbDeletionConnector(mockDdbClient)
-
-    val deletionTarget = DynamoDbDeletionTarget(
-      strategy = DynamoDbDeletionStrategyType.SCAN,
-      awsRegion = DynamoDbTestConstants.TEST_AWS_REGION,
-      tableName = DynamoDbTestConstants.TEST_TABLE_NAME,
-      partitionKeyName = DynamoDbTestConstants.TEST_PARTITION_KEY_NAME,
-      deletionKeySchema = DynamoDbTestConstants.TEST_DELETION_KEY_SCHEMA
-    )
-
-    assertThrows(NotImplementedError::class.java) {
-      runBlocking {
-        deletionConnector.deleteData(deletionTarget, DynamoDbTestConstants.TEST_DELETION_KEY_VALUE)
+  fun deleteCustomerByScan_success() {
+    runBlocking {
+      val mockDdbClient: DynamoDbClient = mock()
+      val mockDdbScanResults = ScanResponse {
+        items = null
       }
+      whenever(mockDdbClient.scan(any())).thenReturn(mockDdbScanResults)
+
+      val deletionTarget = DynamoDbDeletionTarget(
+        strategy = DynamoDbDeletionStrategyType.SCAN,
+        awsRegion = DynamoDbTestConstants.TEST_AWS_REGION,
+        tableName = DynamoDbTestConstants.TEST_TABLE_NAME,
+        partitionKeyName = DynamoDbTestConstants.TEST_PARTITION_KEY_NAME,
+        sortKeyName = DynamoDbTestConstants.TEST_SORT_KEY_NAME,
+        deletionKeySchema = DynamoDbTestConstants.TEST_DELETION_KEY_SCHEMA
+      )
+
+      val deletionConnector = DynamoDbDeletionConnector(mockDdbClient)
+      deletionConnector.deleteData(deletionTarget, DynamoDbTestConstants.TEST_DELETION_KEY_VALUE)
+
+      verify(mockDdbClient).scan(any())
     }
-    verifyNoInteractions(mockDdbClient)
   }
 }

@@ -64,4 +64,19 @@ object DynamoDbTestConstants {
     gsiName = TEST_GSI_NAME,
     deletionKeySchema = TEST_GSI_DELETION_KEY_SCHEMA
   )
+  val TEST_SCAN_DELETION_TARGET = DynamoDbDeletionTarget(
+    strategy = DynamoDbDeletionStrategyType.SCAN,
+    awsRegion = TEST_AWS_REGION,
+    tableName = TEST_TABLE_NAME,
+    partitionKeyName = TEST_PARTITION_KEY_NAME,
+    sortKeyName = TEST_SORT_KEY_NAME,
+    deletionKeySchema = TEST_DELETION_KEY_SCHEMA
+  )
+  val TEST_SCAN_DELETION_TARGET_NO_SORT = DynamoDbDeletionTarget(
+    strategy = DynamoDbDeletionStrategyType.SCAN,
+    awsRegion = TEST_AWS_REGION,
+    tableName = TEST_TABLE_NAME,
+    partitionKeyName = TEST_PARTITION_KEY_NAME,
+    deletionKeySchema = TEST_DELETION_KEY_SCHEMA_NO_SORT
+  )
 }
