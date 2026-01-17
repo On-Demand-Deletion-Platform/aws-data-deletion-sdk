@@ -1,11 +1,12 @@
-package com.ondemanddeletionplatform.deletion.connectors.dynamodb
+package com.ondemanddeletionplatform.deletion.localinteg.connectors.dynamodb
 
 import aws.sdk.kotlin.services.dynamodb.model.AttributeValue
+import com.ondemanddeletionplatform.deletion.connectors.dynamodb.DynamoDbDeletionConnector
+import com.ondemanddeletionplatform.deletion.localinteg.testutil.dynamodb.DynamoDbIntegTestConstants
 import com.ondemanddeletionplatform.deletion.models.dynamodb.DynamoDbDeletionKeySchema
 import com.ondemanddeletionplatform.deletion.models.dynamodb.DynamoDbDeletionKeyValue
 import com.ondemanddeletionplatform.deletion.models.dynamodb.DynamoDbDeletionStrategyType
 import com.ondemanddeletionplatform.deletion.models.dynamodb.DynamoDbDeletionTarget
-import com.ondemanddeletionplatform.deletion.testutil.dynamodb.DynamoDbIntegTestConstants
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test

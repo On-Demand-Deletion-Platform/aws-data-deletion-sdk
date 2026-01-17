@@ -118,8 +118,7 @@ tasks.withType<io.gitlab.arturbosch.detekt.DetektCreateBaselineTask>().configure
 
 // Define source set for local integ tests
 val localIntegTestSourceSet = sourceSets.create("localIntegTest") {
-    kotlin.srcDir("src/localIntegTest/kotlin")
-    resources.srcDir("src/localIntegTest/resources")
+    kotlin.srcDir("src/test/kotlin/com/ondemanddeletionplatform/deletion/localinteg")
     compileClasspath += sourceSets.main.get().output
     runtimeClasspath += sourceSets.main.get().output
 }

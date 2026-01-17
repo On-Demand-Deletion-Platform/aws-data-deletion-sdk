@@ -1,4 +1,4 @@
-package com.ondemanddeletionplatform.deletion.testutil.dynamodb
+package com.ondemanddeletionplatform.deletion.localinteg.testutil.dynamodb
 
 import aws.sdk.kotlin.services.dynamodb.model.ProvisionedThroughput
 
