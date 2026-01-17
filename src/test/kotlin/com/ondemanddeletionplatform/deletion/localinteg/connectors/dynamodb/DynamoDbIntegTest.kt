@@ -36,7 +36,7 @@ abstract class DynamoDbIntegTest {
 
       assertNotNull(customerItem)
       assertEquals(
-        customerItem?.get(DynamoDbTestConstants.TEST_PARTITION_KEY_NAME),
+        customerItem?.get(DynamoDbTestConstants.PARTITION_KEY_NAME),
         AttributeValue.S(it)
       )
     }
@@ -65,9 +65,9 @@ abstract class DynamoDbIntegTest {
   }
 
   protected fun buildItemKey(partitionKeyVal: String, sortKeyVal: String?): Map<String, AttributeValue> {
-    val keyValueMap = mutableMapOf(DynamoDbTestConstants.TEST_PARTITION_KEY_NAME to AttributeValue.S(partitionKeyVal))
+    val keyValueMap = mutableMapOf(DynamoDbTestConstants.PARTITION_KEY_NAME to AttributeValue.S(partitionKeyVal))
     if (sortKeyVal != null) {
-      keyValueMap[DynamoDbTestConstants.TEST_SORT_KEY_NAME] = AttributeValue.S(sortKeyVal)
+      keyValueMap[DynamoDbTestConstants.SORT_KEY_NAME] = AttributeValue.S(sortKeyVal)
     }
     return keyValueMap
   }

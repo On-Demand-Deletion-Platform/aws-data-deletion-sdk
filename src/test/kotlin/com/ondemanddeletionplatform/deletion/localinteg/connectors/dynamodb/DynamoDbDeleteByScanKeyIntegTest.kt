@@ -32,7 +32,7 @@ class DynamoDbDeleteByScanKeyIntegTest : DynamoDbIntegTest() {
       putItem(
         tableName,
         mapOf(
-          DynamoDbTestConstants.TEST_PARTITION_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.TEST_CUSTOMER_ID_1),
+          DynamoDbTestConstants.PARTITION_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.CUSTOMER_ID_1),
           scanAttributeName to AttributeValue.S(scanAttributeValToDelete)
         )
       )
@@ -40,7 +40,7 @@ class DynamoDbDeleteByScanKeyIntegTest : DynamoDbIntegTest() {
       putItem(
         tableName,
         mapOf(
-          DynamoDbTestConstants.TEST_PARTITION_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.TEST_CUSTOMER_ID_2),
+          DynamoDbTestConstants.PARTITION_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.CUSTOMER_ID_2),
           scanAttributeName to AttributeValue.S(otherScanAttributeVal)
         )
       )
@@ -48,7 +48,7 @@ class DynamoDbDeleteByScanKeyIntegTest : DynamoDbIntegTest() {
       putItem(
         tableName,
         mapOf(
-          DynamoDbTestConstants.TEST_PARTITION_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.TEST_CUSTOMER_ID_3),
+          DynamoDbTestConstants.PARTITION_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.CUSTOMER_ID_3),
           scanAttributeName to AttributeValue.S(scanAttributeValToDelete)
         )
       )
@@ -56,7 +56,7 @@ class DynamoDbDeleteByScanKeyIntegTest : DynamoDbIntegTest() {
       putItem(
         tableName,
         mapOf(
-          DynamoDbTestConstants.TEST_PARTITION_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.TEST_CUSTOMER_ID_4)
+          DynamoDbTestConstants.PARTITION_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.CUSTOMER_ID_4)
         )
       )
       println("Populated test data")
@@ -67,10 +67,10 @@ class DynamoDbDeleteByScanKeyIntegTest : DynamoDbIntegTest() {
       )
       DynamoDbDeletionConnector(dynamoDb).deleteData(deletionTarget, deletionKeyValue)
 
-      validateDeleted(tableName, DynamoDbTestConstants.TEST_CUSTOMER_ID_1, null)
-      validateDeleted(tableName, DynamoDbTestConstants.TEST_CUSTOMER_ID_3, null)
+      validateDeleted(tableName, DynamoDbTestConstants.CUSTOMER_ID_1, null)
+      validateDeleted(tableName, DynamoDbTestConstants.CUSTOMER_ID_3, null)
 
-      val nonMatchingCustomerIds = listOf(DynamoDbTestConstants.TEST_CUSTOMER_ID_2, DynamoDbTestConstants.TEST_CUSTOMER_ID_4)
+      val nonMatchingCustomerIds = listOf(DynamoDbTestConstants.CUSTOMER_ID_2, DynamoDbTestConstants.CUSTOMER_ID_4)
       validateNotDeleted(tableName, nonMatchingCustomerIds, null)
     }
   }
@@ -80,7 +80,7 @@ class DynamoDbDeleteByScanKeyIntegTest : DynamoDbIntegTest() {
   @Test
   fun scanDeletionStrategyCanDeleteWithSortKey() {
     val tableName = "TestDeleteByScanWithSortKey"
-    val sortKeyName = DynamoDbTestConstants.TEST_SORT_KEY_NAME
+    val sortKeyName = DynamoDbTestConstants.SORT_KEY_NAME
     val scanPrimaryAttributeName = "scanPrimaryAttribute"
     val scanSecondaryAttributeName = "scanSecondaryAttribute"
     val scanPrimaryAttributeValToDelete = "scanPrimaryAttributeValToDelete"
@@ -95,8 +95,8 @@ class DynamoDbDeleteByScanKeyIntegTest : DynamoDbIntegTest() {
       putItem(
         tableName,
         mapOf(
-          DynamoDbTestConstants.TEST_PARTITION_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.TEST_CUSTOMER_ID_1),
-          DynamoDbTestConstants.TEST_SORT_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.TEST_SORT_KEY_VALUE),
+          DynamoDbTestConstants.PARTITION_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.CUSTOMER_ID_1),
+          DynamoDbTestConstants.SORT_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.SORT_KEY_VALUE),
           scanPrimaryAttributeName to AttributeValue.S(scanPrimaryAttributeValToDelete),
           scanSecondaryAttributeName to AttributeValue.S(scanSecondaryAttributeValToDelete)
         )
@@ -105,8 +105,8 @@ class DynamoDbDeleteByScanKeyIntegTest : DynamoDbIntegTest() {
       putItem(
         tableName,
         mapOf(
-          DynamoDbTestConstants.TEST_PARTITION_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.TEST_CUSTOMER_ID_2),
-          DynamoDbTestConstants.TEST_SORT_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.TEST_SORT_KEY_VALUE),
+          DynamoDbTestConstants.PARTITION_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.CUSTOMER_ID_2),
+          DynamoDbTestConstants.SORT_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.SORT_KEY_VALUE),
           scanPrimaryAttributeName to AttributeValue.S(otherScanPrimaryAttributeVal),
           scanSecondaryAttributeName to AttributeValue.S(scanSecondaryAttributeValToDelete)
         )
@@ -115,8 +115,8 @@ class DynamoDbDeleteByScanKeyIntegTest : DynamoDbIntegTest() {
       putItem(
         tableName,
         mapOf(
-          DynamoDbTestConstants.TEST_PARTITION_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.TEST_CUSTOMER_ID_3),
-          DynamoDbTestConstants.TEST_SORT_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.TEST_SORT_KEY_VALUE),
+          DynamoDbTestConstants.PARTITION_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.CUSTOMER_ID_3),
+          DynamoDbTestConstants.SORT_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.SORT_KEY_VALUE),
           scanPrimaryAttributeName to AttributeValue.S(scanPrimaryAttributeValToDelete),
           scanSecondaryAttributeName to AttributeValue.S(otherScanSecondaryAttributeVal)
         )
@@ -125,8 +125,8 @@ class DynamoDbDeleteByScanKeyIntegTest : DynamoDbIntegTest() {
       putItem(
         tableName,
         mapOf(
-          DynamoDbTestConstants.TEST_PARTITION_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.TEST_CUSTOMER_ID_4),
-          DynamoDbTestConstants.TEST_SORT_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.TEST_SORT_KEY_VALUE_2),
+          DynamoDbTestConstants.PARTITION_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.CUSTOMER_ID_4),
+          DynamoDbTestConstants.SORT_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.SORT_KEY_VALUE_2),
           scanPrimaryAttributeName to AttributeValue.S(scanPrimaryAttributeValToDelete),
           scanSecondaryAttributeName to AttributeValue.S(scanSecondaryAttributeValToDelete)
         )
@@ -135,8 +135,8 @@ class DynamoDbDeleteByScanKeyIntegTest : DynamoDbIntegTest() {
       putItem(
         tableName,
         mapOf(
-          DynamoDbTestConstants.TEST_PARTITION_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.TEST_CUSTOMER_ID_5),
-          DynamoDbTestConstants.TEST_SORT_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.TEST_SORT_KEY_VALUE),
+          DynamoDbTestConstants.PARTITION_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.CUSTOMER_ID_5),
+          DynamoDbTestConstants.SORT_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.SORT_KEY_VALUE),
           scanSecondaryAttributeName to AttributeValue.S(scanSecondaryAttributeValToDelete)
         )
       )
@@ -149,21 +149,21 @@ class DynamoDbDeleteByScanKeyIntegTest : DynamoDbIntegTest() {
       )
       DynamoDbDeletionConnector(dynamoDb).deleteData(deletionTarget, deletionKeyValue)
 
-      validateDeleted(tableName, DynamoDbTestConstants.TEST_CUSTOMER_ID_1, DynamoDbTestConstants.TEST_SORT_KEY_VALUE)
-      validateDeleted(tableName, DynamoDbTestConstants.TEST_CUSTOMER_ID_4, DynamoDbTestConstants.TEST_SORT_KEY_VALUE_2)
+      validateDeleted(tableName, DynamoDbTestConstants.CUSTOMER_ID_1, DynamoDbTestConstants.SORT_KEY_VALUE)
+      validateDeleted(tableName, DynamoDbTestConstants.CUSTOMER_ID_4, DynamoDbTestConstants.SORT_KEY_VALUE_2)
 
       val nonMatchingCustomerIds = listOf(
-        DynamoDbTestConstants.TEST_CUSTOMER_ID_2,
-        DynamoDbTestConstants.TEST_CUSTOMER_ID_3,
-        DynamoDbTestConstants.TEST_CUSTOMER_ID_5
+        DynamoDbTestConstants.CUSTOMER_ID_2,
+        DynamoDbTestConstants.CUSTOMER_ID_3,
+        DynamoDbTestConstants.CUSTOMER_ID_5
       )
-      validateNotDeleted(tableName, nonMatchingCustomerIds, DynamoDbTestConstants.TEST_SORT_KEY_VALUE)
+      validateNotDeleted(tableName, nonMatchingCustomerIds, DynamoDbTestConstants.SORT_KEY_VALUE)
     }
   }
 
   private suspend fun createCustomerTable(tableName: String, withSortKey: Boolean) {
     dynamoDbUtils.createTable(dynamoDb, tableName, withSortKey, null)
-    Thread.sleep(DynamoDbTestConstants.TEST_WAIT_TIME_BETWEEN_DDB_OPERATIONS_MS)
+    Thread.sleep(DynamoDbTestConstants.WAIT_TIME_BETWEEN_DDB_OPERATIONS_MS)
   }
 
   private fun buildScanDeletionTarget(
@@ -174,9 +174,9 @@ class DynamoDbDeleteByScanKeyIntegTest : DynamoDbIntegTest() {
   ): DynamoDbDeletionTarget {
     return DynamoDbDeletionTarget(
       tableName = tableName,
-      awsRegion = DynamoDbTestConstants.TEST_AWS_REGION,
+      awsRegion = DynamoDbTestConstants.AWS_REGION,
       strategy = DynamoDbDeletionStrategyType.SCAN,
-      partitionKeyName = DynamoDbTestConstants.TEST_PARTITION_KEY_NAME,
+      partitionKeyName = DynamoDbTestConstants.PARTITION_KEY_NAME,
       sortKeyName = sortKeyName,
       deletionKeySchema = DynamoDbDeletionKeySchema(
         primaryKeyName = scanPrimaryAttributeName,

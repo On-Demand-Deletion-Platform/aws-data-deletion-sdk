@@ -11,24 +11,24 @@ class DynamoDbDeletionTargetTest {
   fun optionalAttrsDefaultToNull() {
     val partitionKeyDeletionTarget = DynamoDbDeletionTarget(
       strategy = DynamoDbDeletionStrategyType.TABLE_KEY,
-      awsRegion = DynamoDbTestConstants.TEST_AWS_REGION,
-      tableName = DynamoDbTestConstants.TEST_TABLE_NAME,
-      partitionKeyName = DynamoDbTestConstants.TEST_PARTITION_KEY_NAME,
+      awsRegion = DynamoDbTestConstants.AWS_REGION,
+      tableName = DynamoDbTestConstants.TABLE_NAME,
+      partitionKeyName = DynamoDbTestConstants.PARTITION_KEY_NAME,
       deletionKeySchema = DynamoDbDeletionKeySchema(
-        primaryKeyName = DynamoDbTestConstants.TEST_PARTITION_KEY_NAME
+        primaryKeyName = DynamoDbTestConstants.PARTITION_KEY_NAME
       )
     )
     assertNotNull(partitionKeyDeletionTarget, "DynamoDbDeletionTarget should be created")
     assertEquals(DynamoDbDeletionStrategyType.TABLE_KEY, partitionKeyDeletionTarget.strategy, "strategy should be PARTITION_KEY")
-    assertEquals(DynamoDbTestConstants.TEST_AWS_REGION, partitionKeyDeletionTarget.awsRegion, "awsRegion should match")
-    assertEquals(DynamoDbTestConstants.TEST_TABLE_NAME, partitionKeyDeletionTarget.tableName, "tableName should match")
+    assertEquals(DynamoDbTestConstants.AWS_REGION, partitionKeyDeletionTarget.awsRegion, "awsRegion should match")
+    assertEquals(DynamoDbTestConstants.TABLE_NAME, partitionKeyDeletionTarget.tableName, "tableName should match")
     assertEquals(
-      DynamoDbTestConstants.TEST_PARTITION_KEY_NAME,
+      DynamoDbTestConstants.PARTITION_KEY_NAME,
       partitionKeyDeletionTarget.partitionKeyName,
       "partitionKeyName should match"
     )
     assertEquals(
-      DynamoDbTestConstants.TEST_PARTITION_KEY_NAME,
+      DynamoDbTestConstants.PARTITION_KEY_NAME,
       partitionKeyDeletionTarget.deletionKeySchema.primaryKeyName,
       "deletionKeySchema.primaryKeyName should match"
     )

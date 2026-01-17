@@ -22,15 +22,15 @@ class DynamoDbDeletionConnectorTest {
     val deletionConnector = DynamoDbDeletionConnector(mockDdbClient)
 
     val expectedDeleteItemRequest = DeleteItemRequest {
-      tableName = DynamoDbTestConstants.TEST_TABLE_NAME
+      tableName = DynamoDbTestConstants.TABLE_NAME
       key = mapOf(
-        DynamoDbTestConstants.TEST_PARTITION_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.TEST_CUSTOMER_ID),
-        DynamoDbTestConstants.TEST_SORT_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.TEST_SORT_KEY_VALUE)
+        DynamoDbTestConstants.PARTITION_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.CUSTOMER_ID),
+        DynamoDbTestConstants.SORT_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.SORT_KEY_VALUE)
       )
     }
 
     runBlocking {
-      deletionConnector.deleteData(DynamoDbTestConstants.TEST_TABLE_KEY_DELETION_TARGET, DynamoDbTestConstants.TEST_DELETION_KEY_VALUE)
+      deletionConnector.deleteData(DynamoDbTestConstants.TABLE_KEY_DELETION_TARGET, DynamoDbTestConstants.DELETION_KEY_VALUE)
 
       verify(mockDdbClient).deleteItem(expectedDeleteItemRequest)
     }
@@ -46,7 +46,7 @@ class DynamoDbDeletionConnectorTest {
       whenever(mockDdbClient.query(any())).thenReturn(mockDdbQueryResults)
 
       val deletionConnector = DynamoDbDeletionConnector(mockDdbClient)
-      deletionConnector.deleteData(DynamoDbTestConstants.TEST_GSI_DELETION_TARGET, DynamoDbTestConstants.TEST_DELETION_KEY_VALUE)
+      deletionConnector.deleteData(DynamoDbTestConstants.GSI_DELETION_TARGET, DynamoDbTestConstants.DELETION_KEY_VALUE)
 
       verify(mockDdbClient).query(any())
     }
@@ -63,15 +63,15 @@ class DynamoDbDeletionConnectorTest {
 
       val deletionTarget = DynamoDbDeletionTarget(
         strategy = DynamoDbDeletionStrategyType.SCAN,
-        awsRegion = DynamoDbTestConstants.TEST_AWS_REGION,
-        tableName = DynamoDbTestConstants.TEST_TABLE_NAME,
-        partitionKeyName = DynamoDbTestConstants.TEST_PARTITION_KEY_NAME,
-        sortKeyName = DynamoDbTestConstants.TEST_SORT_KEY_NAME,
-        deletionKeySchema = DynamoDbTestConstants.TEST_DELETION_KEY_SCHEMA
+        awsRegion = DynamoDbTestConstants.AWS_REGION,
+        tableName = DynamoDbTestConstants.TABLE_NAME,
+        partitionKeyName = DynamoDbTestConstants.PARTITION_KEY_NAME,
+        sortKeyName = DynamoDbTestConstants.SORT_KEY_NAME,
+        deletionKeySchema = DynamoDbTestConstants.DELETION_KEY_SCHEMA
       )
 
       val deletionConnector = DynamoDbDeletionConnector(mockDdbClient)
-      deletionConnector.deleteData(deletionTarget, DynamoDbTestConstants.TEST_DELETION_KEY_VALUE)
+      deletionConnector.deleteData(deletionTarget, DynamoDbTestConstants.DELETION_KEY_VALUE)
 
       verify(mockDdbClient).scan(any())
     }

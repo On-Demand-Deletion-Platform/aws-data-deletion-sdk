@@ -35,9 +35,9 @@ class DynamoDbRepositoryUtils {
     }
 
     return GlobalSecondaryIndex {
-      indexName = DynamoDbTestConstants.TEST_GSI_NAME
+      indexName = DynamoDbTestConstants.GSI_NAME
       this.keySchema = keySchema
-      provisionedThroughput = DynamoDbTestConstants.TEST_PROVISIONED_THROUGHPUT
+      provisionedThroughput = DynamoDbTestConstants.PROVISIONED_THROUGHPUT
       projection = Projection {
         projectionType = ProjectionType.KeysOnly
       }
@@ -47,13 +47,13 @@ class DynamoDbRepositoryUtils {
   fun buildCreateTableRequest(tableName: String, withSortKey: Boolean, gsis: List<GlobalSecondaryIndex>?): CreateTableRequest {
     var keySchema = mutableListOf(
       KeySchemaElement {
-        attributeName = DynamoDbTestConstants.TEST_PARTITION_KEY_NAME
+        attributeName = DynamoDbTestConstants.PARTITION_KEY_NAME
         keyType = KeyType.Hash
       }
     )
     var attributeDefinitions = mutableListOf(
       AttributeDefinition {
-        attributeName = DynamoDbTestConstants.TEST_PARTITION_KEY_NAME
+        attributeName = DynamoDbTestConstants.PARTITION_KEY_NAME
         attributeType = ScalarAttributeType.S
       }
     )
@@ -61,13 +61,13 @@ class DynamoDbRepositoryUtils {
     if (withSortKey) {
       keySchema.add(
         KeySchemaElement {
-          attributeName = DynamoDbTestConstants.TEST_SORT_KEY_NAME
+          attributeName = DynamoDbTestConstants.SORT_KEY_NAME
           keyType = KeyType.Range
         }
       )
       attributeDefinitions.add(
         AttributeDefinition {
-          attributeName = DynamoDbTestConstants.TEST_SORT_KEY_NAME
+          attributeName = DynamoDbTestConstants.SORT_KEY_NAME
           attributeType = ScalarAttributeType.S
         }
       )
@@ -93,7 +93,7 @@ class DynamoDbRepositoryUtils {
       this.keySchema = keySchema
       this.attributeDefinitions = attributeDefinitions
       globalSecondaryIndexes = gsis
-      provisionedThroughput = DynamoDbTestConstants.TEST_PROVISIONED_THROUGHPUT
+      provisionedThroughput = DynamoDbTestConstants.PROVISIONED_THROUGHPUT
     }
   }
 }

@@ -27,8 +27,8 @@ class DynamoDbGsiKeyDeletionStrategyTest {
       runBlocking {
         DynamoDbGsiKeyDeletionStrategy().deleteData(
           mockDdbClient,
-          DynamoDbTestConstants.TEST_TABLE_KEY_DELETION_TARGET,
-          DynamoDbTestConstants.TEST_DELETION_KEY_VALUE
+          DynamoDbTestConstants.TABLE_KEY_DELETION_TARGET,
+          DynamoDbTestConstants.DELETION_KEY_VALUE
         )
       }
     }
@@ -47,8 +47,8 @@ class DynamoDbGsiKeyDeletionStrategyTest {
 
       processRequestAndValidateNoDeletions(
         mockDdbClient,
-        DynamoDbTestConstants.TEST_GSI_DELETION_TARGET,
-        DynamoDbTestConstants.TEST_DELETION_KEY_VALUE
+        DynamoDbTestConstants.GSI_DELETION_TARGET,
+        DynamoDbTestConstants.DELETION_KEY_VALUE
       )
     }
   }
@@ -64,8 +64,8 @@ class DynamoDbGsiKeyDeletionStrategyTest {
 
       processRequestAndValidateNoDeletions(
         mockDdbClient,
-        DynamoDbTestConstants.TEST_GSI_DELETION_TARGET,
-        DynamoDbTestConstants.TEST_DELETION_KEY_VALUE
+        DynamoDbTestConstants.GSI_DELETION_TARGET,
+        DynamoDbTestConstants.DELETION_KEY_VALUE
       )
     }
   }
@@ -80,29 +80,29 @@ class DynamoDbGsiKeyDeletionStrategyTest {
       customerId2PartitionKey,
       customerId3PartitionKey
     )
-    val customerSortKey = AttributeValue.S(DynamoDbTestConstants.TEST_SORT_KEY_VALUE)
+    val customerSortKey = AttributeValue.S(DynamoDbTestConstants.SORT_KEY_VALUE)
 
     val firstPageResults = QueryResponse {
       items = listOf(
         mapOf(
-          DynamoDbTestConstants.TEST_PARTITION_KEY_NAME to customerId1PartitionKey,
-          DynamoDbTestConstants.TEST_SORT_KEY_NAME to customerSortKey
+          DynamoDbTestConstants.PARTITION_KEY_NAME to customerId1PartitionKey,
+          DynamoDbTestConstants.SORT_KEY_NAME to customerSortKey
         ),
         mapOf(
-          DynamoDbTestConstants.TEST_PARTITION_KEY_NAME to customerId2PartitionKey,
-          DynamoDbTestConstants.TEST_SORT_KEY_NAME to customerSortKey
+          DynamoDbTestConstants.PARTITION_KEY_NAME to customerId2PartitionKey,
+          DynamoDbTestConstants.SORT_KEY_NAME to customerSortKey
         )
       )
       lastEvaluatedKey = mapOf(
-        DynamoDbTestConstants.TEST_PARTITION_KEY_NAME to customerId2PartitionKey,
-        DynamoDbTestConstants.TEST_SORT_KEY_NAME to customerSortKey
+        DynamoDbTestConstants.PARTITION_KEY_NAME to customerId2PartitionKey,
+        DynamoDbTestConstants.SORT_KEY_NAME to customerSortKey
       )
     }
     val secondPageResults = QueryResponse {
       items = listOf(
         mapOf(
-          DynamoDbTestConstants.TEST_PARTITION_KEY_NAME to customerId3PartitionKey,
-          DynamoDbTestConstants.TEST_SORT_KEY_NAME to customerSortKey
+          DynamoDbTestConstants.PARTITION_KEY_NAME to customerId3PartitionKey,
+          DynamoDbTestConstants.SORT_KEY_NAME to customerSortKey
         )
       )
       lastEvaluatedKey = emptyMap()
@@ -114,8 +114,8 @@ class DynamoDbGsiKeyDeletionStrategyTest {
 
       DynamoDbGsiKeyDeletionStrategy().deleteData(
         mockDdbClient,
-        DynamoDbTestConstants.TEST_GSI_DELETION_TARGET_NO_SORT,
-        DynamoDbTestConstants.TEST_DELETION_KEY_VALUE
+        DynamoDbTestConstants.GSI_DELETION_TARGET_NO_SORT,
+        DynamoDbTestConstants.DELETION_KEY_VALUE
       )
       verify(mockDdbClient, times(2)).query(any())
       verify(mockDdbClient, times(matchingCustomerPartitionKeys.size)).deleteItem(any())
@@ -123,10 +123,10 @@ class DynamoDbGsiKeyDeletionStrategyTest {
       matchingCustomerPartitionKeys.forEach { partitionKey ->
         verify(mockDdbClient).deleteItem(
           DeleteItemRequest {
-            tableName = DynamoDbTestConstants.TEST_TABLE_NAME
+            tableName = DynamoDbTestConstants.TABLE_NAME
             key = mapOf(
-              DynamoDbTestConstants.TEST_PARTITION_KEY_NAME to partitionKey,
-              DynamoDbTestConstants.TEST_SORT_KEY_NAME to customerSortKey
+              DynamoDbTestConstants.PARTITION_KEY_NAME to partitionKey,
+              DynamoDbTestConstants.SORT_KEY_NAME to customerSortKey
             )
           }
         )
@@ -146,10 +146,10 @@ class DynamoDbGsiKeyDeletionStrategyTest {
     val queryResults = QueryResponse {
       items = listOf(
         mapOf(
-          DynamoDbTestConstants.TEST_PARTITION_KEY_NAME to customerId1PartitionKey
+          DynamoDbTestConstants.PARTITION_KEY_NAME to customerId1PartitionKey
         ),
         mapOf(
-          DynamoDbTestConstants.TEST_PARTITION_KEY_NAME to customerId2PartitionKey
+          DynamoDbTestConstants.PARTITION_KEY_NAME to customerId2PartitionKey
         )
       )
     }
@@ -160,8 +160,8 @@ class DynamoDbGsiKeyDeletionStrategyTest {
 
       DynamoDbGsiKeyDeletionStrategy().deleteData(
         mockDdbClient,
-        DynamoDbTestConstants.TEST_GSI_DELETION_TARGET,
-        DynamoDbTestConstants.TEST_DELETION_KEY_VALUE_NO_SORT
+        DynamoDbTestConstants.GSI_DELETION_TARGET,
+        DynamoDbTestConstants.DELETION_KEY_VALUE_NO_SORT
       )
       verify(mockDdbClient).query(any())
       verify(mockDdbClient, times(matchingCustomerPartitionKeys.size)).deleteItem(any())
@@ -169,9 +169,9 @@ class DynamoDbGsiKeyDeletionStrategyTest {
       matchingCustomerPartitionKeys.forEach { partitionKey ->
         verify(mockDdbClient).deleteItem(
           DeleteItemRequest {
-            tableName = DynamoDbTestConstants.TEST_TABLE_NAME
+            tableName = DynamoDbTestConstants.TABLE_NAME
             key = mapOf(
-              DynamoDbTestConstants.TEST_PARTITION_KEY_NAME to partitionKey
+              DynamoDbTestConstants.PARTITION_KEY_NAME to partitionKey
             )
           }
         )
@@ -184,7 +184,7 @@ class DynamoDbGsiKeyDeletionStrategyTest {
     val queryResultsMissingPartitionKey = QueryResponse {
       items = listOf(
         mapOf(
-          DynamoDbTestConstants.TEST_SORT_KEY_NAME to AttributeValue.S("SomeSortKeyValue")
+          DynamoDbTestConstants.SORT_KEY_NAME to AttributeValue.S("SomeSortKeyValue")
         )
       )
     }
@@ -197,8 +197,8 @@ class DynamoDbGsiKeyDeletionStrategyTest {
         runBlocking {
           DynamoDbGsiKeyDeletionStrategy().deleteData(
             mockDdbClient,
-            DynamoDbTestConstants.TEST_GSI_DELETION_TARGET,
-            DynamoDbTestConstants.TEST_DELETION_KEY_VALUE
+            DynamoDbTestConstants.GSI_DELETION_TARGET,
+            DynamoDbTestConstants.DELETION_KEY_VALUE
           )
         }
       }
@@ -213,7 +213,7 @@ class DynamoDbGsiKeyDeletionStrategyTest {
     val queryResultsMissingSortKey = QueryResponse {
       items = listOf(
         mapOf(
-          DynamoDbTestConstants.TEST_PARTITION_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.TEST_CUSTOMER_ID)
+          DynamoDbTestConstants.PARTITION_KEY_NAME to AttributeValue.S(DynamoDbTestConstants.CUSTOMER_ID)
         )
       )
     }
@@ -225,8 +225,8 @@ class DynamoDbGsiKeyDeletionStrategyTest {
         runBlocking {
           DynamoDbGsiKeyDeletionStrategy().deleteData(
             mockDdbClient,
-            DynamoDbTestConstants.TEST_GSI_DELETION_TARGET_NO_SORT,
-            DynamoDbTestConstants.TEST_DELETION_KEY_VALUE
+            DynamoDbTestConstants.GSI_DELETION_TARGET_NO_SORT,
+            DynamoDbTestConstants.DELETION_KEY_VALUE
           )
         }
       }

@@ -22,8 +22,8 @@ class DynamoDbTableKeyDeletionStrategyTest {
       runBlocking {
         DynamoDbTableKeyDeletionStrategy().deleteData(
           mockDdbClient,
-          DynamoDbTestConstants.TEST_GSI_DELETION_TARGET,
-          DynamoDbTestConstants.TEST_DELETION_KEY_VALUE
+          DynamoDbTestConstants.GSI_DELETION_TARGET,
+          DynamoDbTestConstants.DELETION_KEY_VALUE
         )
       }
     }
@@ -37,20 +37,20 @@ class DynamoDbTableKeyDeletionStrategyTest {
     runBlocking {
       DynamoDbTableKeyDeletionStrategy().deleteData(
         mockDdbClient,
-        DynamoDbTestConstants.TEST_TABLE_KEY_DELETION_TARGET,
-        DynamoDbTestConstants.TEST_DELETION_KEY_VALUE
+        DynamoDbTestConstants.TABLE_KEY_DELETION_TARGET,
+        DynamoDbTestConstants.DELETION_KEY_VALUE
       )
     }
     val expectedKey = mapOf(
-      DynamoDbTestConstants.TEST_PARTITION_KEY_NAME to AttributeValue.S(
-        DynamoDbTestConstants.TEST_CUSTOMER_ID
+      DynamoDbTestConstants.PARTITION_KEY_NAME to AttributeValue.S(
+        DynamoDbTestConstants.CUSTOMER_ID
       ),
-      DynamoDbTestConstants.TEST_SORT_KEY_NAME to AttributeValue.S(
-        DynamoDbTestConstants.TEST_SORT_KEY_VALUE
+      DynamoDbTestConstants.SORT_KEY_NAME to AttributeValue.S(
+        DynamoDbTestConstants.SORT_KEY_VALUE
       )
     )
     val expectedRequest = DeleteItemRequest {
-      tableName = DynamoDbTestConstants.TEST_TABLE_NAME
+      tableName = DynamoDbTestConstants.TABLE_NAME
       key = expectedKey
     }
     runBlocking {
@@ -66,21 +66,21 @@ class DynamoDbTableKeyDeletionStrategyTest {
         mockDdbClient,
         DynamoDbDeletionTarget(
           strategy = DynamoDbDeletionStrategyType.TABLE_KEY,
-          awsRegion = DynamoDbTestConstants.TEST_AWS_REGION,
-          tableName = DynamoDbTestConstants.TEST_TABLE_NAME,
-          partitionKeyName = DynamoDbTestConstants.TEST_PARTITION_KEY_NAME,
-          deletionKeySchema = DynamoDbTestConstants.TEST_DELETION_KEY_SCHEMA_NO_SORT
+          awsRegion = DynamoDbTestConstants.AWS_REGION,
+          tableName = DynamoDbTestConstants.TABLE_NAME,
+          partitionKeyName = DynamoDbTestConstants.PARTITION_KEY_NAME,
+          deletionKeySchema = DynamoDbTestConstants.DELETION_KEY_SCHEMA_NO_SORT
         ),
-        DynamoDbTestConstants.TEST_DELETION_KEY_VALUE_NO_SORT
+        DynamoDbTestConstants.DELETION_KEY_VALUE_NO_SORT
       )
     }
     val expectedKey = mapOf(
-      DynamoDbTestConstants.TEST_PARTITION_KEY_NAME to AttributeValue.S(
-        DynamoDbTestConstants.TEST_CUSTOMER_ID
+      DynamoDbTestConstants.PARTITION_KEY_NAME to AttributeValue.S(
+        DynamoDbTestConstants.CUSTOMER_ID
       )
     )
     val expectedRequest = DeleteItemRequest {
-      tableName = DynamoDbTestConstants.TEST_TABLE_NAME
+      tableName = DynamoDbTestConstants.TABLE_NAME
       key = expectedKey
     }
     runBlocking {
