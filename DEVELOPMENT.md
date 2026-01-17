@@ -65,6 +65,9 @@ Run `./gradlew publish` to publish the new GitHub Package version.
 
 Ref: https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-gradle-registry#authenticating-to-github-packages
 
+## Generating local HTML API documentation
+Run `./gradlew dokkaGenerateHtml` to generate API documentation for public classes and data models in /build/dokka/html/.
+
 ## Helpful commands
 
 * `./gradlew build` - build project, run lint checker, and run unit tests
