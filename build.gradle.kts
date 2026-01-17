@@ -116,26 +116,10 @@ tasks.withType<io.gitlab.arturbosch.detekt.DetektCreateBaselineTask>().configure
 // Local integration test config
 // ------------------------------
 
-// Define source set for local integ tests
-val localIntegTestSourceSet = sourceSets.create("localIntegTest") {
-    kotlin.srcDir("src/test/kotlin/com/ondemanddeletionplatform/deletion/localinteg")
-    compileClasspath += sourceSets.main.get().output
-    runtimeClasspath += sourceSets.main.get().output
-}
-
-// Reuse test dependencies for local integ tests
-configurations["localIntegTestImplementation"]
-    .extendsFrom(configurations["testImplementation"])
-configurations["localIntegTestRuntimeOnly"]
-    .extendsFrom(configurations["testRuntimeOnly"])
-
 // Define task to run local integ tests
 val localIntegTest = tasks.register<Test>("localIntegTest") {
     description = "Runs local integration tests."
     group = "verification"
-
-    testClassesDirs = localIntegTestSourceSet.output.classesDirs
-    classpath = localIntegTestSourceSet.runtimeClasspath
 
     useJUnitPlatform {
         includeTags("localIntegTest")
@@ -149,9 +133,6 @@ val localIntegTest = tasks.register<Test>("localIntegTest") {
 }
 
 tasks.build {
-    // Ensure localIntegTest compilation is included in build task
-    dependsOn(tasks.named("compileLocalIntegTestKotlin"))
-
     // Auto-generate documentation during builds
     dependsOn(tasks.dokkaGenerateHtml)
 }
