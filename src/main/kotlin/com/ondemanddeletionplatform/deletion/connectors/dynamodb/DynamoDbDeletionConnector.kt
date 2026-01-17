@@ -1,6 +1,9 @@
 package com.ondemanddeletionplatform.deletion.connectors.dynamodb
 
 import aws.sdk.kotlin.services.dynamodb.DynamoDbClient
+import com.ondemanddeletionplatform.deletion.connectors.dynamodb.internal.DynamoDbGsiKeyDeletionStrategy
+import com.ondemanddeletionplatform.deletion.connectors.dynamodb.internal.DynamoDbScanDeletionStrategy
+import com.ondemanddeletionplatform.deletion.connectors.dynamodb.internal.DynamoDbTableKeyDeletionStrategy
 import com.ondemanddeletionplatform.deletion.models.dynamodb.DynamoDbDeletionKeyValue
 import com.ondemanddeletionplatform.deletion.models.dynamodb.DynamoDbDeletionStrategyType
 import com.ondemanddeletionplatform.deletion.models.dynamodb.DynamoDbDeletionTarget

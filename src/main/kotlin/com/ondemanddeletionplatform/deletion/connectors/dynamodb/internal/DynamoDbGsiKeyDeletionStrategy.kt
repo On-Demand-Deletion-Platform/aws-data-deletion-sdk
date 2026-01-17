@@ -1,16 +1,16 @@
-package com.ondemanddeletionplatform.deletion.connectors.dynamodb
+package com.ondemanddeletionplatform.deletion.connectors.dynamodb.internal
 
 import aws.sdk.kotlin.services.dynamodb.DynamoDbClient
 import aws.sdk.kotlin.services.dynamodb.model.AttributeValue
 import aws.sdk.kotlin.services.dynamodb.model.QueryRequest
 import com.ondemanddeletionplatform.deletion.models.dynamodb.DynamoDbDeletionKeyValue
 import com.ondemanddeletionplatform.deletion.models.dynamodb.DynamoDbDeletionTarget
-import com.ondemanddeletionplatform.deletion.models.dynamodb.ValidatedDynamoDbGsiDeletionTarget
+import com.ondemanddeletionplatform.deletion.models.internal.dynamodb.ValidatedDynamoDbGsiDeletionTarget
 
 /**
  * DynamoDB on-demand-deletion strategy that deletes items based on GSI key.
  */
-class DynamoDbGsiKeyDeletionStrategy : DynamoDbDeletionStrategy() {
+internal class DynamoDbGsiKeyDeletionStrategy : DynamoDbDeletionStrategy() {
   override suspend fun deleteData(ddb: DynamoDbClient, deletionTarget: DynamoDbDeletionTarget, deletionKey: DynamoDbDeletionKeyValue) {
     println("Called GSI deletion for deletionKey: $deletionKey")
     val gsiDeletionTarget = ValidatedDynamoDbGsiDeletionTarget.fromDeletionTarget(deletionTarget)

@@ -1,5 +1,7 @@
-package com.ondemanddeletionplatform.deletion.models.dynamodb
+package com.ondemanddeletionplatform.deletion.models.internal.dynamodb
 
+import com.ondemanddeletionplatform.deletion.models.dynamodb.DynamoDbDeletionStrategyType
+import com.ondemanddeletionplatform.deletion.models.dynamodb.DynamoDbDeletionTarget
 import com.ondemanddeletionplatform.deletion.testutil.DynamoDbTestConstants
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull

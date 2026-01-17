@@ -1,4 +1,8 @@
-package com.ondemanddeletionplatform.deletion.models.dynamodb
+package com.ondemanddeletionplatform.deletion.models.internal.dynamodb
+
+import com.ondemanddeletionplatform.deletion.models.dynamodb.DynamoDbDeletionKeySchema
+import com.ondemanddeletionplatform.deletion.models.dynamodb.DynamoDbDeletionStrategyType
+import com.ondemanddeletionplatform.deletion.models.dynamodb.DynamoDbDeletionTarget
 
 /**
  * Validated data model for the DynamoDB GSI-based deletion strategy.
@@ -6,7 +10,7 @@ package com.ondemanddeletionplatform.deletion.models.dynamodb
  * Used for data deletion when deletion requests map to a DynamoDB
  * Global Secondary Index (GSI) primary key.
  */
-data class ValidatedDynamoDbGsiDeletionTarget(
+internal data class ValidatedDynamoDbGsiDeletionTarget(
   val strategy: DynamoDbDeletionStrategyType,
   val awsRegion: String,
   val tableName: String,

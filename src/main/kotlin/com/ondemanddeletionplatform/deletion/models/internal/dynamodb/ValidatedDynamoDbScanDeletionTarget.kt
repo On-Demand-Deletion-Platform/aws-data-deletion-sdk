@@ -1,4 +1,8 @@
-package com.ondemanddeletionplatform.deletion.models.dynamodb
+package com.ondemanddeletionplatform.deletion.models.internal.dynamodb
+
+import com.ondemanddeletionplatform.deletion.models.dynamodb.DynamoDbDeletionKeySchema
+import com.ondemanddeletionplatform.deletion.models.dynamodb.DynamoDbDeletionStrategyType
+import com.ondemanddeletionplatform.deletion.models.dynamodb.DynamoDbDeletionTarget
 
 /**
  * Validated data model for the DynamoDB table scan deletion strategy.
@@ -10,7 +14,7 @@ package com.ondemanddeletionplatform.deletion.models.dynamodb
  * Highly inefficient for large tables; use only when not possible
  * to index tables by a reasonable on-demand-deletion key.
  */
-data class ValidatedDynamoDbScanDeletionTarget(
+internal data class ValidatedDynamoDbScanDeletionTarget(
   val strategy: DynamoDbDeletionStrategyType,
   val awsRegion: String,
   val tableName: String,

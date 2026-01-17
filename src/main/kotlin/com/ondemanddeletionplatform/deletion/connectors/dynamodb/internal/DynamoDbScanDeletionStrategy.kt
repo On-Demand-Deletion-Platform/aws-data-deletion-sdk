@@ -1,11 +1,11 @@
-package com.ondemanddeletionplatform.deletion.connectors.dynamodb
+package com.ondemanddeletionplatform.deletion.connectors.dynamodb.internal
 
 import aws.sdk.kotlin.services.dynamodb.DynamoDbClient
 import aws.sdk.kotlin.services.dynamodb.model.AttributeValue
 import aws.sdk.kotlin.services.dynamodb.model.ScanRequest
 import com.ondemanddeletionplatform.deletion.models.dynamodb.DynamoDbDeletionKeyValue
 import com.ondemanddeletionplatform.deletion.models.dynamodb.DynamoDbDeletionTarget
-import com.ondemanddeletionplatform.deletion.models.dynamodb.ValidatedDynamoDbScanDeletionTarget
+import com.ondemanddeletionplatform.deletion.models.internal.dynamodb.ValidatedDynamoDbScanDeletionTarget
 
 /**
  * DynamoDB on-demand-deletion strategy that scans the table
@@ -15,7 +15,7 @@ import com.ondemanddeletionplatform.deletion.models.dynamodb.ValidatedDynamoDbSc
  * only as a last resort when it is not possible to index the
  * table by deletion key.
  */
-class DynamoDbScanDeletionStrategy : DynamoDbDeletionStrategy() {
+internal class DynamoDbScanDeletionStrategy : DynamoDbDeletionStrategy() {
   override suspend fun deleteData(ddb: DynamoDbClient, deletionTarget: DynamoDbDeletionTarget, deletionKey: DynamoDbDeletionKeyValue) {
     println("Called scan deletion for deletionKey: $deletionKey")
     val scanDeletionTarget = ValidatedDynamoDbScanDeletionTarget.fromDeletionTarget(deletionTarget)
