@@ -19,8 +19,6 @@ object DynamoDbTestConstants {
   const val TABLE_DELETION_KEY_NAME = "DeletionKey"
   const val CUSTOMER_ID = "Customer123"
   const val SORT_KEY_VALUE = "SortValue456"
-
-  // Additional constants migrated from DynamoDbIntegTestConstants
   const val SORT_KEY_VALUE_2 = "sortKeyVal2"
   const val CUSTOMER_ID_1 = "customer1"
   const val CUSTOMER_ID_2 = "customer2"
