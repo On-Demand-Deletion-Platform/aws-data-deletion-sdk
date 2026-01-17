@@ -6,79 +6,6 @@ Kotlin library with connectors and data models for executing data deletion reque
 
 See https://on-demand-deletion-platform.github.io/aws-data-deletion-sdk for SDK documentation.
 
-## Importing
-
-### Prerequisites
-
-Follow [GitHub's "Managing your personal access tokens" guide](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) to set up a personal access token that has repo and read:packages permissions (required to access public repositories and download packages from GitHub Package Registry).
-
-Set up a `GITHUB_USERNAME` environment variable matching your GitHub username.
-
-Set up a `GITHUB_TOKEN` environment variable matching your GitHub personal access token.
-
-### Gradle Kotlin DSL
-
-Merge the following into your build.gradle.kts file:
-
-```kotlin
-repositories {
-    // GitHub Packages repository for aws-data-deletion-sdk
-    maven {
-        url = uri("https://maven.pkg.github.com/On-Demand-Deletion-Platform/aws-data-deletion-sdk")
-        credentials {
-            username = project.findProperty("gpr.user") as String? ?: System.getenv("GITHUB_USERNAME")
-            password = project.findProperty("gpr.key") as String? ?: System.getenv("GITHUB_TOKEN")
-        }
-    }
-}
-
-dependencies {
-    // AWS Data Deletion SDK
-    implementation("com.ondemanddeletionplatform:aws-data-deletion-sdk:0.0.2")
-}
-```
-
-### Gradle Groovy
-
-Merge the following into your build.gradle file:
-
-```groovy
-repositories {
-    maven {
-        url = uri("https://maven.pkg.github.com/On-Demand-Deletion-Platform/aws-data-deletion-sdk")
-        credentials {
-            username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_USERNAME")
-            password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
-        }
-    }
-}
-
-dependencies {
-    implementation 'com.ondemanddeletionplatform:aws-data-deletion-sdk:0.0.2'
-}
-```
-
-### Maven
-
-Merge the following into your pom.xml file:
-
-```xml
-<repositories>
-    <repository>
-        <id>github</id>
-        <url>https://maven.pkg.github.com/On-Demand-Deletion-Platform/aws-data-deletion-sdk</url>
-    </repository>
-</repositories>
-
-<dependencies>
-    <dependency>
-        <groupId>com.ondemanddeletionplatform</groupId>
-        <artifactId>aws-data-deletion-sdk</artifactId>
-        <version>0.0.2</version>
-    </dependency>
-</dependencies>
-```
-
 ## Usage
 
 ### DynamoDB deletion requests
@@ -156,6 +83,79 @@ val deletionKey = DynamoDbDeletionKeyValue(
 )
 
 DynamoDbDeletionConnector(dynamoDbClient).deleteData(deletionTarget, deletionKey)
+```
+
+## Importing
+
+### Prerequisites
+
+Follow [GitHub's "Managing your personal access tokens" guide](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) to set up a personal access token that has repo and read:packages permissions (required to access public repositories and download packages from GitHub Package Registry).
+
+Set up a `GITHUB_USERNAME` environment variable matching your GitHub username.
+
+Set up a `GITHUB_TOKEN` environment variable matching your GitHub personal access token.
+
+### Gradle Kotlin DSL
+
+Merge the following into your build.gradle.kts file:
+
+```kotlin
+repositories {
+    // GitHub Packages repository for aws-data-deletion-sdk
+    maven {
+        url = uri("https://maven.pkg.github.com/On-Demand-Deletion-Platform/aws-data-deletion-sdk")
+        credentials {
+            username = project.findProperty("gpr.user") as String? ?: System.getenv("GITHUB_USERNAME")
+            password = project.findProperty("gpr.key") as String? ?: System.getenv("GITHUB_TOKEN")
+        }
+    }
+}
+
+dependencies {
+    // AWS Data Deletion SDK
+    implementation("com.ondemanddeletionplatform:aws-data-deletion-sdk:0.0.2")
+}
+```
+
+### Gradle Groovy
+
+Merge the following into your build.gradle file:
+
+```groovy
+repositories {
+    maven {
+        url = uri("https://maven.pkg.github.com/On-Demand-Deletion-Platform/aws-data-deletion-sdk")
+        credentials {
+            username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_USERNAME")
+            password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+        }
+    }
+}
+
+dependencies {
+    implementation 'com.ondemanddeletionplatform:aws-data-deletion-sdk:0.0.2'
+}
+```
+
+### Maven
+
+Merge the following into your pom.xml file:
+
+```xml
+<repositories>
+    <repository>
+        <id>github</id>
+        <url>https://maven.pkg.github.com/On-Demand-Deletion-Platform/aws-data-deletion-sdk</url>
+    </repository>
+</repositories>
+
+<dependencies>
+    <dependency>
+        <groupId>com.ondemanddeletionplatform</groupId>
+        <artifactId>aws-data-deletion-sdk</artifactId>
+        <version>0.0.2</version>
+    </dependency>
+</dependencies>
 ```
 
 ## Technologies
