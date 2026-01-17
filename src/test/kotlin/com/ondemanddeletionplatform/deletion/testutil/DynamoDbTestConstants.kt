@@ -1,11 +1,14 @@
 package com.ondemanddeletionplatform.deletion.testutil
 
+import aws.sdk.kotlin.services.dynamodb.model.ProvisionedThroughput
 import com.ondemanddeletionplatform.deletion.models.dynamodb.DynamoDbDeletionKeySchema
 import com.ondemanddeletionplatform.deletion.models.dynamodb.DynamoDbDeletionKeyValue
 import com.ondemanddeletionplatform.deletion.models.dynamodb.DynamoDbDeletionStrategyType
 import com.ondemanddeletionplatform.deletion.models.dynamodb.DynamoDbDeletionTarget
 
 object DynamoDbTestConstants {
+  private const val TEST_DDB_CAPACITY_UNITS = 10L
+
   const val TEST_AWS_REGION = "us-west-2"
   const val TEST_TABLE_NAME = "TestTable"
   const val TEST_PARTITION_KEY_NAME = "CustomerId"
@@ -16,6 +19,20 @@ object DynamoDbTestConstants {
   const val TEST_TABLE_DELETION_KEY_NAME = "DeletionKey"
   const val TEST_CUSTOMER_ID = "Customer123"
   const val TEST_SORT_KEY_VALUE = "SortValue456"
+
+  // Additional constants migrated from DynamoDbIntegTestConstants
+  const val TEST_SORT_KEY_VALUE_2 = "sortKeyVal2"
+  const val TEST_CUSTOMER_ID_1 = "customer1"
+  const val TEST_CUSTOMER_ID_2 = "customer2"
+  const val TEST_CUSTOMER_ID_3 = "customer3"
+  const val TEST_CUSTOMER_ID_4 = "customer4"
+  const val TEST_CUSTOMER_ID_5 = "customer5"
+  const val TEST_WAIT_TIME_BETWEEN_DDB_OPERATIONS_MS = 100L
+
+  val TEST_PROVISIONED_THROUGHPUT: ProvisionedThroughput = ProvisionedThroughput {
+    readCapacityUnits = TEST_DDB_CAPACITY_UNITS
+    writeCapacityUnits = TEST_DDB_CAPACITY_UNITS
+  }
 
   val TEST_DELETION_KEY_SCHEMA = DynamoDbDeletionKeySchema(
     primaryKeyName = TEST_PARTITION_KEY_NAME,

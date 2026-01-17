@@ -5,9 +5,9 @@ import aws.sdk.kotlin.services.dynamodb.model.AttributeValue
 import aws.sdk.kotlin.services.dynamodb.model.GetItemRequest
 import aws.sdk.kotlin.services.dynamodb.model.GetItemResponse
 import aws.sdk.kotlin.services.dynamodb.model.PutItemRequest
-import com.ondemanddeletionplatform.deletion.localinteg.testutil.dynamodb.DynamoDbIntegTestConstants
 import com.ondemanddeletionplatform.deletion.localinteg.testutil.dynamodb.DynamoDbLocalStack
 import com.ondemanddeletionplatform.deletion.localinteg.testutil.dynamodb.DynamoDbRepositoryUtils
+import com.ondemanddeletionplatform.deletion.testutil.DynamoDbTestConstants
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertNull
@@ -36,7 +36,7 @@ abstract class DynamoDbIntegTest {
 
       assertNotNull(customerItem)
       assertEquals(
-        customerItem?.get(DynamoDbIntegTestConstants.PARTITION_KEY_NAME),
+        customerItem?.get(DynamoDbTestConstants.TEST_PARTITION_KEY_NAME),
         AttributeValue.S(it)
       )
     }
@@ -65,9 +65,9 @@ abstract class DynamoDbIntegTest {
   }
 
   protected fun buildItemKey(partitionKeyVal: String, sortKeyVal: String?): Map<String, AttributeValue> {
-    val keyValueMap = mutableMapOf(DynamoDbIntegTestConstants.PARTITION_KEY_NAME to AttributeValue.S(partitionKeyVal))
+    val keyValueMap = mutableMapOf(DynamoDbTestConstants.TEST_PARTITION_KEY_NAME to AttributeValue.S(partitionKeyVal))
     if (sortKeyVal != null) {
-      keyValueMap[DynamoDbIntegTestConstants.SORT_KEY_NAME] = AttributeValue.S(sortKeyVal)
+      keyValueMap[DynamoDbTestConstants.TEST_SORT_KEY_NAME] = AttributeValue.S(sortKeyVal)
     }
     return keyValueMap
   }

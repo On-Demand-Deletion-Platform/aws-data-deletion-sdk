@@ -9,6 +9,7 @@ import aws.sdk.kotlin.services.dynamodb.model.KeyType
 import aws.sdk.kotlin.services.dynamodb.model.Projection
 import aws.sdk.kotlin.services.dynamodb.model.ProjectionType
 import aws.sdk.kotlin.services.dynamodb.model.ScalarAttributeType
+import com.ondemanddeletionplatform.deletion.testutil.DynamoDbTestConstants
 
 class DynamoDbRepositoryUtils {
   suspend fun createTable(dynamoDb: DynamoDbClient, tableName: String, withSortKey: Boolean, gsis: List<GlobalSecondaryIndex>?) {
@@ -34,9 +35,9 @@ class DynamoDbRepositoryUtils {
     }
 
     return GlobalSecondaryIndex {
-      indexName = DynamoDbIntegTestConstants.GSI_NAME
+      indexName = DynamoDbTestConstants.TEST_GSI_NAME
       this.keySchema = keySchema
-      provisionedThroughput = DynamoDbIntegTestConstants.PROVISIONED_THROUGHPUT
+      provisionedThroughput = DynamoDbTestConstants.TEST_PROVISIONED_THROUGHPUT
       projection = Projection {
         projectionType = ProjectionType.KeysOnly
       }
@@ -46,13 +47,13 @@ class DynamoDbRepositoryUtils {
   fun buildCreateTableRequest(tableName: String, withSortKey: Boolean, gsis: List<GlobalSecondaryIndex>?): CreateTableRequest {
     var keySchema = mutableListOf(
       KeySchemaElement {
-        attributeName = DynamoDbIntegTestConstants.PARTITION_KEY_NAME
+        attributeName = DynamoDbTestConstants.TEST_PARTITION_KEY_NAME
         keyType = KeyType.Hash
       }
     )
     var attributeDefinitions = mutableListOf(
       AttributeDefinition {
-        attributeName = DynamoDbIntegTestConstants.PARTITION_KEY_NAME
+        attributeName = DynamoDbTestConstants.TEST_PARTITION_KEY_NAME
         attributeType = ScalarAttributeType.S
       }
     )
@@ -60,13 +61,13 @@ class DynamoDbRepositoryUtils {
     if (withSortKey) {
       keySchema.add(
         KeySchemaElement {
-          attributeName = DynamoDbIntegTestConstants.SORT_KEY_NAME
+          attributeName = DynamoDbTestConstants.TEST_SORT_KEY_NAME
           keyType = KeyType.Range
         }
       )
       attributeDefinitions.add(
         AttributeDefinition {
-          attributeName = DynamoDbIntegTestConstants.SORT_KEY_NAME
+          attributeName = DynamoDbTestConstants.TEST_SORT_KEY_NAME
           attributeType = ScalarAttributeType.S
         }
       )
@@ -92,7 +93,7 @@ class DynamoDbRepositoryUtils {
       this.keySchema = keySchema
       this.attributeDefinitions = attributeDefinitions
       globalSecondaryIndexes = gsis
-      provisionedThroughput = DynamoDbIntegTestConstants.PROVISIONED_THROUGHPUT
+      provisionedThroughput = DynamoDbTestConstants.TEST_PROVISIONED_THROUGHPUT
     }
   }
 }
