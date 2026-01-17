@@ -79,6 +79,85 @@ Merge the following into your pom.xml file:
 </dependencies>
 ```
 
+## Usage
+
+### DynamoDB deletion requests
+
+The SDK supports three deletion strategies for DynamoDB tables:
+
+#### 1. Table Key Deletion (`TABLE_KEY`)
+Delete items by primary key (partition key and optional sort key).
+
+```kotlin
+val deletionTarget = DynamoDbDeletionTarget(
+    strategy = DynamoDbDeletionStrategyType.TABLE_KEY,
+    awsRegion = "us-east-1",
+    tableName = "customers",
+    partitionKeyName = "serviceId",
+    sortKeyName = "customerId", // Optional
+    deletionKeySchema = DynamoDbDeletionKeySchema(
+        primaryKeyName = "serviceId",
+        secondaryKeyName = "customerId" // Optional
+    )
+)
+
+val deletionKey = DynamoDbDeletionKeyValue(
+    primaryKeyValue = "service-123",
+    secondaryKeyValue = "customer-123"
+)
+
+DynamoDbDeletionConnector(dynamoDbClient).deleteData(deletionTarget, deletionKey)
+```
+
+#### 2. GSI Query Deletion (`GSI_QUERY`)
+Query a Global Secondary Index and delete all matching items.
+
+```kotlin
+val deletionTarget = DynamoDbDeletionTarget(
+    strategy = DynamoDbDeletionStrategyType.GSI_QUERY,
+    awsRegion = "us-east-1",
+    tableName = "purchases",
+    partitionKeyName = "purchaseId", // Table partition key
+    sortKeyName = "customerId", // Table sort key (optional)
+    gsiName = "customer-index",
+    deletionKeySchema = DynamoDbDeletionKeySchema(
+        primaryKeyName = "customerId", // GSI partition key
+        secondaryKeyName = "purchaseId" // GSI sort key (optional)
+    )
+)
+
+val deletionKey = DynamoDbDeletionKeyValue(
+    primaryKeyValue = "customer-123",
+    secondaryKeyValue = "0510511e-49d2-4753-8aca-a3ddfc99513b" // Optional
+)
+
+DynamoDbDeletionConnector(dynamoDbClient).deleteData(deletionTarget, deletionKey)
+```
+
+#### 3. Scan Deletion (`SCAN`)
+Scan the entire table and delete items matching specified attributes.
+
+```kotlin
+val deletionTarget = DynamoDbDeletionTarget(
+    strategy = DynamoDbDeletionStrategyType.SCAN,
+    awsRegion = "us-east-1",
+    tableName = "purchases",
+    partitionKeyName = "purchaseId", // Table partition key
+    sortKeyName = "timestamp", // Table sort key (optional)
+    deletionKeySchema = DynamoDbDeletionKeySchema(
+        primaryKeyName = "tenantId", // Attribute to scan for
+        secondaryKeyName = "customerId" // Secondary attribute filter (optional)
+    )
+)
+
+val deletionKey = DynamoDbDeletionKeyValue(
+    primaryKeyValue = "tenant-123",
+    secondaryKeyValue = "customer-123" // Optional
+)
+
+DynamoDbDeletionConnector(dynamoDbClient).deleteData(deletionTarget, deletionKey)
+```
+
 ## Technologies
 
 * [AWS SDK for Kotlin](https://docs.aws.amazon.com/sdk-for-kotlin/api/latest/) is used for AWS integrations for deleting data from AWS data stores such as DynamoDB.
