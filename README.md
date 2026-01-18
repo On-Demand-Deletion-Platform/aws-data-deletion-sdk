@@ -85,6 +85,53 @@ val deletionKey = DynamoDbDeletionKeyValue(
 DynamoDbDeletionConnector(dynamoDbClient).deleteData(deletionTarget, deletionKey)
 ```
 
+### S3 deletion requests
+
+The SDK supports two deletion strategies for S3 buckets:
+
+#### 1. Object Key Deletion (`OBJECT_KEY`)
+Delete S3 objects by matching object key patterns.
+
+```kotlin
+val deletionTarget = S3DeletionTarget(
+    strategy = S3DeletionStrategyType.OBJECT_KEY,
+    awsRegion = "us-east-1",
+    bucketName = "purchases",
+    objectKeyPrefix = "data/customers/", // Optional S3 key prefix for efficient search
+    deletionKeyPattern = Pattern.compile("data/customers/([\\w\\-]+)/.*") // Pattern with exactly one capture group
+)
+
+val deletionKey = S3DeletionKeyValue(
+    deletionKeyPatternCaptureValue = "customer-123" // Matches capture group in pattern
+)
+
+S3DeletionConnector(s3Client).deleteData(deletionTarget, deletionKey)
+```
+
+#### 2. Row Level Deletion (`ROW_LEVEL`)
+(NOT YET IMPLEMENTED)
+
+Remove specific rows from S3 files containing data from multiple customers.
+
+```kotlin
+val deletionTarget = S3DeletionTarget(
+    strategy = S3DeletionStrategyType.ROW_LEVEL,
+    awsRegion = "us-east-1",
+    bucketName = "purchase-events",
+    objectKeyPrefix = "data/events/", // Optional S3 key prefix for efficient search
+    deletionKeyPattern = Pattern.compile("data/events/([\\w\\-]+)/.*"), // Pattern with capture group
+    deletionRowAttributeName = "customerId", // Attribute to filter rows by
+    objectFileFormat = FileFormat.JSONL // Supported: JSONL, PARQUET
+)
+
+val deletionKey = S3DeletionKeyValue(
+    deletionKeyPatternCaptureValue = "customer-123", // Matches capture group in pattern
+    deletionRowAttributeValue = "customer-123" // Value to match in row attribute
+)
+
+S3DeletionConnector(s3Client).deleteData(deletionTarget, deletionKey)
+```
+
 ## Importing
 
 ### Prerequisites
