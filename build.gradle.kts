@@ -131,6 +131,11 @@ val localIntegTest = tasks.register<Test>("localIntegTest") {
     onlyIf {
         System.getProperty("runLocalIntegTests") == "true"
     }
+
+    // Disable JaCoCo for integ tests
+    extensions.configure(org.gradle.testing.jacoco.plugins.JacocoTaskExtension::class) {
+        isEnabled = false
+    }
 }
 
 tasks.build {
