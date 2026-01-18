@@ -26,7 +26,7 @@ class S3DeletionConnectorTest {
   fun deleteData_withRowLevelStrategy_throwsNotImplementedException() {
     val exception = assertThrows(NotImplementedError::class.java) {
       runBlocking {
-        connector.deleteData(S3TestConstants.ROW_LEVEL_DELETION_TARGET, S3TestConstants.DELETION_KEY_CAPTURE_VALUE_ONLY)
+        connector.deleteData(S3TestConstants.ROW_LEVEL_DELETION_TARGET, S3TestConstants.ROW_LEVEL_DELETION_KEY)
       }
     }
     assertEquals("An operation is not implemented: S3 row-level deletion strategy not yet implemented", exception.message)

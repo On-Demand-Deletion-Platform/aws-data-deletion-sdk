@@ -31,12 +31,17 @@ object S3TestConstants {
     awsRegion = AWS_REGION,
     bucketName = BUCKET_NAME,
     objectKeyPrefix = OBJECT_KEY_PREFIX,
-    deletionKeyPattern = DELETION_KEY_PATTERN,
+    deletionKeyPattern = null,
     deletionRowAttributeName = DELETION_ROW_ATTRIBUTE_NAME,
     objectFileFormat = FileFormat.JSONL
   )
 
   val DELETION_KEY_CAPTURE_VALUE_ONLY = S3DeletionKeyValue(
     deletionKeyPatternCaptureValue = S3TestConstants.CUSTOMER_ID
+  )
+
+  val ROW_LEVEL_DELETION_KEY = S3DeletionKeyValue(
+    deletionKeyPatternCaptureValue = null,
+    deletionRowAttributeValue = CUSTOMER_ID
   )
 }
