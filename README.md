@@ -160,7 +160,7 @@ repositories {
 
 dependencies {
     // AWS Data Deletion SDK
-    implementation("com.ondemanddeletionplatform:aws-data-deletion-sdk:0.0.2")
+    implementation("com.ondemanddeletionplatform:aws-data-deletion-sdk:0.0.3")
 }
 ```
 
@@ -180,7 +180,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.ondemanddeletionplatform:aws-data-deletion-sdk:0.0.2'
+    implementation 'com.ondemanddeletionplatform:aws-data-deletion-sdk:0.0.3'
 }
 ```
 
@@ -200,7 +200,7 @@ Merge the following into your pom.xml file:
     <dependency>
         <groupId>com.ondemanddeletionplatform</groupId>
         <artifactId>aws-data-deletion-sdk</artifactId>
-        <version>0.0.2</version>
+        <version>0.0.3</version>
     </dependency>
 </dependencies>
 ```
