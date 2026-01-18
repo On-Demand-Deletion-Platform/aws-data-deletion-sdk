@@ -3,6 +3,7 @@ package com.ondemanddeletionplatform.deletion.models.internal.s3
 import com.ondemanddeletionplatform.deletion.models.s3.FileFormat
 import com.ondemanddeletionplatform.deletion.models.s3.S3DeletionStrategyType
 import com.ondemanddeletionplatform.deletion.models.s3.S3DeletionTarget
+import com.ondemanddeletionplatform.deletion.testutil.S3TestConstants
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertThrows
@@ -12,23 +13,13 @@ import java.util.regex.Pattern
 class ValidatedS3RowLevelDeletionTargetTest {
   @Test
   fun fromDeletionTarget_validRowLevelTarget_success() {
-    val deletionTarget = S3DeletionTarget(
-      strategy = S3DeletionStrategyType.ROW_LEVEL,
-      awsRegion = "us-east-1",
-      bucketName = "test-bucket",
-      objectKeyPrefix = "data/customers/",
-      deletionKeyPattern = Pattern.compile("customer/(\\w+)/.*"),
-      deletionRowAttributeName = "customerId",
-      objectFileFormat = FileFormat.JSONL
-    )
-
-    val validated = ValidatedS3RowLevelDeletionTarget.fromDeletionTarget(deletionTarget)
+    val validated = ValidatedS3RowLevelDeletionTarget.fromDeletionTarget(S3TestConstants.ROW_LEVEL_DELETION_TARGET)
 
     assertEquals(S3DeletionStrategyType.ROW_LEVEL, validated.strategy)
-    assertEquals("us-east-1", validated.awsRegion)
-    assertEquals("test-bucket", validated.bucketName)
-    assertEquals("data/customers/", validated.objectKeyPrefix)
-    assertEquals("customerId", validated.deletionRowAttributeName)
+    assertEquals(S3TestConstants.AWS_REGION, validated.awsRegion)
+    assertEquals(S3TestConstants.BUCKET_NAME, validated.bucketName)
+    assertEquals(S3TestConstants.OBJECT_KEY_PREFIX, validated.objectKeyPrefix)
+    assertEquals(S3TestConstants.DELETION_ROW_ATTRIBUTE_NAME, validated.deletionRowAttributeName)
     assertEquals(FileFormat.JSONL, validated.objectFileFormat)
   }
 
@@ -36,9 +27,9 @@ class ValidatedS3RowLevelDeletionTargetTest {
   fun fromDeletionTarget_wrongStrategy_throwsException() {
     val deletionTarget = S3DeletionTarget(
       strategy = S3DeletionStrategyType.OBJECT_KEY,
-      awsRegion = "us-east-1",
-      bucketName = "test-bucket",
-      deletionRowAttributeName = "customerId",
+      awsRegion = S3TestConstants.AWS_REGION,
+      bucketName = S3TestConstants.BUCKET_NAME,
+      deletionRowAttributeName = S3TestConstants.DELETION_ROW_ATTRIBUTE_NAME,
       objectFileFormat = FileFormat.JSONL
     )
 
@@ -52,8 +43,8 @@ class ValidatedS3RowLevelDeletionTargetTest {
   fun fromDeletionTarget_nullDeletionRowAttributeName_throwsException() {
     val deletionTarget = S3DeletionTarget(
       strategy = S3DeletionStrategyType.ROW_LEVEL,
-      awsRegion = "us-east-1",
-      bucketName = "test-bucket",
+      awsRegion = S3TestConstants.AWS_REGION,
+      bucketName = S3TestConstants.BUCKET_NAME,
       deletionRowAttributeName = null,
       objectFileFormat = FileFormat.JSONL
     )
@@ -68,9 +59,9 @@ class ValidatedS3RowLevelDeletionTargetTest {
   fun fromDeletionTarget_nullObjectFileFormat_throwsException() {
     val deletionTarget = S3DeletionTarget(
       strategy = S3DeletionStrategyType.ROW_LEVEL,
-      awsRegion = "us-east-1",
-      bucketName = "test-bucket",
-      deletionRowAttributeName = "customerId",
+      awsRegion = S3TestConstants.AWS_REGION,
+      bucketName = S3TestConstants.BUCKET_NAME,
+      deletionRowAttributeName = S3TestConstants.DELETION_ROW_ATTRIBUTE_NAME,
       objectFileFormat = null
     )
 
@@ -84,10 +75,10 @@ class ValidatedS3RowLevelDeletionTargetTest {
   fun fromDeletionTarget_patternWithZeroCaptureGroups_throwsException() {
     val deletionTarget = S3DeletionTarget(
       strategy = S3DeletionStrategyType.ROW_LEVEL,
-      awsRegion = "us-east-1",
-      bucketName = "test-bucket",
+      awsRegion = S3TestConstants.AWS_REGION,
+      bucketName = S3TestConstants.BUCKET_NAME,
       deletionKeyPattern = Pattern.compile("customer/\\w+/.*"),
-      deletionRowAttributeName = "customerId",
+      deletionRowAttributeName = S3TestConstants.DELETION_ROW_ATTRIBUTE_NAME,
       objectFileFormat = FileFormat.JSONL
     )
 
@@ -101,10 +92,10 @@ class ValidatedS3RowLevelDeletionTargetTest {
   fun fromDeletionTarget_patternWithMultipleCaptureGroups_throwsException() {
     val deletionTarget = S3DeletionTarget(
       strategy = S3DeletionStrategyType.ROW_LEVEL,
-      awsRegion = "us-east-1",
-      bucketName = "test-bucket",
+      awsRegion = S3TestConstants.AWS_REGION,
+      bucketName = S3TestConstants.BUCKET_NAME,
       deletionKeyPattern = Pattern.compile("customer/(\\w+)/(\\w+)/.*"),
-      deletionRowAttributeName = "customerId",
+      deletionRowAttributeName = S3TestConstants.DELETION_ROW_ATTRIBUTE_NAME,
       objectFileFormat = FileFormat.JSONL
     )
 
@@ -118,10 +109,10 @@ class ValidatedS3RowLevelDeletionTargetTest {
   fun fromDeletionTarget_nullPattern_success() {
     val deletionTarget = S3DeletionTarget(
       strategy = S3DeletionStrategyType.ROW_LEVEL,
-      awsRegion = "us-east-1",
-      bucketName = "test-bucket",
+      awsRegion = S3TestConstants.AWS_REGION,
+      bucketName = S3TestConstants.BUCKET_NAME,
       deletionKeyPattern = null,
-      deletionRowAttributeName = "customerId",
+      deletionRowAttributeName = S3TestConstants.DELETION_ROW_ATTRIBUTE_NAME,
       objectFileFormat = FileFormat.PARQUET
     )
 
