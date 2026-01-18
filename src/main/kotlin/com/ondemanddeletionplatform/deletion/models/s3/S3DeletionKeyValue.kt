@@ -11,7 +11,7 @@ data class S3DeletionKeyValue(
    * Increases efficiency of object searches in nested directories
    * when a deletion strategy is for a specific subdirectory.
    */
-  val objectKeyPrefix: String?,
+  val objectKeyPrefix: String? = null,
   /**
    * The deletion key to match to the deletion target's deletionKeyPattern.
    *
@@ -20,11 +20,11 @@ data class S3DeletionKeyValue(
    * and a deletion key with deletionKeyPatternCaptureValue = "fred", we will
    * delete all S3 objects in the given bucket with key prefix "data/purchases/customer/fred/".
    */
-  val deletionKeyPatternCaptureValue: String,
+  val deletionKeyPatternCaptureValue: String?,
   /**
    * If scanning S3 files for rows matching a given deletion subject,
    * the value of the deletionRowAttributeKey to match on when
    * selecting rows to delete from files.
    */
-  val deletionRowAttributeValue: String?,
+  val deletionRowAttributeValue: String? = null,
 )

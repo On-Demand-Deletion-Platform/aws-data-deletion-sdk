@@ -26,6 +26,7 @@ repositories {
 dependencies {
     // AWS SDK for Kotlin
     implementation("aws.sdk.kotlin:dynamodb:1.5.113")
+    implementation("aws.sdk.kotlin:s3:1.5.121")
 
     // JUnit Jupiter for testing.
     testImplementation(libs.junit.jupiter)
