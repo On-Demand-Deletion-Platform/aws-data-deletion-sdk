@@ -12,6 +12,7 @@ import com.ondemanddeletionplatform.deletion.models.dynamodb.DynamoDbDeletionTar
  */
 internal data class ValidatedDynamoDbGsiDeletionTarget(
   val strategy: DynamoDbDeletionStrategyType,
+  val awsAccountId: String,
   val awsRegion: String,
   val tableName: String,
   val partitionKeyName: String,
@@ -28,6 +29,7 @@ internal data class ValidatedDynamoDbGsiDeletionTarget(
 
       return ValidatedDynamoDbGsiDeletionTarget(
         strategy = deletionTarget.strategy,
+        awsAccountId = deletionTarget.awsAccountId,
         awsRegion = deletionTarget.awsRegion,
         tableName = deletionTarget.tableName,
         partitionKeyName = deletionTarget.partitionKeyName,

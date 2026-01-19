@@ -9,6 +9,7 @@ import com.ondemanddeletionplatform.deletion.models.dynamodb.DynamoDbDeletionTar
 object DynamoDbTestConstants {
   private const val DDB_CAPACITY_UNITS = 10L
 
+  const val AWS_ACCOUNT_ID = "123456789012"
   const val AWS_REGION = "us-west-2"
   const val TABLE_NAME = "TestTable"
   const val PARTITION_KEY_NAME = "CustomerId"
@@ -56,6 +57,7 @@ object DynamoDbTestConstants {
 
   val TABLE_KEY_DELETION_TARGET = DynamoDbDeletionTarget(
     strategy = DynamoDbDeletionStrategyType.TABLE_KEY,
+    awsAccountId = AWS_ACCOUNT_ID,
     awsRegion = AWS_REGION,
     tableName = TABLE_NAME,
     partitionKeyName = PARTITION_KEY_NAME,
@@ -64,6 +66,7 @@ object DynamoDbTestConstants {
   )
   val GSI_DELETION_TARGET = DynamoDbDeletionTarget(
     strategy = DynamoDbDeletionStrategyType.GSI_QUERY,
+    awsAccountId = AWS_ACCOUNT_ID,
     awsRegion = AWS_REGION,
     tableName = TABLE_NAME,
     partitionKeyName = PARTITION_KEY_NAME,
@@ -72,6 +75,7 @@ object DynamoDbTestConstants {
   )
   val GSI_DELETION_TARGET_NO_SORT = DynamoDbDeletionTarget(
     strategy = DynamoDbDeletionStrategyType.GSI_QUERY,
+    awsAccountId = AWS_ACCOUNT_ID,
     awsRegion = AWS_REGION,
     tableName = TABLE_NAME,
     partitionKeyName = PARTITION_KEY_NAME,
@@ -81,6 +85,7 @@ object DynamoDbTestConstants {
   )
   val SCAN_DELETION_TARGET = DynamoDbDeletionTarget(
     strategy = DynamoDbDeletionStrategyType.SCAN,
+    awsAccountId = AWS_ACCOUNT_ID,
     awsRegion = AWS_REGION,
     tableName = TABLE_NAME,
     partitionKeyName = PARTITION_KEY_NAME,
@@ -89,6 +94,7 @@ object DynamoDbTestConstants {
   )
   val SCAN_DELETION_TARGET_NO_SORT = DynamoDbDeletionTarget(
     strategy = DynamoDbDeletionStrategyType.SCAN,
+    awsAccountId = AWS_ACCOUNT_ID,
     awsRegion = AWS_REGION,
     tableName = TABLE_NAME,
     partitionKeyName = PARTITION_KEY_NAME,

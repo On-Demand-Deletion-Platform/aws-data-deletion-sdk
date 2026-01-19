@@ -14,6 +14,7 @@ class ValidatedS3ObjectKeyDeletionTargetTest {
   fun canConstructWithoutOptionalFields() {
     val target = ValidatedS3ObjectKeyDeletionTarget(
       strategy = S3DeletionStrategyType.OBJECT_KEY,
+      awsAccountId = S3TestConstants.AWS_ACCOUNT_ID,
       awsRegion = S3TestConstants.AWS_REGION,
       bucketName = S3TestConstants.BUCKET_NAME,
       objectKeyPrefix = null,
@@ -31,6 +32,7 @@ class ValidatedS3ObjectKeyDeletionTargetTest {
   fun incorrectStrategy_throwsException() {
     val deletionTarget = S3DeletionTarget(
       strategy = S3DeletionStrategyType.ROW_LEVEL,
+      awsAccountId = S3TestConstants.AWS_ACCOUNT_ID,
       awsRegion = S3TestConstants.AWS_REGION,
       bucketName = S3TestConstants.BUCKET_NAME,
       objectKeyPrefix = S3TestConstants.OBJECT_KEY_PREFIX,
@@ -47,6 +49,7 @@ class ValidatedS3ObjectKeyDeletionTargetTest {
   fun nullDeletionKeyPattern_throwsException() {
     val deletionTarget = S3DeletionTarget(
       strategy = S3DeletionStrategyType.OBJECT_KEY,
+      awsAccountId = S3TestConstants.AWS_ACCOUNT_ID,
       awsRegion = S3TestConstants.AWS_REGION,
       bucketName = S3TestConstants.BUCKET_NAME,
       objectKeyPrefix = S3TestConstants.OBJECT_KEY_PREFIX,
@@ -64,6 +67,7 @@ class ValidatedS3ObjectKeyDeletionTargetTest {
     val patternWithoutCaptureGroup = Pattern.compile("data/customers/\\w+/.*")
     val deletionTarget = S3DeletionTarget(
       strategy = S3DeletionStrategyType.OBJECT_KEY,
+      awsAccountId = S3TestConstants.AWS_ACCOUNT_ID,
       awsRegion = S3TestConstants.AWS_REGION,
       bucketName = S3TestConstants.BUCKET_NAME,
       objectKeyPrefix = S3TestConstants.OBJECT_KEY_PREFIX,
@@ -81,6 +85,7 @@ class ValidatedS3ObjectKeyDeletionTargetTest {
     val patternWithMultipleCaptureGroups = Pattern.compile("data/customers/(\\w+)/(\\w+)/.*")
     val deletionTarget = S3DeletionTarget(
       strategy = S3DeletionStrategyType.OBJECT_KEY,
+      awsAccountId = S3TestConstants.AWS_ACCOUNT_ID,
       awsRegion = S3TestConstants.AWS_REGION,
       bucketName = S3TestConstants.BUCKET_NAME,
       objectKeyPrefix = S3TestConstants.OBJECT_KEY_PREFIX,
@@ -108,6 +113,7 @@ class ValidatedS3ObjectKeyDeletionTargetTest {
   fun validDeletionTarget_withoutObjectKeyPrefix_returnsValidatedTarget() {
     val deletionTarget = S3DeletionTarget(
       strategy = S3DeletionStrategyType.OBJECT_KEY,
+      awsAccountId = S3TestConstants.AWS_ACCOUNT_ID,
       awsRegion = S3TestConstants.AWS_REGION,
       bucketName = S3TestConstants.BUCKET_NAME,
       objectKeyPrefix = null,

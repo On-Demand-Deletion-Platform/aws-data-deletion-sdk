@@ -9,6 +9,7 @@ import java.util.regex.Pattern
  * in response to all subsequent customer-level deletion requests.
  *
  * @property strategy Deletion strategy to use for this target
+ * @property awsAccountId AWS account where the S3 bucket is located
  * @property awsRegion AWS region the S3 bucket is located in
  * @property bucketName S3 bucket name
  * @property objectKeyPrefix S3 object key prefix to filter searches for efficiency
@@ -21,6 +22,11 @@ data class S3DeletionTarget(
    * Deletion strategy to use for this target.
    */
   val strategy: S3DeletionStrategyType,
+
+  /**
+   * AWS account where the S3 bucket is located.
+   */
+  val awsAccountId: String,
 
   /**
    * AWS region the S3 bucket is located in.

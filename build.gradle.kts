@@ -161,7 +161,7 @@ publishing {
 
             groupId = "com.ondemanddeletionplatform"
             artifactId = "aws-data-deletion-sdk"
-            version = "0.0.3"
+            version = "0.1.0"
 
             pom {
                 name.set("AWS Data Deletion SDK")

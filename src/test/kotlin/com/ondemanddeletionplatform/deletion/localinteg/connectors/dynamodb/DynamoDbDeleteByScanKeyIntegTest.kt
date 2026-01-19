@@ -174,6 +174,7 @@ class DynamoDbDeleteByScanKeyIntegTest : DynamoDbIntegTest() {
   ): DynamoDbDeletionTarget {
     return DynamoDbDeletionTarget(
       tableName = tableName,
+      awsAccountId = DynamoDbTestConstants.AWS_ACCOUNT_ID,
       awsRegion = DynamoDbTestConstants.AWS_REGION,
       strategy = DynamoDbDeletionStrategyType.SCAN,
       partitionKeyName = DynamoDbTestConstants.PARTITION_KEY_NAME,

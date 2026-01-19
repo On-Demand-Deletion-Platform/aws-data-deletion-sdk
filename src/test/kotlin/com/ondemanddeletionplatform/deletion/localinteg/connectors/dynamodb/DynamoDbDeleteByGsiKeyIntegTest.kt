@@ -174,6 +174,7 @@ class DynamoDbDeleteByGsiKeyIntegTest : DynamoDbIntegTest() {
 
     return DynamoDbDeletionTarget(
       tableName = tableName,
+      awsAccountId = DynamoDbTestConstants.AWS_ACCOUNT_ID,
       awsRegion = DynamoDbTestConstants.AWS_REGION,
       strategy = DynamoDbDeletionStrategyType.GSI_QUERY,
       partitionKeyName = DynamoDbTestConstants.PARTITION_KEY_NAME,

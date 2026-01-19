@@ -13,6 +13,7 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
   fun canConstructWithoutOptionalFields() {
     val gsiDeletionTarget = ValidatedDynamoDbGsiDeletionTarget(
       strategy = DynamoDbDeletionStrategyType.GSI_QUERY,
+      awsAccountId = DynamoDbTestConstants.AWS_ACCOUNT_ID,
       awsRegion = DynamoDbTestConstants.AWS_REGION,
       tableName = DynamoDbTestConstants.TABLE_NAME,
       partitionKeyName = DynamoDbTestConstants.PARTITION_KEY_NAME,
@@ -34,6 +35,7 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
   fun incorrectStrategy_throwsException() {
     val deletionTarget = DynamoDbDeletionTarget(
       strategy = DynamoDbDeletionStrategyType.TABLE_KEY,
+      awsAccountId = DynamoDbTestConstants.AWS_ACCOUNT_ID,
       awsRegion = DynamoDbTestConstants.AWS_REGION,
       tableName = DynamoDbTestConstants.TABLE_NAME,
       partitionKeyName = DynamoDbTestConstants.PARTITION_KEY_NAME,
@@ -50,6 +52,7 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
   fun missingGsiFields_throwsException() {
     val deletionTarget = DynamoDbDeletionTarget(
       strategy = DynamoDbDeletionStrategyType.GSI_QUERY,
+      awsAccountId = DynamoDbTestConstants.AWS_ACCOUNT_ID,
       awsRegion = DynamoDbTestConstants.AWS_REGION,
       tableName = DynamoDbTestConstants.TABLE_NAME,
       partitionKeyName = DynamoDbTestConstants.PARTITION_KEY_NAME,
@@ -66,6 +69,7 @@ class ValidatedDynamoDbGsiDeletionTargetTest {
   fun validInputWithoutSortKey_returnsValidatedGsiDeletionTarget() {
     val deletionTarget = DynamoDbDeletionTarget(
       strategy = DynamoDbDeletionStrategyType.GSI_QUERY,
+      awsAccountId = DynamoDbTestConstants.AWS_ACCOUNT_ID,
       awsRegion = DynamoDbTestConstants.AWS_REGION,
       tableName = DynamoDbTestConstants.TABLE_NAME,
       partitionKeyName = DynamoDbTestConstants.PARTITION_KEY_NAME,

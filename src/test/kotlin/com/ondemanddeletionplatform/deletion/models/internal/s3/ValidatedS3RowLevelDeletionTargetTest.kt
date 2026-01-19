@@ -27,6 +27,7 @@ class ValidatedS3RowLevelDeletionTargetTest {
   fun fromDeletionTarget_wrongStrategy_throwsException() {
     val deletionTarget = S3DeletionTarget(
       strategy = S3DeletionStrategyType.OBJECT_KEY,
+      awsAccountId = S3TestConstants.AWS_ACCOUNT_ID,
       awsRegion = S3TestConstants.AWS_REGION,
       bucketName = S3TestConstants.BUCKET_NAME,
       deletionRowAttributeName = S3TestConstants.DELETION_ROW_ATTRIBUTE_NAME,
@@ -43,6 +44,7 @@ class ValidatedS3RowLevelDeletionTargetTest {
   fun fromDeletionTarget_nullDeletionRowAttributeName_throwsException() {
     val deletionTarget = S3DeletionTarget(
       strategy = S3DeletionStrategyType.ROW_LEVEL,
+      awsAccountId = S3TestConstants.AWS_ACCOUNT_ID,
       awsRegion = S3TestConstants.AWS_REGION,
       bucketName = S3TestConstants.BUCKET_NAME,
       deletionRowAttributeName = null,
@@ -59,6 +61,7 @@ class ValidatedS3RowLevelDeletionTargetTest {
   fun fromDeletionTarget_nullObjectFileFormat_throwsException() {
     val deletionTarget = S3DeletionTarget(
       strategy = S3DeletionStrategyType.ROW_LEVEL,
+      awsAccountId = S3TestConstants.AWS_ACCOUNT_ID,
       awsRegion = S3TestConstants.AWS_REGION,
       bucketName = S3TestConstants.BUCKET_NAME,
       deletionRowAttributeName = S3TestConstants.DELETION_ROW_ATTRIBUTE_NAME,
@@ -75,6 +78,7 @@ class ValidatedS3RowLevelDeletionTargetTest {
   fun fromDeletionTarget_patternWithZeroCaptureGroups_throwsException() {
     val deletionTarget = S3DeletionTarget(
       strategy = S3DeletionStrategyType.ROW_LEVEL,
+      awsAccountId = S3TestConstants.AWS_ACCOUNT_ID,
       awsRegion = S3TestConstants.AWS_REGION,
       bucketName = S3TestConstants.BUCKET_NAME,
       deletionKeyPattern = Pattern.compile("customer/\\w+/.*"),
@@ -92,6 +96,7 @@ class ValidatedS3RowLevelDeletionTargetTest {
   fun fromDeletionTarget_patternWithMultipleCaptureGroups_throwsException() {
     val deletionTarget = S3DeletionTarget(
       strategy = S3DeletionStrategyType.ROW_LEVEL,
+      awsAccountId = S3TestConstants.AWS_ACCOUNT_ID,
       awsRegion = S3TestConstants.AWS_REGION,
       bucketName = S3TestConstants.BUCKET_NAME,
       deletionKeyPattern = Pattern.compile("customer/(\\w+)/(\\w+)/.*"),
@@ -109,6 +114,7 @@ class ValidatedS3RowLevelDeletionTargetTest {
   fun fromDeletionTarget_nullPattern_success() {
     val deletionTarget = S3DeletionTarget(
       strategy = S3DeletionStrategyType.ROW_LEVEL,
+      awsAccountId = S3TestConstants.AWS_ACCOUNT_ID,
       awsRegion = S3TestConstants.AWS_REGION,
       bucketName = S3TestConstants.BUCKET_NAME,
       deletionKeyPattern = null,

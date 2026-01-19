@@ -76,6 +76,7 @@ class DynamoDbDeleteByTableKeyIntegTest : DynamoDbIntegTest() {
 
     return DynamoDbDeletionTarget(
       tableName = tableName,
+      awsAccountId = DynamoDbTestConstants.AWS_ACCOUNT_ID,
       awsRegion = DynamoDbTestConstants.AWS_REGION,
       strategy = DynamoDbDeletionStrategyType.TABLE_KEY,
       partitionKeyName = DynamoDbTestConstants.PARTITION_KEY_NAME,

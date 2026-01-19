@@ -4,6 +4,7 @@ package com.ondemanddeletionplatform.deletion.models.dynamodb
  * Common data model for on-demand deletion strategies for DynamoDB tables.
  *
  * @property strategy The deletion strategy to use for this target
+ * @property awsAccountId AWS account where the DynamoDB table is located
  * @property awsRegion AWS region where the DynamoDB table is located
  * @property tableName Name of the DynamoDB table to delete data from
  * @property partitionKeyName Name of the table's partition key attribute
@@ -16,6 +17,11 @@ data class DynamoDbDeletionTarget(
    * The deletion strategy to use for this target.
    */
   val strategy: DynamoDbDeletionStrategyType,
+
+  /**
+   * AWS account where the DynamoDB table is located.
+   */
+  val awsAccountId: String,
 
   /**
    * AWS region where the DynamoDB table is located.

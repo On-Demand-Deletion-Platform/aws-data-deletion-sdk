@@ -13,6 +13,7 @@ class ValidatedDynamoDbScanDeletionTargetTest {
   fun canConstructValidatedScanDeletionTarget() {
     val scanDeletionTarget = ValidatedDynamoDbScanDeletionTarget(
       strategy = DynamoDbDeletionStrategyType.SCAN,
+      awsAccountId = DynamoDbTestConstants.AWS_ACCOUNT_ID,
       awsRegion = DynamoDbTestConstants.AWS_REGION,
       tableName = DynamoDbTestConstants.TABLE_NAME,
       partitionKeyName = DynamoDbTestConstants.PARTITION_KEY_NAME,
@@ -32,6 +33,7 @@ class ValidatedDynamoDbScanDeletionTargetTest {
   fun incorrectStrategy_throwsException() {
     val deletionTarget = DynamoDbDeletionTarget(
       strategy = DynamoDbDeletionStrategyType.TABLE_KEY,
+      awsAccountId = DynamoDbTestConstants.AWS_ACCOUNT_ID,
       awsRegion = DynamoDbTestConstants.AWS_REGION,
       tableName = DynamoDbTestConstants.TABLE_NAME,
       partitionKeyName = DynamoDbTestConstants.PARTITION_KEY_NAME,
@@ -50,6 +52,7 @@ class ValidatedDynamoDbScanDeletionTargetTest {
   fun validInputWithoutSortKey_returnsValidatedScanDeletionTarget() {
     val deletionTarget = DynamoDbDeletionTarget(
       strategy = DynamoDbDeletionStrategyType.SCAN,
+      awsAccountId = DynamoDbTestConstants.AWS_ACCOUNT_ID,
       awsRegion = DynamoDbTestConstants.AWS_REGION,
       tableName = DynamoDbTestConstants.TABLE_NAME,
       partitionKeyName = DynamoDbTestConstants.PARTITION_KEY_NAME,
@@ -71,6 +74,7 @@ class ValidatedDynamoDbScanDeletionTargetTest {
   fun validInputWithSortKey_returnsValidatedScanDeletionTarget() {
     val deletionTarget = DynamoDbDeletionTarget(
       strategy = DynamoDbDeletionStrategyType.SCAN,
+      awsAccountId = DynamoDbTestConstants.AWS_ACCOUNT_ID,
       awsRegion = DynamoDbTestConstants.AWS_REGION,
       tableName = DynamoDbTestConstants.TABLE_NAME,
       partitionKeyName = DynamoDbTestConstants.PARTITION_KEY_NAME,

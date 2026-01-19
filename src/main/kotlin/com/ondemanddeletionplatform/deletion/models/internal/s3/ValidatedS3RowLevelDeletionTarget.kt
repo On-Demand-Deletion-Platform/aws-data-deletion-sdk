@@ -13,6 +13,7 @@ import java.util.regex.Pattern
  */
 internal data class ValidatedS3RowLevelDeletionTarget(
   val strategy: S3DeletionStrategyType,
+  val awsAccountId: String,
   val awsRegion: String,
   val bucketName: String,
   val objectKeyPrefix: String?,
@@ -37,6 +38,7 @@ internal data class ValidatedS3RowLevelDeletionTarget(
 
       return ValidatedS3RowLevelDeletionTarget(
         strategy = deletionTarget.strategy,
+        awsAccountId = deletionTarget.awsAccountId,
         awsRegion = deletionTarget.awsRegion,
         bucketName = deletionTarget.bucketName,
         objectKeyPrefix = deletionTarget.objectKeyPrefix,

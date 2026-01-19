@@ -11,6 +11,7 @@ class DynamoDbDeletionTargetTest {
   fun optionalAttrsDefaultToNull() {
     val partitionKeyDeletionTarget = DynamoDbDeletionTarget(
       strategy = DynamoDbDeletionStrategyType.TABLE_KEY,
+      awsAccountId = DynamoDbTestConstants.AWS_ACCOUNT_ID,
       awsRegion = DynamoDbTestConstants.AWS_REGION,
       tableName = DynamoDbTestConstants.TABLE_NAME,
       partitionKeyName = DynamoDbTestConstants.PARTITION_KEY_NAME,

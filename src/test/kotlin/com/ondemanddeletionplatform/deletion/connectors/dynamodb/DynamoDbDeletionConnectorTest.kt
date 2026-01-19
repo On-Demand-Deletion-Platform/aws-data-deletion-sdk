@@ -63,6 +63,7 @@ class DynamoDbDeletionConnectorTest {
 
       val deletionTarget = DynamoDbDeletionTarget(
         strategy = DynamoDbDeletionStrategyType.SCAN,
+        awsAccountId = DynamoDbTestConstants.AWS_ACCOUNT_ID,
         awsRegion = DynamoDbTestConstants.AWS_REGION,
         tableName = DynamoDbTestConstants.TABLE_NAME,
         partitionKeyName = DynamoDbTestConstants.PARTITION_KEY_NAME,

@@ -7,6 +7,7 @@ import com.ondemanddeletionplatform.deletion.models.s3.S3DeletionTarget
 import java.util.regex.Pattern
 
 object S3TestConstants {
+  const val AWS_ACCOUNT_ID = "123456789012"
   const val AWS_REGION = "us-west-2"
   const val BUCKET_NAME = "test-bucket"
   const val OBJECT_KEY_PREFIX = "data/customers/"
@@ -20,6 +21,7 @@ object S3TestConstants {
 
   val OBJECT_KEY_DELETION_TARGET = S3DeletionTarget(
     strategy = S3DeletionStrategyType.OBJECT_KEY,
+    awsAccountId = AWS_ACCOUNT_ID,
     awsRegion = AWS_REGION,
     bucketName = BUCKET_NAME,
     objectKeyPrefix = OBJECT_KEY_PREFIX,
@@ -28,6 +30,7 @@ object S3TestConstants {
 
   val ROW_LEVEL_DELETION_TARGET_JSONL = S3DeletionTarget(
     strategy = S3DeletionStrategyType.ROW_LEVEL,
+    awsAccountId = AWS_ACCOUNT_ID,
     awsRegion = AWS_REGION,
     bucketName = BUCKET_NAME,
     objectKeyPrefix = OBJECT_KEY_PREFIX,
@@ -38,6 +41,7 @@ object S3TestConstants {
 
   val ROW_LEVEL_DELETION_TARGET_PARQUET = S3DeletionTarget(
     strategy = S3DeletionStrategyType.ROW_LEVEL,
+    awsAccountId = AWS_ACCOUNT_ID,
     awsRegion = AWS_REGION,
     bucketName = BUCKET_NAME,
     objectKeyPrefix = OBJECT_KEY_PREFIX,
