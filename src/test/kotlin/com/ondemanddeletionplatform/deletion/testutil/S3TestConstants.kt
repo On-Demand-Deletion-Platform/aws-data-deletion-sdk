@@ -31,7 +31,7 @@ object S3TestConstants {
     awsRegion = AWS_REGION,
     bucketName = BUCKET_NAME,
     objectKeyPrefix = OBJECT_KEY_PREFIX,
-    deletionKeyPattern = null,
+    deletionKeyPattern = DELETION_KEY_PATTERN,
     deletionRowAttributeName = DELETION_ROW_ATTRIBUTE_NAME,
     objectFileFormat = FileFormat.JSONL
   )

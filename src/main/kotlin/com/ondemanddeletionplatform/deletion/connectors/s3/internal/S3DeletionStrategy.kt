@@ -3,6 +3,8 @@ package com.ondemanddeletionplatform.deletion.connectors.s3.internal
 import aws.sdk.kotlin.services.s3.S3Client
 import aws.sdk.kotlin.services.s3.model.Delete
 import aws.sdk.kotlin.services.s3.model.DeleteObjectsRequest
+import aws.sdk.kotlin.services.s3.model.GetObjectRequest
+import aws.sdk.kotlin.services.s3.model.GetObjectResponse
 import aws.sdk.kotlin.services.s3.model.ListObjectsV2Request
 import aws.sdk.kotlin.services.s3.model.ListObjectsV2Response
 import aws.sdk.kotlin.services.s3.model.ObjectIdentifier
@@ -32,6 +34,18 @@ internal abstract class S3DeletionStrategy {
         this.continuationToken = continuationToken
       }
     )
+  }
+
+  /**
+   * Query the S3 GetObject API.
+   */
+  protected suspend fun getObject(s3: S3Client, bucketName: String, objectKey: String): GetObjectResponse {
+    return s3.getObject(
+      GetObjectRequest {
+        bucket = bucketName
+        key = objectKey
+      }
+    ) { it }
   }
 
   /**

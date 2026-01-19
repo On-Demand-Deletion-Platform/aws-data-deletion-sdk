@@ -42,23 +42,25 @@ class S3ObjectKeyDeletionStrategyTest {
   }
 
   @Test
-  fun deleteData_withCaptureValue_replacesPatternAndDeletesMatchingObjects() = runBlocking {
-    whenever(mockS3Client.listObjectsV2(any<ListObjectsV2Request>())).thenReturn(
-      ListObjectsV2Response {
-        contents = listOf(
-          Object { key = S3TestConstants.MATCHING_OBJECT_KEY_1 },
-          Object { key = "data/customers/othercustomer/file.json" },
-          Object { key = S3TestConstants.MATCHING_OBJECT_KEY_2 }
-        )
-        isTruncated = false
-      }
-    )
-    mockDeleteObjectsSuccess()
-
-    strategy.deleteData(mockS3Client, S3TestConstants.OBJECT_KEY_DELETION_TARGET, S3TestConstants.DELETION_KEY_CAPTURE_VALUE_ONLY)
-
+  fun deleteData_withCaptureValue_replacesPatternAndDeletesMatchingObjects() {
     val deleteCaptor = argumentCaptor<DeleteObjectsRequest>()
-    verify(mockS3Client, times(1)).deleteObjects(deleteCaptor.capture())
+
+    runBlocking {
+      whenever(mockS3Client.listObjectsV2(any<ListObjectsV2Request>())).thenReturn(
+        ListObjectsV2Response {
+          contents = listOf(
+            Object { key = S3TestConstants.MATCHING_OBJECT_KEY_1 },
+            Object { key = "data/customers/othercustomer/file.json" },
+            Object { key = S3TestConstants.MATCHING_OBJECT_KEY_2 }
+          )
+          isTruncated = false
+        }
+      )
+      mockDeleteObjectsSuccess()
+
+      strategy.deleteData(mockS3Client, S3TestConstants.OBJECT_KEY_DELETION_TARGET, S3TestConstants.DELETION_KEY_CAPTURE_VALUE_ONLY)
+      verify(mockS3Client, times(1)).deleteObjects(deleteCaptor.capture())
+    }
 
     val deleteRequest = deleteCaptor.firstValue
     assertEquals(S3TestConstants.BUCKET_NAME, deleteRequest.bucket)
@@ -68,26 +70,26 @@ class S3ObjectKeyDeletionStrategyTest {
   }
 
   @Test
-  fun deleteData_withoutCaptureValue_usesOriginalPatternAndDeletesMatchingObjects() = runBlocking {
+  fun deleteData_withoutCaptureValue_usesOriginalPatternAndDeletesMatchingObjects() {
     val deletionKey = S3DeletionKeyValue(
       objectKeyPrefix = "data/customers/",
       deletionKeyPatternCaptureValue = null
     )
-
     val matchingObject = Object { key = "data/customers/anyvalue/file1.json" }
 
-    whenever(mockS3Client.listObjectsV2(any<ListObjectsV2Request>())).thenReturn(
-      ListObjectsV2Response {
-        contents = listOf(matchingObject)
-        isTruncated = false
-      }
-    )
-    mockDeleteObjectsSuccess()
-
-    strategy.deleteData(mockS3Client, S3TestConstants.OBJECT_KEY_DELETION_TARGET, deletionKey)
-
     val deleteCaptor = argumentCaptor<DeleteObjectsRequest>()
-    verify(mockS3Client).deleteObjects(deleteCaptor.capture())
+
+    runBlocking {
+      whenever(mockS3Client.listObjectsV2(any<ListObjectsV2Request>())).thenReturn(
+        ListObjectsV2Response {
+          contents = listOf(matchingObject)
+          isTruncated = false
+        }
+      )
+      mockDeleteObjectsSuccess()
+      strategy.deleteData(mockS3Client, S3TestConstants.OBJECT_KEY_DELETION_TARGET, deletionKey)
+      verify(mockS3Client).deleteObjects(deleteCaptor.capture())
+    }
 
     val deleteRequest = deleteCaptor.firstValue
     assertEquals(1, deleteRequest.delete?.objects?.size)
@@ -95,69 +97,74 @@ class S3ObjectKeyDeletionStrategyTest {
   }
 
   @Test
-  fun deleteData_withDeletionKeyPrefix_queriesByKeyPrefix() = runBlocking {
+  fun deleteData_withDeletionKeyPrefix_queriesByKeyPrefix() {
     val deletionKey = S3DeletionKeyValue(
       objectKeyPrefix = "custom/prefix/",
       deletionKeyPatternCaptureValue = S3TestConstants.CUSTOMER_ID
     )
 
-    whenever(mockS3Client.listObjectsV2(any<ListObjectsV2Request>())).thenReturn(
-      ListObjectsV2Response {
-        contents = emptyList()
-        isTruncated = false
-      }
-    )
+    runBlocking {
+      whenever(mockS3Client.listObjectsV2(any<ListObjectsV2Request>())).thenReturn(
+        ListObjectsV2Response {
+          contents = emptyList()
+          isTruncated = false
+        }
+      )
+      strategy.deleteData(mockS3Client, S3TestConstants.OBJECT_KEY_DELETION_TARGET, deletionKey)
 
-    strategy.deleteData(mockS3Client, S3TestConstants.OBJECT_KEY_DELETION_TARGET, deletionKey)
-
-    val listCaptor = argumentCaptor<ListObjectsV2Request>()
-    verify(mockS3Client).listObjectsV2(listCaptor.capture())
-    assertEquals("custom/prefix/", listCaptor.firstValue.prefix)
+      val listCaptor = argumentCaptor<ListObjectsV2Request>()
+      verify(mockS3Client).listObjectsV2(listCaptor.capture())
+      assertEquals("custom/prefix/", listCaptor.firstValue.prefix)
+    }
   }
 
   @Test
-  fun deleteData_withTargetPrefix_usesTargetPrefixIfNoDeletionKeyPrefix() = runBlocking {
-    whenever(mockS3Client.listObjectsV2(any<ListObjectsV2Request>())).thenReturn(
-      ListObjectsV2Response {
-        contents = emptyList()
-        isTruncated = false
-      }
-    )
-    mockDeleteObjectsSuccess()
-
-    strategy.deleteData(mockS3Client, S3TestConstants.OBJECT_KEY_DELETION_TARGET, S3TestConstants.DELETION_KEY_CAPTURE_VALUE_ONLY)
-
+  fun deleteData_withTargetPrefix_usesTargetPrefixIfNoDeletionKeyPrefix() {
     val listCaptor = argumentCaptor<ListObjectsV2Request>()
-    verify(mockS3Client).listObjectsV2(listCaptor.capture())
+
+    runBlocking {
+      whenever(mockS3Client.listObjectsV2(any<ListObjectsV2Request>())).thenReturn(
+        ListObjectsV2Response {
+          contents = emptyList()
+          isTruncated = false
+        }
+      )
+      mockDeleteObjectsSuccess()
+      strategy.deleteData(mockS3Client, S3TestConstants.OBJECT_KEY_DELETION_TARGET, S3TestConstants.DELETION_KEY_CAPTURE_VALUE_ONLY)
+
+      verify(mockS3Client).listObjectsV2(listCaptor.capture())
+    }
 
     val listRequest = listCaptor.firstValue
     assertEquals(S3TestConstants.OBJECT_KEY_PREFIX, listRequest.prefix)
   }
 
   @Test
-  fun deleteData_withPaginatedResults_handlesMultiplePages() = runBlocking {
-    whenever(mockS3Client.listObjectsV2(any<ListObjectsV2Request>()))
-      .thenReturn(
-        ListObjectsV2Response {
-          contents = listOf(Object { key = S3TestConstants.MATCHING_OBJECT_KEY_1 })
-          isTruncated = true
-          nextContinuationToken = "token123"
-        }
-      )
-      .thenReturn(
-        ListObjectsV2Response {
-          contents = listOf(Object { key = S3TestConstants.MATCHING_OBJECT_KEY_2 })
-          isTruncated = false
-        }
-      )
-    mockDeleteObjectsSuccess()
-
-    strategy.deleteData(mockS3Client, S3TestConstants.OBJECT_KEY_DELETION_TARGET, S3TestConstants.DELETION_KEY_CAPTURE_VALUE_ONLY)
-
-    verify(mockS3Client, times(2)).listObjectsV2(any<ListObjectsV2Request>())
-
+  fun deleteData_withPaginatedResults_handlesMultiplePages() {
     val deleteCaptor = argumentCaptor<DeleteObjectsRequest>()
-    verify(mockS3Client, times(2)).deleteObjects(deleteCaptor.capture())
+
+    runBlocking {
+      whenever(mockS3Client.listObjectsV2(any<ListObjectsV2Request>()))
+        .thenReturn(
+          ListObjectsV2Response {
+            contents = listOf(Object { key = S3TestConstants.MATCHING_OBJECT_KEY_1 })
+            isTruncated = true
+            nextContinuationToken = "token123"
+          }
+        )
+        .thenReturn(
+          ListObjectsV2Response {
+            contents = listOf(Object { key = S3TestConstants.MATCHING_OBJECT_KEY_2 })
+            isTruncated = false
+          }
+        )
+      mockDeleteObjectsSuccess()
+
+      strategy.deleteData(mockS3Client, S3TestConstants.OBJECT_KEY_DELETION_TARGET, S3TestConstants.DELETION_KEY_CAPTURE_VALUE_ONLY)
+
+      verify(mockS3Client, times(2)).listObjectsV2(any<ListObjectsV2Request>())
+      verify(mockS3Client, times(2)).deleteObjects(deleteCaptor.capture())
+    }
 
     val deleteRequest1 = deleteCaptor.firstValue
     assertEquals(S3TestConstants.BUCKET_NAME, deleteRequest1.bucket)
@@ -169,76 +176,82 @@ class S3ObjectKeyDeletionStrategyTest {
   }
 
   @Test
-  fun deleteData_withNoMatchingObjects_doesNotCallDelete() = runBlocking {
+  fun deleteData_withNoMatchingObjects_doesNotCallDelete() {
     val nonMatchingObject = Object { key = "data/other/file.json" }
 
-    whenever(mockS3Client.listObjectsV2(any<ListObjectsV2Request>())).thenReturn(
-      ListObjectsV2Response {
-        contents = listOf(nonMatchingObject)
-        isTruncated = false
-      }
-    )
+    runBlocking {
+      whenever(mockS3Client.listObjectsV2(any<ListObjectsV2Request>())).thenReturn(
+        ListObjectsV2Response {
+          contents = listOf(nonMatchingObject)
+          isTruncated = false
+        }
+      )
+      strategy.deleteData(mockS3Client, S3TestConstants.OBJECT_KEY_DELETION_TARGET, S3TestConstants.DELETION_KEY_CAPTURE_VALUE_ONLY)
 
-    strategy.deleteData(mockS3Client, S3TestConstants.OBJECT_KEY_DELETION_TARGET, S3TestConstants.DELETION_KEY_CAPTURE_VALUE_ONLY)
-
-    verify(mockS3Client, never()).deleteObjects(any<DeleteObjectsRequest>())
-  }
-
-  @Test
-  fun deleteData_withEmptyContents_doesNotCallDelete() = runBlocking {
-    whenever(mockS3Client.listObjectsV2(any<ListObjectsV2Request>())).thenReturn(
-      ListObjectsV2Response {
-        contents = emptyList()
-        isTruncated = false
-      }
-    )
-
-    strategy.deleteData(mockS3Client, S3TestConstants.OBJECT_KEY_DELETION_TARGET, S3TestConstants.DELETION_KEY_CAPTURE_VALUE_ONLY)
-
-    verify(mockS3Client, never()).deleteObjects(any<DeleteObjectsRequest>())
-  }
-
-  @Test
-  fun deleteData_withNullContents_doesNotCallDelete() = runBlocking {
-    whenever(mockS3Client.listObjectsV2(any<ListObjectsV2Request>())).thenReturn(
-      ListObjectsV2Response {
-        contents = null
-        isTruncated = false
-      }
-    )
-
-    strategy.deleteData(mockS3Client, S3TestConstants.OBJECT_KEY_DELETION_TARGET, S3TestConstants.DELETION_KEY_CAPTURE_VALUE_ONLY)
-
-    verify(mockS3Client, never()).deleteObjects(any<DeleteObjectsRequest>())
-  }
-
-  @Test
-  fun deleteData_withDeleteObjectsErrors_throwsException() = runBlocking {
-    whenever(mockS3Client.listObjectsV2(any<ListObjectsV2Request>())).thenReturn(
-      ListObjectsV2Response {
-        contents = listOf(Object { key = S3TestConstants.MATCHING_OBJECT_KEY_1 })
-        isTruncated = false
-      }
-    )
-    whenever(mockS3Client.deleteObjects(any<DeleteObjectsRequest>())).thenReturn(
-      DeleteObjectsResponse {
-        errors = listOf(
-          Error {
-            key = S3TestConstants.MATCHING_OBJECT_KEY_1
-            code = "AccessDenied"
-            message = "Access denied for object"
-          }
-        )
-      }
-    )
-
-    val exception = assertThrows(IllegalStateException::class.java) {
-      runBlocking {
-        strategy.deleteData(mockS3Client, S3TestConstants.OBJECT_KEY_DELETION_TARGET, S3TestConstants.DELETION_KEY_CAPTURE_VALUE_ONLY)
-      }
+      verify(mockS3Client, never()).deleteObjects(any<DeleteObjectsRequest>())
     }
-    assertNotNull(exception.message)
-    assertTrue(exception.message!!.startsWith("Received errors in S3 DeleteObjects response"))
+  }
+
+  @Test
+  fun deleteData_withEmptyContents_doesNotCallDelete() {
+    runBlocking {
+      whenever(mockS3Client.listObjectsV2(any<ListObjectsV2Request>())).thenReturn(
+        ListObjectsV2Response {
+          contents = emptyList()
+          isTruncated = false
+        }
+      )
+
+      strategy.deleteData(mockS3Client, S3TestConstants.OBJECT_KEY_DELETION_TARGET, S3TestConstants.DELETION_KEY_CAPTURE_VALUE_ONLY)
+
+      verify(mockS3Client, never()).deleteObjects(any<DeleteObjectsRequest>())
+    }
+  }
+
+  @Test
+  fun deleteData_withNullContents_doesNotCallDelete() {
+    runBlocking {
+      whenever(mockS3Client.listObjectsV2(any<ListObjectsV2Request>())).thenReturn(
+        ListObjectsV2Response {
+          contents = null
+          isTruncated = false
+        }
+      )
+
+      strategy.deleteData(mockS3Client, S3TestConstants.OBJECT_KEY_DELETION_TARGET, S3TestConstants.DELETION_KEY_CAPTURE_VALUE_ONLY)
+
+      verify(mockS3Client, never()).deleteObjects(any<DeleteObjectsRequest>())
+    }
+  }
+
+  @Test
+  fun deleteData_withDeleteObjectsErrors_throwsException() {
+    runBlocking {
+      whenever(mockS3Client.listObjectsV2(any<ListObjectsV2Request>())).thenReturn(
+        ListObjectsV2Response {
+          contents = listOf(Object { key = S3TestConstants.MATCHING_OBJECT_KEY_1 })
+          isTruncated = false
+        }
+      )
+      whenever(mockS3Client.deleteObjects(any<DeleteObjectsRequest>())).thenReturn(
+        DeleteObjectsResponse {
+          errors = listOf(
+            Error {
+              key = S3TestConstants.MATCHING_OBJECT_KEY_1
+              code = "AccessDenied"
+              message = "Access denied for object"
+            }
+          )
+        }
+      )
+      val exception = assertThrows(IllegalStateException::class.java) {
+        runBlocking {
+          strategy.deleteData(mockS3Client, S3TestConstants.OBJECT_KEY_DELETION_TARGET, S3TestConstants.DELETION_KEY_CAPTURE_VALUE_ONLY)
+        }
+      }
+      assertNotNull(exception.message)
+      assertTrue(exception.message!!.startsWith("Received errors in S3 DeleteObjects response"))
+    }
   }
 
   private suspend fun mockDeleteObjectsSuccess() {
