@@ -29,7 +29,7 @@ class S3DeletionConnectorTest {
         connector.deleteData(S3TestConstants.ROW_LEVEL_DELETION_TARGET, S3TestConstants.ROW_LEVEL_DELETION_KEY)
       }
     }
-    assertEquals("An operation is not implemented: S3 row-level deletion strategy not yet implemented", exception.message)
+    assertEquals("An operation is not implemented: JSON Line row-level deletion not yet implemented", exception.message)
   }
 
   @Test

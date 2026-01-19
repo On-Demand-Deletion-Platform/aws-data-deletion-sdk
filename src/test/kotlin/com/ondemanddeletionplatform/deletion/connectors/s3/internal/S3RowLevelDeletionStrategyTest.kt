@@ -25,4 +25,40 @@ class S3RowLevelDeletionStrategyTest {
     assertEquals("Deletion row attribute value must be non-null", exception.message)
     verifyNoInteractions(mockS3Client)
   }
+
+  @Test
+  fun deleteData_withJsonlFormat_throwsTodoException() {
+    val deletionTarget = S3TestConstants.ROW_LEVEL_DELETION_TARGET.copy(
+      objectFileFormat = com.ondemanddeletionplatform.deletion.models.s3.FileFormat.JSONL
+    )
+    val deletionKey = com.ondemanddeletionplatform.deletion.models.s3.S3DeletionKeyValue(
+      deletionKeyPatternCaptureValue = S3TestConstants.CUSTOMER_ID,
+      deletionRowAttributeValue = S3TestConstants.CUSTOMER_ID
+    )
+
+    val exception = assertThrows(NotImplementedError::class.java) {
+      runBlocking {
+        strategy.deleteData(mockS3Client, deletionTarget, deletionKey)
+      }
+    }
+    assertEquals("An operation is not implemented: JSON Line row-level deletion not yet implemented", exception.message)
+  }
+
+  @Test
+  fun deleteData_withParquetFormat_throwsTodoException() {
+    val deletionTarget = S3TestConstants.ROW_LEVEL_DELETION_TARGET.copy(
+      objectFileFormat = com.ondemanddeletionplatform.deletion.models.s3.FileFormat.PARQUET
+    )
+    val deletionKey = com.ondemanddeletionplatform.deletion.models.s3.S3DeletionKeyValue(
+      deletionKeyPatternCaptureValue = S3TestConstants.CUSTOMER_ID,
+      deletionRowAttributeValue = S3TestConstants.CUSTOMER_ID
+    )
+
+    val exception = assertThrows(NotImplementedError::class.java) {
+      runBlocking {
+        strategy.deleteData(mockS3Client, deletionTarget, deletionKey)
+      }
+    }
+    assertEquals("An operation is not implemented: Parquet row-level deletion not yet implemented", exception.message)
+  }
 }
