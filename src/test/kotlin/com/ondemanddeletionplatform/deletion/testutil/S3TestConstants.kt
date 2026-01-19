@@ -36,6 +36,16 @@ object S3TestConstants {
     objectFileFormat = FileFormat.JSONL
   )
 
+  val ROW_LEVEL_DELETION_TARGET_PARQUET = S3DeletionTarget(
+    strategy = S3DeletionStrategyType.ROW_LEVEL,
+    awsRegion = AWS_REGION,
+    bucketName = BUCKET_NAME,
+    objectKeyPrefix = OBJECT_KEY_PREFIX,
+    deletionKeyPattern = null,
+    deletionRowAttributeName = DELETION_ROW_ATTRIBUTE_NAME,
+    objectFileFormat = FileFormat.PARQUET
+  )
+
   val DELETION_KEY_CAPTURE_VALUE_ONLY = S3DeletionKeyValue(
     deletionKeyPatternCaptureValue = S3TestConstants.CUSTOMER_ID
   )
