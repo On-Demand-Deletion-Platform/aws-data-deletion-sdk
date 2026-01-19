@@ -13,7 +13,7 @@ import java.util.regex.Pattern
 class ValidatedS3RowLevelDeletionTargetTest {
   @Test
   fun fromDeletionTarget_validRowLevelTarget_success() {
-    val validated = ValidatedS3RowLevelDeletionTarget.fromDeletionTarget(S3TestConstants.ROW_LEVEL_DELETION_TARGET)
+    val validated = ValidatedS3RowLevelDeletionTarget.fromDeletionTarget(S3TestConstants.ROW_LEVEL_DELETION_TARGET_JSONL)
 
     assertEquals(S3DeletionStrategyType.ROW_LEVEL, validated.strategy)
     assertEquals(S3TestConstants.AWS_REGION, validated.awsRegion)

@@ -26,7 +26,7 @@ object S3TestConstants {
     deletionKeyPattern = DELETION_KEY_PATTERN
   )
 
-  val ROW_LEVEL_DELETION_TARGET = S3DeletionTarget(
+  val ROW_LEVEL_DELETION_TARGET_JSONL = S3DeletionTarget(
     strategy = S3DeletionStrategyType.ROW_LEVEL,
     awsRegion = AWS_REGION,
     bucketName = BUCKET_NAME,

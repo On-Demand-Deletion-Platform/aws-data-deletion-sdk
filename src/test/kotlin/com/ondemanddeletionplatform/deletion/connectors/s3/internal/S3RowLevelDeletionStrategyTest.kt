@@ -19,7 +19,7 @@ class S3RowLevelDeletionStrategyTest {
 
     val exception = assertThrows(IllegalArgumentException::class.java) {
       runBlocking {
-        strategy.deleteData(mockS3Client, S3TestConstants.ROW_LEVEL_DELETION_TARGET, invalidDeletionKey)
+        strategy.deleteData(mockS3Client, S3TestConstants.ROW_LEVEL_DELETION_TARGET_JSONL, invalidDeletionKey)
       }
     }
     assertEquals("Deletion row attribute value must be non-null", exception.message)
@@ -28,7 +28,7 @@ class S3RowLevelDeletionStrategyTest {
 
   @Test
   fun deleteData_withJsonlFormat_throwsTodoException() {
-    val deletionTarget = S3TestConstants.ROW_LEVEL_DELETION_TARGET.copy(
+    val deletionTarget = S3TestConstants.ROW_LEVEL_DELETION_TARGET_JSONL.copy(
       objectFileFormat = com.ondemanddeletionplatform.deletion.models.s3.FileFormat.JSONL
     )
     val deletionKey = com.ondemanddeletionplatform.deletion.models.s3.S3DeletionKeyValue(
@@ -46,7 +46,7 @@ class S3RowLevelDeletionStrategyTest {
 
   @Test
   fun deleteData_withParquetFormat_throwsTodoException() {
-    val deletionTarget = S3TestConstants.ROW_LEVEL_DELETION_TARGET.copy(
+    val deletionTarget = S3TestConstants.ROW_LEVEL_DELETION_TARGET_JSONL.copy(
       objectFileFormat = com.ondemanddeletionplatform.deletion.models.s3.FileFormat.PARQUET
     )
     val deletionKey = com.ondemanddeletionplatform.deletion.models.s3.S3DeletionKeyValue(

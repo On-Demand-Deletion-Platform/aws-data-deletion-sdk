@@ -16,7 +16,7 @@ class S3JsonLineRowLevelDeletionStrategyTest {
   fun deleteData_unvalidatedMethodThrowsRedirectException() {
     val exception = assertThrows(NotImplementedError::class.java) {
       runBlocking {
-        strategy.deleteData(mockS3Client, S3TestConstants.ROW_LEVEL_DELETION_TARGET, S3TestConstants.ROW_LEVEL_DELETION_KEY)
+        strategy.deleteData(mockS3Client, S3TestConstants.ROW_LEVEL_DELETION_TARGET_JSONL, S3TestConstants.ROW_LEVEL_DELETION_KEY)
       }
     }
     assertEquals(S3JsonLineRowLevelDeletionStrategy.USE_VALIDATED_DELETE_METHOD_MESSAGE, exception.message)
