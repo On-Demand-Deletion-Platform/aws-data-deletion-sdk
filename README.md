@@ -6,6 +6,9 @@ Kotlin library with connectors and data models for executing data deletion reque
 
 See https://on-demand-deletion-platform.github.io/aws-data-deletion-sdk for SDK documentation.
 
+## Project status
+This repository is archived and no longer under active development.
+
 ## Usage
 
 ### DynamoDB deletion requests
